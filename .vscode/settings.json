@@ -1,0 +1,66 @@
+{
+    "http.proxyAuthorization": null,
+    "beautify.language": {
+        "html": [
+            "django-html",
+            "html",
+            "jinja",
+            "jinja-html"
+        ]
+    },
+    "emmet.includeLanguages": {
+        "jinja-html": "html",
+        "django-html": "html"
+    },
+    "explorer.compactFolders": false,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "json.schemas": [],
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.wordWrap": "on"
+    },
+    "breadcrumbs.enabled": false,
+    "editor.fontLigatures": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": false,
+    "explorer.autoReveal": false,
+    "files.exclude": {
+        "**/.pyc": true,
+        "**/__pycache__": true,
+        ".vscode": false,
+        "venv": true,
+        ".pytest_cache": true
+    },
+    "python.formatting.blackArgs": [
+        "--line-length=79"
+    ],
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_flask"
+    ],
+    "python.linting.pylintEnabled": true,
+    "liveSassCompile.settings.formats": [
+        {
+            "format": "expanded",
+            "extensionName": ".min.css",
+            "savePath": "/static/css"
+        },
+    ],
+    "liveSassCompile.settings.generateMap": false,
+}

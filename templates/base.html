@@ -1,0 +1,102 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block meta %}
+            <meta http-equiv="X-UA-Compatible" content="ie-edge">
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% endblock meta %}
+
+        {% block extra_meta %}
+        {% endblock extra_meta %}
+        
+        {% block corecss %}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+            <link rel="stylesheet" href="{% static 'css/base.min.css' %}">
+        {% endblock corecss %}
+
+        {% block extra_css %}
+        {% endblock extra_css %}
+
+        {% block corejs %}
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+            <script src="https://kit.fontawesome.com/d23270b885.js" crossorigin="anonymous"></script>
+        {% endblock corejs %}
+
+        {% block extra_js %}
+        {% endblock extra_js %}
+
+        <title>2infinity {% block extra_title %}{% endblock extra_title %}</title>
+    </head>
+
+    <body>
+    <header class="container-fluid sticky-top container-dark">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <nav class="navbar navbar-dark p-0">
+                    <a href="#" class="nav-link pl-0 main-logo-link">
+                        <h1 class="logo-font my-0"><span>2</span>infinity</h1>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="main-nav">
+                        <ul class="navbar-nav w-100 pl-0 justify-content-end text-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <p class="my-0">Trips</p>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link" id="account-links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Account
+                                </a>
+                                <div class="dropdown-menu border-0" aria-labelledby="account-links">
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.is_superuser %}
+                                            <a href="#" class="dropdown-item">Product Management</a>
+                                        {% endif %}
+                                        <a href="#" class="dropdown-item">My Profile</a>
+                                        <a href="{% url "account_logout" %}" class="dropdown-item">Logout</a>
+                                    {% else %}
+                                        <a href="{% url "account_signup" %}" class="dropdown-item">Register</a>
+                                        <a href="{% url "account_login" %}" class="dropdown-item">Login</a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div> 
+        </div>  
+    </header>
+
+    {% if messages %}
+        <div class="message-container"></div>
+    {% endif %}
+
+    {% block page_header %}
+    {% endblock page_header %}
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 mb-5 img-header">
+                <div class="h-100"></div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    {% block postloadjs %}
+    {% endblock postloadjs %}
+
+    </body>
+</html>
