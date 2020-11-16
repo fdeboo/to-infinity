@@ -180,7 +180,7 @@
 
 | Name          | Key in db     | Field Type | Validation                |
 |:--------------|:--------------|:-----------|:--------------------------|
-| Name          | category_name | CharField  | max_length=75             |
+| Name          | name          | CharField  | max_length=75             |
 | Friendly Name | friendly_name | CharField  | max_length=75, blank=True |
 
 <p>&nbsp;</p>
