@@ -33,70 +33,29 @@
     </head>
 
     <body>
-    <header class="container-fluid sticky-top container-dark">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-10">
-                <nav class="navbar navbar-dark p-0">
-                    <a href="#" class="nav-link pl-0 main-logo-link">
-                        <h1 class="logo-font my-0"><span>2</span>infinity</h1>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="main-nav">
-                        <ul class="navbar-nav w-100 pl-0 justify-content-end text-center">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <p class="my-0">Trips</p>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link" id="account-links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Account
-                                </a>
-                                <div class="dropdown-menu border-0" aria-labelledby="account-links">
-                                    {% if request.user.is_authenticated %}
-                                        {% if request.user.is_superuser %}
-                                            <a href="#" class="dropdown-item">Product Management</a>
-                                        {% endif %}
-                                        <a href="#" class="dropdown-item">My Profile</a>
-                                        <a href="{% url "account_logout" %}" class="dropdown-item">Logout</a>
-                                    {% else %}
-                                        <a href="{% url "account_signup" %}" class="dropdown-item">Register</a>
-                                        <a href="{% url "account_login" %}" class="dropdown-item">Login</a>
-                                    {% endif %}
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div> 
-        </div>  
-    </header>
+        <header class="container-fluid sticky-top">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10">
+                    {% block page_nav %}
+                    {% endblock page_nav %}
+                </div>
+            </div>
+        </header>
+        {% if messages %}
+            <div class="message-container"></div>
+        {% endif %}
 
-    {% if messages %}
-        <div class="message-container"></div>
-    {% endif %}
-
-    {% block page_header %}
-    {% endblock page_header %}
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-10 mb-5 img-header">
-                <div class="h-100"></div>
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-10">
-                {% block content %}
-                {% endblock content %}
-            </div>
-        </div>
-    </div>
 
-    {% block postloadjs %}
-    {% endblock postloadjs %}
+        {% block postloadjs %}
+        {% endblock postloadjs %}
 
     </body>
 </html>

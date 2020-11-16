@@ -1,3 +1,75 @@
+/* define colours */
+@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap");
 body {
-  background-color: black;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+}
+
+.logo-font {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+}
+
+.logo-font span {
+  font-family: 'Euphoria Script', cursive;
+}
+
+.site-link, .site-link-light {
+  text-decoration: none;
+  color: #000;
+}
+
+.site-link:hover, .site-link-light:hover {
+  text-decoration: none;
+  color: #000;
+}
+
+.site-link-light {
+  color: #F9F9F9;
+}
+
+.site-link-light:hover {
+  color: #F9F9F9;
+}
+
+.btn-outline, .hero-btn {
+  border: 1px solid #000;
+  border-radius: 0;
+  background-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: .3rem;
+  padding: 1rem 1.5rem;
+  -webkit-transition: background-color .75s, color .75s ease-out;
+  transition: background-color .75s, color .75s ease-out;
+}
+
+.btn-outline:hover, .hero-btn:hover {
+  background-color: #000;
+  color: #F9F9F9;
+}
+
+.hero-btn {
+  border: 1px solid #F9F9F9;
+  color: #F9F9F9;
+}
+
+.hero-btn:hover {
+  background-color: #F9F9F9;
+  color: #000;
+}
+
+.hero-text {
+  color: #F9F9F9;
+  font-family: 'Euphoria Script', cursive;
+  font-size: 4rem;
+}
+
+.bg-black {
+  z-index: -1;
+  background: #000 url("/media/pexels-pixabay-41953.png") no-repeat center bottom fixed;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

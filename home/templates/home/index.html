@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block page_nav %}
+    {% include 'includes/light_nav.html' %}
+{% endblock page_nav %}
 
 {% block content %}
-    Hello World!
+    <div class="bg-black"></div>
+    <div class="d-flex flex-column align-items-center my-auto">
+        <p class="hero-text text-center">Experiences that are out of this world.</p>
+        <button class="hero-btn">
+            Explore
+        </button>
+    </div>
 {% endblock content %}

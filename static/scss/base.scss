@@ -1,5 +1,76 @@
 @import 'config';
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap');
 
 body {
-    background-color: black;
+    font: {
+        family: $font-stack;
+        weight: 300;
+    }
+}
+
+.logo-font {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    span {
+        font-family: 'Euphoria Script', cursive;
+    }
+}
+
+.site-link {
+    text-decoration: none;
+    color: #000;
+    &:hover {
+        text-decoration: none;
+        color: #000;
+    }
+}
+
+.site-link-light {
+    @extend .site-link;
+    color: $off-white;
+    &:hover {
+        color: $off-white;
+    }
+}
+
+.btn-outline {
+    border: 1px solid #000;
+    border-radius: 0;
+    background-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: .3rem;
+    padding: 1rem 1.5rem;
+    transition: background-color .75s, color .75s ease-out;
+    &:hover {
+        background-color: #000;
+        color: $off-white;
+    }
+}
+
+.hero-btn {
+    @extend .btn-outline;
+    border: 1px solid $off-white;
+    color: $off-white;
+    &:hover {
+        background-color: $off-white;
+        color: #000;
+    }
+}
+
+.hero-text {
+    color: $off-white;
+    font: {
+        family: 'Euphoria Script', cursive;
+        size: 4rem;
+    }
+}
+
+.bg-black {
+    z-index: -1;
+    background: #000 url("/media/pexels-pixabay-41953.png") no-repeat center bottom fixed;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }

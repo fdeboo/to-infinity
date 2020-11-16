@@ -1,0 +1,13 @@
+$font-stack: 'Montserrat', sans-serif;
+
+/* define colours */
+$off-white: #F9F9F9;
+
+
+@function set-text-color($color) {
+    @if (lightness($color) >70) {
+        @return #000;
+    } @else {
+        @return $off-white;
+    }
+}
