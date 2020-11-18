@@ -71,5 +71,16 @@ class Trip(models.Model):
     )
     date = models.DateTimeField()
     seats_available = models.IntegerField(
-        default=0, null=False, blank=False
+        null=False,
+        blank=False,
+        editable=False
     )
+
+    def save(self, *args, **kwargs):
+        """
+        Override the original save method and set the number of
+        seats available
+        """
+        bookings = 0
+        self.seats_available = self.destination.max_passengers - bookings
+        super().save(*args, **kwargs)
