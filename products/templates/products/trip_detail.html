@@ -5,6 +5,16 @@
 {% endblock page_nav %}
 
 {% block content %}
-
+<div class="row">
+    <div class="col-md-5">
+        <a href="{{ destination.image_url }}">
+            <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
+        </a>
+    </div>
+    <div class="col-md-6">
+        <h2>{{ destination.name }}</h2>
+        <p>{{ destination.description }}</p>
+    </div>
+</div>
 
 {% endblock content %}

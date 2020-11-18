@@ -6,9 +6,13 @@
 
 {% block content %}
 <div class="row">
-    {%for trip in trips %}
+    {%for destination in destinations %}
         <div class="col-md-4">
-            <img class="img-fluid" src="{{ trip.image.url }}" alt="{{ trip.name }}">
+            <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
+            <a href="{% url 'trip_detail' destination.id %}">
+                <p>{{ destination.name }}</p>
+            </a>
+            
         </div>
     {% endfor %}
 </div>

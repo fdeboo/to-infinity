@@ -3,6 +3,7 @@
 body {
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
+  cursor: url("/media/rocket45right.png") 0 0, pointer;
 }
 
 .logo-font {
@@ -66,7 +67,8 @@ body {
 
 .bg-black {
   z-index: -1;
-  background: #000 url("/media/pexels-pixabay-41953.png") no-repeat center bottom fixed;
+  background: #000 url("/media/international-space-station-1176518.jpg") no-repeat center bottom fixed;
+  background-size: contain;
   position: fixed;
   top: 0;
   bottom: 0;

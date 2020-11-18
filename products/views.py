@@ -5,10 +5,10 @@ from .models import Product
 def all_trips(request):
     """ A view to show all trips """
     template = 'products/trips.html'
-    trips = Product.objects.filter(category=3)
+    destinations = Product.objects.filter(category=3)
 
     context = {
-        "trips": trips,
+        "destinations": destinations,
     }
 
     return render(request, template, context)
@@ -16,12 +16,12 @@ def all_trips(request):
 
 def trip_detail(request, product_id):
     """ A view to show individual event details """
-    trip = get_object_or_404(Product, pk=product_id)
+    destination = get_object_or_404(Product, pk=product_id)
 
     template = 'products/trip_detail.html'
 
     context = {
-        "trip": trip,
+        "destination": destination,
     }
 
     return render(request, template, context)

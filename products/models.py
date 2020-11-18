@@ -73,6 +73,3 @@ class Trip(models.Model):
     seats_available = models.IntegerField(
         default=0, null=False, blank=False
     )
-
-    def __str__(self):
-        return self.name

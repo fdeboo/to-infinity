@@ -23,7 +23,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
 
-class AddOnAdmin(admin.ModelAdmin):
+class AddOnAdmin(ProductAdmin):
     list_display = (
         'product_id',
         'name',
@@ -38,7 +38,7 @@ class AddOnAdmin(admin.ModelAdmin):
     )
 
 
-class InsuranceAdmin(admin.ModelAdmin):
+class InsuranceAdmin(ProductAdmin):
     list_display = (
         'product_id',
         'name',
@@ -53,9 +53,8 @@ class InsuranceAdmin(admin.ModelAdmin):
     )
 
 
-class DestinationAdmin(admin.ModelAdmin):
+class DestinationAdmin(ProductAdmin):
     list_display = (
-        'product_id',
         'name',
         'max_passengers',
         'duration',
@@ -72,8 +71,8 @@ class DestinationAdmin(admin.ModelAdmin):
 
 class TripAdmin(admin.ModelAdmin):
     list_display = (
-        'destination',
         'date',
+        'destination',
         'seats_available',
     )
 
