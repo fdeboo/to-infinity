@@ -1,1 +1,5 @@
-[{"pk": 1, "model": "products.category", "fields": {"name": "add_ons", "friendly_name": "Add-Ons"}}, {"pk": 2, "model": "products.category", "fields": {"name": "insurance", "friendly_name": "Insurance"}}, {"pk": 3, "model": "products.category", "fields": {"name": "destinations", "friendly_name": "Destinations"}}]
+[
+    {"pk": 1, "model": "products.category", "fields": {"name": "add_ons", "friendly_name": "Add-Ons"}},
+    {"pk": 2, "model": "products.category", "fields": {"name": "insurance", "friendly_name": "Insurance"}},
+    {"pk": 3, "model": "products.category", "fields": {"name": "destinations", "friendly_name": "Destinations"}}
+]

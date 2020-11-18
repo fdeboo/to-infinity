@@ -5,4 +5,12 @@
 {% endblock page_nav %}
 
 {% block content %}
+<div class="row">
+    {%for trip in trips %}
+        <div class="col-md-4">
+            <img class="img-fluid" src="{{ trip.image.url }}" alt="{{ trip.name }}">
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock content %}

@@ -59,3 +59,20 @@ class Destination(Product):
 
     def __str__(self):
         return self.name
+
+
+class Trip(models.Model):
+    destination = models.ForeignKey(
+        'Destination',
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="trips"
+    )
+    date = models.DateTimeField()
+    seats_available = models.IntegerField(
+        default=0, null=False, blank=False
+    )
+
+    def __str__(self):
+        return self.name

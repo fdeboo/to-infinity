@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light p-0">
-    <a href="#" class="nav-link site-link pl-0 main-logo-link text-uppercase">
+    <a href="{% url 'home' %}" class="nav-link site-link pl-0 main-logo-link text-uppercase">
         <h1 class="logo-font my-0"><span>2</span>infinity</h1>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav"
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="main-nav">
         <ul class="navbar-nav w-100 pl-0 justify-content-end text-center">
             <li class="nav-item">
-                <a class="nav-link site-link" href="#">
+                <a class="nav-link site-link" href="{% url 'trips' %}">
                     <p class="my-0">Trips</p>
                 </a>
             </li>

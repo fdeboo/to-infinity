@@ -5,7 +5,7 @@ from .models import Product
 def all_trips(request):
     """ A view to show all trips """
     template = 'products/trips.html'
-    trips = Product.objects.filter(category="destination")
+    trips = Product.objects.filter(category=3)
 
     context = {
         "trips": trips,

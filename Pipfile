@@ -10,6 +10,7 @@ pylint = "*"
 django = "*"
 django-allauth = "*"
 pillow = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"
