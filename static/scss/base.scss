@@ -76,3 +76,13 @@ body {
     left: 0;
     right: 0;
 }
+
+.search-relative {
+    position: relative;
+    button {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: .5rem;
+    }
+}
