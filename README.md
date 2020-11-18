@@ -187,11 +187,11 @@
 
 ### Destination (Product):
 
-| Name                      | Key in db             | Field Type    | Validation |
-|:--------------------------|:----------------------|:--------------|:-----------|
+| Name                      | Key in db             | Field Type    | Validation    |
+|:--------------------------|:----------------------|:--------------|:--------------|
 | Maximum Passengers        | max_passengers        | IntegerField  | |
-| Duration                  | duration              | DurationField | |
-| Minimal Medical Threshold | min_medical_threshold | IntegerField  | blank=True |
+| Duration                  | duration              | CharField     | max_lenght=20 |
+| Minimal Medical Threshold | min_medical_threshold | IntegerField  | blank=True    |
 
 <p>&nbsp;</p>
 
@@ -214,11 +214,11 @@
 
 ### Trip:
 
-| Name            | Key in db       | Field Type              | Validation                |
-|:----------------|:----------------|:------------------------|:--------------------------|
-| Destination     | destination     | ForeignKey(Destination) | on_delete=CASCADE         |
-| Date            | date            | DateField               |                           |
-| Seats Available | seats_available | IntergerField           | blank=True                |
+| Name            | Key in db       | Field Type              | Validation                                 |
+|:----------------|:----------------|:------------------------|:-------------------------------------------|
+| Destination     | destination     | ForeignKey(Destination) | null=True, blank=False, on_delete=SET_NULL |
+| Date            | date            | DateField               |             |
+| Seats Available | seats_available | IntergerField           | null=False, blank=False, editable=False    |
 
 <p>&nbsp;</p>
 
@@ -272,7 +272,7 @@ You will need to set up a free account with Stripe and with AWS for a S3 bucket.
 
 5. Set up a .env file in the project root and provide the folllowing environment variables: 
 
-    _*for guidance on where to obtain these values click [here](#guidance)_
+    >_Important! Make sure you set up a .gitignore file and list .env in it so that it is ignored in commits to GitHub_
 
         SECRET_KEY=your_secret_key
         STRIPE_PUBLIC_KEY=your_stripe_public_key
@@ -280,7 +280,7 @@ You will need to set up a free account with Stripe and with AWS for a S3 bucket.
         STRIPE_WH_SECRET=your_stripe_wh_secret
         DEVELOPMENT=True
 
-    >_Important! Make sure you set up a .gitignore file and list .env in it so that it is ignored in commits to GitHub_
+    _*for guidance on where to obtain these values click [here](#guidance)_
 
 6. If using VSCode, or else if necessary, restart the IDE and reactivate the virtual environment (as per step 3)
 

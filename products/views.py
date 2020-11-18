@@ -21,7 +21,7 @@ def all_trips(request):
             queries = Q(name__icontains=query) | Q(
                 description__icontains=query
                 )
-            destinations = destinations.filter(queries)    
+            destinations = destinations.filter(queries)
 
     context = {
         "destinations": destinations,
