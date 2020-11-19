@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import Count
-from bookings.models import Booking
 
 
 class Category(models.Model):
@@ -58,31 +56,3 @@ class Destination(Product):
 
     def __str__(self):
         return self.name
-
-
-class Trip(models.Model):
-    destination = models.ForeignKey(
-        "Destination",
-        null=True,
-        blank=False,
-        on_delete=models.SET_NULL,
-        related_name="trips",
-    )
-    date = models.DateTimeField()
-    seats_available = models.IntegerField(
-        null=False, blank=False, editable=False
-    )
-
-    def save(self, *args, **kwargs):
-        """
-        Override the original save method and set the number of
-        seats available
-        """
-        reservations = (
-            Booking.objects.aggregate(
-                num_passengers=Count("passengers")
-            )
-            ["num_passengers"] or 0
-        )
-        self.seats_available = self.destination.max_passengers - reservations
-        super().save(*args, **kwargs)

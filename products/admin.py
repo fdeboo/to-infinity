@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, AddOn, Insurance, Destination, Trip
+from .models import Product, Category, AddOn, Insurance, Destination
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -69,21 +69,9 @@ class DestinationAdmin(ProductAdmin):
     )
 
 
-class TripAdmin(admin.ModelAdmin):
-    list_display = (
-        'date',
-        'destination',
-        'seats_available',
-    )
-
-    ordering = (
-        'date',
-    )
-
-
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(AddOn, AddOnAdmin)
 admin.site.register(Insurance, InsuranceAdmin)
 admin.site.register(Destination, DestinationAdmin)
-admin.site.register(Trip, TripAdmin)
+

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Booking, BookingLineItem, Passenger
+from .models import Booking, BookingLineItem, Passenger, Trip
 
 
 class BookingLineItemAdminInline(admin.TabularInline):
@@ -9,7 +9,6 @@ class BookingLineItemAdminInline(admin.TabularInline):
 
 class PassengerAdminInline(admin.TabularInline):
     model = Passenger
-    readonly_fields = ("medical_assessment",)
 
 
 class BookingAdmin(admin.ModelAdmin):
@@ -18,14 +17,12 @@ class BookingAdmin(admin.ModelAdmin):
     """ Can view but not edit the following """
     readonly_fields = (
         "booking_ref",
-        "date",
         "booking_total",
         "stripe_pid",
     )
 
     fields = (
         "booking_ref",
-        "user_profile",
         "first_name",
         "email",
         "booking_total",
@@ -39,7 +36,18 @@ class BookingAdmin(admin.ModelAdmin):
         "booking_total",
     )
 
-    ordering = ("-date",)
+
+class TripAdmin(admin.ModelAdmin):
+    list_display = (
+        'date',
+        'destination',
+        'seats_available',
+    )
+
+    ordering = (
+        'date',
+    )
 
 
 admin.site.register(Booking, BookingAdmin)
+admin.site.register(Trip, TripAdmin)

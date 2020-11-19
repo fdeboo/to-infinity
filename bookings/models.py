@@ -1,6 +1,35 @@
 import uuid
 from django.db import models
-from products.models import Trip, Product
+from django.db.models import Count
+from products.models import Destination, Product
+
+
+class Trip(models.Model):
+    destination = models.ForeignKey(
+        Destination,
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="trips",
+    )
+    date = models.DateTimeField()
+    seats_available = models.IntegerField(
+        null=False, blank=False, editable=False
+    )
+
+    def save(self, *args, **kwargs):
+        """
+        Override the original save method and set the number of
+        seats available
+        """
+        reservations = (
+            Booking.objects.aggregate(
+                num_passengers=Count("passengers")
+            )
+            ["num_passengers"] or 0
+        )
+        self.seats_available = self.destination.max_passengers - reservations
+        super().save(*args, **kwargs)
 
 
 class Booking(models.Model):
@@ -10,6 +39,7 @@ class Booking(models.Model):
     trip = models.ForeignKey(
         Trip, on_delete=models.SET_NULL, null=True, blank=False
     )
+    """
     user_profile = models.ForeignKey(
         "UserProfile",
         on_delete=models.SET_NULL,
@@ -17,6 +47,7 @@ class Booking(models.Model):
         blank=True,
         related_name="bookings",
     )
+    """
     booking_total = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, default=0
     )
@@ -50,13 +81,15 @@ class Passenger(models.Model):
     )
     first_name = models.CharField(max_length=20, null=False, blank=False)
     last_name = models.CharField(max_length=20, null=False, blank=False)
-    email = models.EmailField(maxlength=254, null=False, blank=False)
+    email = models.EmailField(max_length=254, null=False, blank=False)
+    """"
     medical_assessment = models.OneToOneField(
         "Medical",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
+    """
 
 
 class BookingLineItem(models.Model):
