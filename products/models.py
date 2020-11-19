@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Count
+from bookings.models import Booking
 
 
 class Category(models.Model):
@@ -6,7 +8,7 @@ class Category(models.Model):
     friendly_name = models.CharField(max_length=75, null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
@@ -17,10 +19,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(
-        'Category',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
+        "Category", null=True, blank=True, on_delete=models.SET_NULL
     )
     name = models.CharField(max_length=254)
     product_id = models.CharField(max_length=254)
@@ -63,17 +62,15 @@ class Destination(Product):
 
 class Trip(models.Model):
     destination = models.ForeignKey(
-        'Destination',
+        "Destination",
         null=True,
         blank=False,
         on_delete=models.SET_NULL,
-        related_name="trips"
+        related_name="trips",
     )
     date = models.DateTimeField()
     seats_available = models.IntegerField(
-        null=False,
-        blank=False,
-        editable=False
+        null=False, blank=False, editable=False
     )
 
     def save(self, *args, **kwargs):
@@ -81,6 +78,11 @@ class Trip(models.Model):
         Override the original save method and set the number of
         seats available
         """
-        bookings = 0
-        self.seats_available = self.destination.max_passengers - bookings
+        reservations = (
+            Booking.objects.aggregate(
+                num_passengers=Count("passengers")
+            )
+            ["num_passengers"] or 0
+        )
+        self.seats_available = self.destination.max_passengers - reservations
         super().save(*args, **kwargs)
