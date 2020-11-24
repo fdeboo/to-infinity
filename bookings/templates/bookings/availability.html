@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_nav %}
+{% include 'includes/dark_nav.html' %}
+{% endblock page_nav %}
+
+{% block content %}
+{% for trip in trips %}{% endfor %}
+{% endblock content %}

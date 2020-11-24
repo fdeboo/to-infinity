@@ -1,6 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.contrib import messages
-from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
 from .models import Product
 from bookings.forms import InitialForm
 
@@ -9,7 +7,7 @@ def all_trips(request):
     """ A view to show all trips """
     template = 'products/trips.html'
     destinations = Product.objects.filter(category=3)
-    intital_form = InitialForm(request.POST or None)
+    intital_form = InitialForm()
 
     context = {
         "destinations": destinations,

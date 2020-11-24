@@ -61,7 +61,7 @@
 
  <div align="center">
 
-<img src="media/wireframes/profile.png" alt="profile view"/>
+<img src="media/wireframes/products_trips.png" alt="profile view"/>
  
  </div>
 

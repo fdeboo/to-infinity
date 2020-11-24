@@ -19,10 +19,10 @@
 {% endfor %}
 
 <div class="row booking-form justify-content-center">
-    <div class="col-10">
-        <form action="{% url 'trips' %}" method="POST">
+    <div class="col-10 py-4">
+        <form action="{% url 'initial_search' %}" method="GET">
             {% csrf_token %}
-            {{ form }}
+            {{ form | crispy }}
             <input type="submit" value="Search">
         </form>
     </div>

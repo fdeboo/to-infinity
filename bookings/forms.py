@@ -6,16 +6,30 @@ from datetime import date
 
 
 class DateInput(forms.DateInput):
-    """ https://www.youtube.com/watch?v=I2-JYxnSiB0 """
+    """
+    Override the default input type for Django's DateInput Widget
+    as suggested here: https://www.youtube.com/watch?v=I2-JYxnSiB0.
+    Renders <input type="date"> in html
+    """
 
     input_type = "date"
 
 
 class SelectWithOptionAttribute(Select):
     """
-    Select with Option Attributes- subclasses Django's select widget
-    and created a dictionary of labels which become attributes
-    Code suggested in this StackOverflow post:
+    Creates a custom widget that sublasses Django's select widget.
+    Customises it's create_option method
+    Allows attributes to be added the option elements of the Select
+
+    Since the options of a Select widget are list of tuples containing
+    the value and label ie. [('value_1, 'label_1')],
+
+    Pass a dictionary instead of string for it's label:
+    ie. [('value_1, {'label': 'label_1', 'foo': 'bar', ...})]
+
+    The extra key/values in the dictionary render as HTML attributes
+
+    Code and explanation courtesy this StackOverflow post:
     https://stackoverflow.com/questions/38944814/how-to-add-data-attribute-to-django-modelform-modelchoicefield
     """
 
@@ -36,7 +50,11 @@ class SelectWithOptionAttribute(Select):
 
 
 class DestinationChoiceField(ModelChoiceField):
-    """ChoiceField which puts num_passengers on <options>"""
+    """
+    Subclasses Django's ModelChoiceField and customises it's
+    label_from_instance method to include the 'max_passengers' attribute from
+    the queryset as an data-attribute in the html element
+    """
 
     widget = SelectWithOptionAttribute
 
@@ -44,15 +62,16 @@ class DestinationChoiceField(ModelChoiceField):
         # 'obj' will be a Destination
         return {
             # the usual label:
-            'label': super().label_from_instance(obj),
+            "label": super().label_from_instance(obj),
             # the new data attribute:
-            'data-max-num': obj.max_passengers
+            "data-max-num": obj.max_passengers,
         }
 
 
 class InitialForm(forms.Form):
     """
     Collects user's desired deestination, no. of passengers and date preference
+    Fields include an id attribute for referencing in Javascript
     """
 
     destination = DestinationChoiceField(queryset=Destination.objects.all())
