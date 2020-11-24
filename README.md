@@ -55,7 +55,7 @@
 ## Wireframes <a name="wireframes"></a>
 <div align="center">
 
-<img src="media/wireframes/login.png" alt="login view"/>
+<img src="media/wireframes/home.png" alt="login view"/>
  
  </div>
 
