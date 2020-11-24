@@ -75,3 +75,31 @@ body {
   left: 0;
   right: 0;
 }
+
+.search-relative {
+  position: relative;
+}
+
+.search-relative button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: .5rem;
+}
+
+.image-container {
+  height: 100vh;
+  position: relative;
+}
+
+.image-container a {
+  position: absolute;
+}
+
+.booking-form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #F9F9F9;
+}

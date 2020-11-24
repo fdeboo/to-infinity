@@ -74,4 +74,3 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(AddOn, AddOnAdmin)
 admin.site.register(Insurance, InsuranceAdmin)
 admin.site.register(Destination, DestinationAdmin)
-

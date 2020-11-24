@@ -86,3 +86,19 @@ body {
         right: .5rem;
     }
 }
+
+.image-container{
+    height: 100vh;
+    position: relative;
+    a {
+        position: absolute;
+    }
+}
+
+.booking-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $off-white;
+}

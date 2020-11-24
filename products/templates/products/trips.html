@@ -1,30 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_nav %}
-    {% include 'includes/dark_nav.html' %}
+{% include 'includes/dark_nav.html' %}
 {% endblock page_nav %}
 
 {% block content %}
-<div class="row">
-    <form method="GET" action="{% url 'trips'%}">
-        <div class="search-relative">
-            <input type="text" class="rounded-pill form-control border-white" name='q' placeholder="Search trips">
-            <button class="px-2 border-none btn bg-transparent" type="submit">
-                <span>
-                    <i class="fas fa-search"></i>
-                </span>
-            </button>
-        </div>
-    </form>
-    {%for destination in destinations %}
-        <div class="col-md-4">
-            <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
-            <a href="{% url 'trip_detail' destination.id %}">
-                <p>{{ destination.name }}</p>
-            </a>
-            
-        </div>
-    {% endfor %}
+{%for destination in destinations %}
+<div class="row icon-menu-bar"></div>
+<div class="image-container w-100" id="{{ destination.name }}">
+    
+    
+        <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
+        <a href="{% url 'trip_detail' destination.id %}">
+            <p>{{ destination.name }}</p>
+        </a>
+
+</div>
+{% endfor %}
+
+<div class="row booking-form justify-content-center">
+    <div class="col-10">
+        <form action="{% url 'trips' %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Search">
+        </form>
+    </div>
 </div>
 
 {% endblock content %}
+
+
+{% block postloadjs %}
+<script>
+    document.getElementById("selected-trip").onchange = function() {
+        let elemSelect = document.getElementById("selected-trip");
+        if (elemSelect.value == '') {
+            $('#passengers-max').prop("disabled", true);
+        }
+        else {
+            let tripChoice = elemSelect.options[elemSelect.selectedIndex];
+
+            // From http://html5doctor.com/html5-custom-data-attributes/
+            let maxNm = tripChoice.dataset.maxNum;
+            
+            $('#passengers-max').attr("max", maxNm).prop("disabled", false);
+        }
+    };
+</script>
+{% endblock postloadjs %}

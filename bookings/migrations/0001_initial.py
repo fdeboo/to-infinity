@@ -9,54 +9,128 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('products', '0008_delete_trip'),
+        ("products", "0008_delete_trip"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Booking',
+            name="Booking",
             fields=[
-                ('booking_ref', models.CharField(editable=False, max_length=20, primary_key=True, serialize=False)),
-                ('booking_total', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
-                ('stripe_pid', models.CharField(default='', max_length=254)),
-                ('first_name', models.CharField(max_length=50)),
-                ('last_name', models.CharField(max_length=50)),
-                ('email', models.EmailField(max_length=254)),
-                ('num_passengers', models.IntegerField()),
+                (
+                    "booking_ref",
+                    models.CharField(
+                        editable=False,
+                        max_length=20,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "booking_total",
+                    models.DecimalField(
+                        decimal_places=2, default=0, max_digits=10
+                    ),
+                ),
+                ("stripe_pid", models.CharField(default="", max_length=254)),
+                ("first_name", models.CharField(max_length=50)),
+                ("last_name", models.CharField(max_length=50)),
+                ("email", models.EmailField(max_length=254)),
+                ("num_passengers", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='Trip',
+            name="Trip",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField()),
-                ('seats_available', models.IntegerField(editable=False)),
-                ('destination', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='trips', to='products.destination')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateTimeField()),
+                ("seats_available", models.IntegerField(editable=False)),
+                (
+                    "destination",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="trips",
+                        to="products.destination",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Passenger',
+            name="Passenger",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=20)),
-                ('last_name', models.CharField(max_length=20)),
-                ('email', models.EmailField(max_length=254)),
-                ('booking', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='passengers', to='bookings.booking')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=20)),
+                ("last_name", models.CharField(max_length=20)),
+                ("email", models.EmailField(max_length=254)),
+                (
+                    "booking",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="passengers",
+                        to="bookings.booking",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='BookingLineItem',
+            name="BookingLineItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField(default=0)),
-                ('line_total', models.DecimalField(decimal_places=2, editable=False, max_digits=8)),
-                ('booking', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='lineitems', to='bookings.booking')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.product')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.IntegerField(default=0)),
+                (
+                    "line_total",
+                    models.DecimalField(
+                        decimal_places=2, editable=False, max_digits=8
+                    ),
+                ),
+                (
+                    "booking",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="lineitems",
+                        to="bookings.booking",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="products.product",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='booking',
-            name='trip',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='bookings.trip'),
+            model_name="booking",
+            name="trip",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="bookings.trip",
+            ),
         ),
     ]

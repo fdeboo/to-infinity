@@ -2,29 +2,18 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.db.models import Q
 from .models import Product
+from bookings.forms import InitialForm
 
 
 def all_trips(request):
     """ A view to show all trips """
     template = 'products/trips.html'
     destinations = Product.objects.filter(category=3)
-
-    if request.GET:
-        if 'q' in request.GET:
-            query = request.GET['q']
-            if not query:
-                messages.error(
-                    request, "You didn't enter any search criteria!"
-                    )
-                return redirect(reverse('trips'))
-
-            queries = Q(name__icontains=query) | Q(
-                description__icontains=query
-                )
-            destinations = destinations.filter(queries)
+    intital_form = InitialForm(request.POST or None)
 
     context = {
         "destinations": destinations,
+        "form": intital_form
     }
 
     return render(request, template, context)
