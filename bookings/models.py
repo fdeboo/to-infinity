@@ -1,3 +1,6 @@
+"""
+Models include Trip, Passenger and Booking Line Item
+"""
 import uuid
 from django.db import models
 from django.db.models import Count
@@ -5,6 +8,11 @@ from products.models import Destination, Product
 
 
 class Trip(models.Model):
+    """
+    Stores information about each Trip on offer to any given destination
+    Monitors how many seats are left available as booking are made
+
+    """
     destination = models.ForeignKey(
         Destination,
         null=True,
@@ -19,7 +27,7 @@ class Trip(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Override the original save method and set the number of
+        Override the original save method and update the number of
         seats available
         """
         reservations = (
@@ -33,6 +41,9 @@ class Trip(models.Model):
 
 
 class Booking(models.Model):
+    """ Model stores information about each booking such as which trip
+    the booking is for, details of the passengers and the overall cost  """
+
     booking_ref = models.CharField(
         primary_key=True, max_length=20, null=False, editable=False
     )
@@ -40,7 +51,7 @@ class Booking(models.Model):
         Trip, on_delete=models.SET_NULL, null=True, blank=False
     )
     """
-    user_profile = models.ForeignKey(
+    lead_user = models.ForeignKey(
         "UserProfile",
         on_delete=models.SET_NULL,
         null=True,
@@ -54,9 +65,6 @@ class Booking(models.Model):
     stripe_pid = models.CharField(
         max_length=254, null=False, blank=False, default=""
     )
-    first_name = models.CharField(max_length=50, null=False, blank=False)
-    last_name = models.CharField(max_length=50, null=False, blank=False)
-    email = models.EmailField(max_length=254, null=False, blank=False)
     num_passengers = models.IntegerField(null=False, blank=False)
 
     def _generate_booking_ref(self):
@@ -76,6 +84,9 @@ class Booking(models.Model):
 
 
 class Passenger(models.Model):
+    """ Store information about each passenger included
+    in a booking """
+
     booking = models.ForeignKey(
         Booking, on_delete=models.CASCADE, related_name="passengers"
     )
@@ -93,6 +104,12 @@ class Passenger(models.Model):
 
 
 class BookingLineItem(models.Model):
+    """
+    Related to the products being sold as part of the booking.
+    Each instance is an individual product that make up the order.
+    Calculates the total based on the quantity applied.
+    """
+
     booking = models.ForeignKey(
         Booking,
         null=False,

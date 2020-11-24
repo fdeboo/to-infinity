@@ -1,7 +1,16 @@
+"""
+Models include Category, Product and Destination, AddOn and Insurance
+which subclass the Product model
+"""
 from django.db import models
 
 
 class Category(models.Model):
+    """
+    Applied against the Product model to define the different types
+    of products
+    """
+
     name = models.CharField(max_length=75)
     friendly_name = models.CharField(max_length=75, null=True, blank=True)
 
@@ -12,10 +21,17 @@ class Category(models.Model):
         return self.name
 
     def get_friendly_name(self):
+        """ Returns human readable name """
         return self.friendly_name
 
 
 class Product(models.Model):
+    """
+    General attributes that can be applied to all product instances
+    regardless of category.
+    Includes details that describe what the product is.
+    """
+
     category = models.ForeignKey(
         "Category", null=True, blank=True, on_delete=models.SET_NULL
     )
@@ -32,6 +48,8 @@ class Product(models.Model):
 
 
 class AddOn(Product):
+    """ Inherits Product model and adds a threshold for customers """
+
     min_medical_threshold = models.IntegerField(
         default=0, null=False, blank=False
     )
@@ -41,6 +59,8 @@ class AddOn(Product):
 
 
 class Insurance(Product):
+    """ Inherits Product model """
+
     friendly_name = models.CharField(max_length=75, blank=True)
 
     def __str__(self):
@@ -48,6 +68,10 @@ class Insurance(Product):
 
 
 class Destination(Product):
+    """ Inherits Product model and stores key information about
+    the different destinations such as how many people can travel per trip
+    and roughly how long each trip takes.  """
+
     max_passengers = models.IntegerField(null=True, blank=True)
     duration = models.CharField(max_length=20, blank=True)
     min_medical_threshold = models.IntegerField(

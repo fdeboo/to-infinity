@@ -13,7 +13,7 @@ def initial_search(request):
             destination_choice = request.GET['destination']
             date_choice = request.GET['request_date']
             passenger_total = request.GET['passengers']
-            destinations = Trip.objects.filter(
+            trips = Trip.objects.filter(
                 destination=destination_choice
             ).filter(
                 seats_available__gte=passenger_total
@@ -21,6 +21,6 @@ def initial_search(request):
             print(destination_choice)  
             print(destinations)  
     context = {
-        'destinations': destinations
+        'trips': destinations
     }
     return render(request, template, context)

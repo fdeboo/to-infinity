@@ -1,8 +1,12 @@
+"""
+Defines the form objects to be used for the booking aspects of the app
+Includes a form to search available dates
+"""
+from datetime import date
 from django import forms
-from django.forms import ModelChoiceField
+from django.forms import ModelChoiceField, NumberInput
 from django.forms.widgets import Select
 from .models import Destination
-from datetime import date
 
 
 class DateInput(forms.DateInput):
@@ -74,7 +78,10 @@ class InitialForm(forms.Form):
     Fields include an id attribute for referencing in Javascript
     """
 
-    destination = DestinationChoiceField(queryset=Destination.objects.all())
+    destination = DestinationChoiceField(
+        queryset=Destination.objects.all(),
+        widget=SelectWithOptionAttribute(attrs={"id": "selected-trip"})
+    )
     request_date = forms.DateField(
         required=True,
         widget=DateInput(
@@ -84,8 +91,6 @@ class InitialForm(forms.Form):
             }
         ),
     )
-    passengers = forms.IntegerField()
-    passengers.widget.attrs.update(
-        {"min": 1, "disabled": True, "id": "passengers-max"}
-    )
-    destination.widget.attrs.update({"id": "selected-trip"})
+    passengers = forms.IntegerField(widget=NumberInput(attrs={
+        "min": 1, "disabled": True, "id": "passengers-max"
+    }))

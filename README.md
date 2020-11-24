@@ -98,11 +98,13 @@
 | Name           | Key in db              | Field Type          | Options                                      |
 |:---------------|:-----------------------|:--------------------|:---------------------------------------------|
 | User           | user                   | OneToOneField(User) | on_delete=CASCADE                            |
-| Address 1      | default_address1       | CharField           | max_length=80, null=true, blank=True         |
-| Address 2      | default_address2       | CharField           | max_length=80, null=true, blank=True         |        
-| Postcode       | default_postcode       | CharField           | max_length=20, null=true, blank=True         |
-| City           | default_town_or_city   | CharField           | max_length=40,  null=true, blank=True        |
-| Country        | default_country        | CountryField        | blank_label="Country", null=true, blank=True |
+| First Name     | default_first_name      | CharField           | max_lenghth=80, null=False, blank=False      |
+| Last Name      | default_last_name      | CharField           | max_length=80, null=False, blank=False       |
+| Address 1      | default_address1       | CharField           | max_length=80, null=True, blank=True         |
+| Address 2      | default_address2       | CharField           | max_length=80, null=True, blank=True         |        
+| Postcode       | default_postcode       | CharField           | max_length=20, null=True, blank=True         |
+| City           | default_town_or_city   | CharField           | max_length=40,  null=True, blank=True        |
+| Country        | default_country        | CountryField        | blank_label="Country", null=True, blank=True |
 | Medical Rating | default_medical_rating | IntegerField        | null=true, blank=True                        |
 
 <p>&nbsp;</p>
@@ -115,17 +117,26 @@
 
 <p>&nbsp;</p>
 
+### Trip:
+
+| Name            | Key in db       | Field Type              | Validation                                 |
+|:----------------|:----------------|:------------------------|:-------------------------------------------|
+| Destination     | destination     | ForeignKey(Destination) | null=True, blank=False, on_delete=SET_NULL |
+| Date            | date            | DateField               |             |
+| Seats Available | seats_available | IntergerField           | null=False, blank=False, editable=False    |
+
+<p>&nbsp;</p>
+
 ### Booking:
 
 | Name              | Key in db      | Field Type              | Validation                                                  |
 |:------------------|:---------------|:------------------------|:------------------------------------------------------------|
 | Booking Reference | booking_ref    | CharField               | primary_key=True, max_length=20, null=False, editable=False |
 | Trip              | trip           | ForeignKey(Trip)        | on_delete=SET_NULL, null=False, blank=False                 |
-| User Profile      | user_profile   | ForeignKey(UserProfile) | on_delete=SET_NULL, null=True, blank=True                   |
+| Lead User         | lead_user      | ForeignKey(UserProfile) | on_delete=SET_NULL, null=True, blank=True                   |
 | Booking Total     | booking_total  | DecimalField            | max_digits=10, decimal_places=2, null=False, default=0      |
 | Stripe Payment ID | stripe_pid     | CharField               | max_length=254, null=False, blank=False default=""          |
 | Full Name         | full_name      | TextField               | max_length=50, null=False, blank=False                      |
-| Email             | email          | EmailField              | max_length=254, null=False, blank=False                     |
 
 <p>&nbsp;</p>
 
@@ -134,7 +145,7 @@
 | Name               | Key in db          | Field Type             | Validation                                         |
 |:-------------------|:-------------------|:-----------------------|:---------------------------------------------------|
 | Booking            | booking            | ForeignKey(Booking)    | on_delete=CASCADE,                                 |
-| First Name         | first_name         | CharField              | on_delete=SET_NULL, null=False, blank=False        |
+| First Name         | first_name          | CharField              | on_delete=SET_NULL, null=False, blank=False        |
 | Last Name          | last_name          | CharField              | on_delete=SET_NULL, null=True, blank=True          |
 | Email              | email              | EmailField             | max_length=254, null=False, blank=False            |
 | Medical Assessment | medical_assessment | OneToOneField(Medical) | on_delete_CASCADE, null=True, blank=True           |
@@ -209,16 +220,6 @@
 | Name          | Key in db     | Field Type | Validation                |
 |:--------------|:--------------|:-----------|:--------------------------|
 | Friendly Name | friendly_name | CharField  | max_length=75, blank=True |
-
-<p>&nbsp;</p>
-
-### Trip:
-
-| Name            | Key in db       | Field Type              | Validation                                 |
-|:----------------|:----------------|:------------------------|:-------------------------------------------|
-| Destination     | destination     | ForeignKey(Destination) | null=True, blank=False, on_delete=SET_NULL |
-| Date            | date            | DateField               |             |
-| Seats Available | seats_available | IntergerField           | null=False, blank=False, editable=False    |
 
 <p>&nbsp;</p>
 
