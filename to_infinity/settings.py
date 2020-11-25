@@ -139,9 +139,15 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+DATE_FORMAT = "l, j F Y"
+
+TIME_FORMAT = "G:i"
+
+DATETIME_FORMAT = "bm S, Y, P"
 
 
 # Static files (CSS, JavaScript, Images)

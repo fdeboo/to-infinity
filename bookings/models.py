@@ -68,9 +68,7 @@ class Booking(models.Model):
     num_passengers = models.IntegerField(null=False, blank=False)
 
     def _generate_booking_ref(self):
-        """
-        Generate a random, unique order number using UUID
-        """
+        """ Generate a random, unique order number using UUID """
         return uuid.uuid4().hex.upper()
 
     def save(self, *args, **kwargs):
@@ -78,6 +76,7 @@ class Booking(models.Model):
         Override the original save method to set the booking reference
         if it hasn't been set already
         """
+
         if not self.booking_ref:
             self.booking_ref = self._generate_booking_ref()
         super().save(*args, **kwargs)

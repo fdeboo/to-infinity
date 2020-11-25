@@ -6,6 +6,8 @@ from datetime import date
 from django import forms
 from django.forms import ModelChoiceField, NumberInput
 from django.forms.widgets import Select
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Field, ButtonHolder
 from .models import Destination
 
 
@@ -80,10 +82,15 @@ class InitialForm(forms.Form):
 
     destination = DestinationChoiceField(
         queryset=Destination.objects.all(),
-        widget=SelectWithOptionAttribute(attrs={"id": "selected-trip"})
+        label="",
+        empty_label="Destination",
+        widget=SelectWithOptionAttribute(attrs={
+            "id": "selected-trip"
+        })
     )
     request_date = forms.DateField(
         required=True,
+        label="",
         widget=DateInput(
             attrs={
                 "min": date.today(),
@@ -91,6 +98,39 @@ class InitialForm(forms.Form):
             }
         ),
     )
-    passengers = forms.IntegerField(widget=NumberInput(attrs={
-        "min": 1, "disabled": True, "id": "passengers-max"
+    passengers = forms.IntegerField(label="", widget=NumberInput(attrs={
+        "min": 1,
+        "disabled": True,
+        "id": "passengers-max",
+        "placeholder": "No. of Passengers"
     }))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "GET"
+        self.helper.form_action = "initial_search"
+        self.helper.form_class = "d-flex flex-column flex-md-row"
+        self.helper.field_class = 'col-12'
+        self.helper.layout = Layout(
+                Field(
+                    "destination",
+                    wrapper_class="mb-0 d-flex align-items-center",
+                    css_class="form-control mb-3 mb-md-0"
+                ),
+                Field(
+                    "request_date",
+                    wrapper_class="mb-0 d-flex align-items-center",
+                    css_class="form-control mb-3 mb-md-0"
+                ),
+                Field(
+                    "passengers",
+                    wrapper_class="mb-0 d-flex align-items-center",
+                    css_class="form-control mb-3 mb-md-0"
+                ),
+                ButtonHolder(
+                    Submit(
+                        "submit", "Search", css_class="btn btn-outline"
+                    ), css_class="ml-lg-auto"
+                )
+            )

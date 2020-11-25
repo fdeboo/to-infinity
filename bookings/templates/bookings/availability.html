@@ -5,5 +5,24 @@
 {% endblock page_nav %}
 
 {% block content %}
-{% for trip in trips %}{% endfor %}
+<section class="container-fluid">
+    <div class="row justify-content-center pb-5">
+        <div class="col-12 pt-5">
+            <p class="mb-4 pb-2">Available dates</p>
+        </div>
+        <form class="col-12 d-flex justify-content-center pb-5" action="" method="POST">
+        {% csrf_token %}
+
+            {% for trip in trips %}       
+                <input class="date-option" type="radio" name="tools" id="option{{ forloop.counter }}">
+                <label for="option{{ forloop.counter }}">
+                    {{ trip.date|date:'DATE_FORMAT' }}
+                </label>
+            {% endfor %}
+
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</section>
+
 {% endblock content %}

@@ -23,8 +23,6 @@ class BookingAdmin(admin.ModelAdmin):
 
     fields = (
         "booking_ref",
-        "first_name",
-        "email",
         "booking_total",
         "stripe_pid",
     )
@@ -32,7 +30,6 @@ class BookingAdmin(admin.ModelAdmin):
     """ Fields displayed in add or change """
     list_display = (
         "booking_ref",
-        "first_name",
         "booking_total",
     )
 

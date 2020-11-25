@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block page_nav %}
 {% include 'includes/dark_nav.html' %}
+<div class="row justify-content-center py-3 bg-white">
+    <div class="col-12 col-md-7 icon-menu-bar d-flex justify-content-around">
+        <a href="#trip1"><img src="{% static '../media/moonlanding.png' %}" alt="Moon Landing Icon"></a>
+        <a href="#trip2"><img src="{% static '../media/earthorbit.png' %}" alt="Earth Orbit Icon"></a>
+        <a href="#trip3"><img src="{% static '../media/earthorbit.png' %}" alt="Earth Orbit Icon"></a>
+        <a href="#trip4"><img src="{% static '../media/moonlanding.png' %}" alt="Earth Orbit Icon"></a>
+    </div>
+</div>
 {% endblock page_nav %}
 
 {% block content %}
-{%for destination in destinations %}
-<div class="row icon-menu-bar"></div>
-<div class="image-container w-100" id="{{ destination.name }}">
+<section class="container-fluid">
     
-    
-        <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
-        <a href="{% url 'trip_detail' destination.id %}">
-            <p>{{ destination.name }}</p>
-        </a>
-
-</div>
-{% endfor %}
-
-<div class="row booking-form justify-content-center">
-    <div class="col-10 py-4">
-        <form action="{% url 'initial_search' %}" method="GET">
-            {% csrf_token %}
-            {{ form | crispy }}
-            <input type="submit" value="Search">
-        </form>
+    {%for destination in destinations %}
+    <div class="row">
+        <div class="col-12 image-container" id="trip{{ forloop.counter }}">
+            <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
+            <a href="{% url 'trip_detail' destination.id %}">
+                <p>{{ destination.name }}</p>
+            </a>
+        </div>
     </div>
-</div>
-
+    {% endfor %}
+    <div class="row booking-form justify-content-center">
+        <div class="col-md-10 col-xl-9 py-4">
+            {% crispy form %}   
+        </div>
+    </div>
+</section>
 {% endblock content %}
 
 
