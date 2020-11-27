@@ -6,23 +6,22 @@
 
 {% block content %}
 <section class="container-fluid">
-    <div class="row justify-content-center pb-5">
-        <div class="col-12 pt-5">
-            <p class="mb-4 pb-2">Available dates</p>
-        </div>
-        <form class="col-12 d-flex justify-content-center pb-5" action="" method="POST">
-        {% csrf_token %}
 
-            {% for trip in trips %}       
-                <input class="date-option" type="radio" name="tools" id="option{{ forloop.counter }}">
-                <label for="option{{ forloop.counter }}">
-                    {{ trip.date|date:'DATE_FORMAT' }}
-                </label>
+        <form action="." method="POST">
+            {% csrf_token %}
+            <div class="row justify-content-center">
+            {% for radio in form.trip_date %}
+                <div class="radio-options mx-2 col-2">
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+                </div>
             {% endfor %}
-
-            <input type="submit" value="Search" />
+            <div class="col-12 text-center">
+                <input type="submit" class="btn btn-outline" value="Search" />
+            </div>
+            </div>  
         </form>
-    </div>
+
 </section>
 
 {% endblock content %}

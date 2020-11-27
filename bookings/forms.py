@@ -58,7 +58,7 @@ class SelectWithOptionAttribute(Select):
 class DestinationChoiceField(ModelChoiceField):
     """
     Subclasses Django's ModelChoiceField and customises it's
-    label_from_instance method to include the 'max_passengers' attribute from
+    label_from_instance method to include 'max_passengers' from
     the queryset as an data-attribute in the html element
     """
 
@@ -74,7 +74,7 @@ class DestinationChoiceField(ModelChoiceField):
         }
 
 
-class InitialForm(forms.Form):
+class InitialSearchForm(forms.Form):
     """
     Collects user's desired deestination, no. of passengers and date preference
     Fields include an id attribute for referencing in Javascript
@@ -84,53 +84,68 @@ class InitialForm(forms.Form):
         queryset=Destination.objects.all(),
         label="",
         empty_label="Destination",
-        widget=SelectWithOptionAttribute(attrs={
-            "id": "selected-trip"
-        })
+        widget=SelectWithOptionAttribute()
     )
     request_date = forms.DateField(
         required=True,
         label="",
-        widget=DateInput(
-            attrs={
-                "min": date.today(),
-                "max": "2040-12-20",
-            }
-        ),
+        widget=DateInput()
     )
-    passengers = forms.IntegerField(label="", widget=NumberInput(attrs={
-        "min": 1,
-        "disabled": True,
-        "id": "passengers-max",
-        "placeholder": "No. of Passengers"
-    }))
+    passengers = forms.IntegerField(label="", widget=NumberInput())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = "GET"
+        self.helper.form_method = "POST"
         self.helper.form_action = "initial_search"
-        self.helper.form_class = "d-flex flex-column flex-md-row"
+        self.helper.form_class = "d-flex flex-column flex-lg-row"
         self.helper.field_class = 'col-12'
         self.helper.layout = Layout(
                 Field(
                     "destination",
                     wrapper_class="mb-0 d-flex align-items-center",
-                    css_class="form-control mb-3 mb-md-0"
+                    css_class="form-control mb-3 mb-lg-0",
+                    id="selected-trip",
                 ),
                 Field(
                     "request_date",
+                    min=date.today(),
+                    max="2040-12-20",
                     wrapper_class="mb-0 d-flex align-items-center",
-                    css_class="form-control mb-3 mb-md-0"
+                    css_class="form-control mb-3 mb-lg-0"
                 ),
                 Field(
                     "passengers",
+                    min="1",
+                    disabled="true",
+                    id="passengers-max",
+                    placeholder="No. of Passengers",
                     wrapper_class="mb-0 d-flex align-items-center",
-                    css_class="form-control mb-3 mb-md-0"
+                    css_class="form-control mb-3 mb-lg-0"
                 ),
                 ButtonHolder(
                     Submit(
                         "submit", "Search", css_class="btn btn-outline"
-                    ), css_class="ml-lg-auto"
+                    ), css_class="ml-lg-auto col-12 col-lg-auto text-right"
                 )
             )
+
+
+class DateChoiceForm(forms.Form):
+    """
+    Provides user with a choices of available dates beased on their preference.
+    Uses input type, 'radio' and allows the user to select only one option.
+    By default the closest date to the searched date is selected.
+    """
+
+    trip_date = forms.ModelChoiceField(
+        queryset=None,
+        widget=forms.RadioSelect()
+    )
+
+    def __init__(self, *args, **kwargs):
+        trip_dates = kwargs.pop('trips', None)
+        super(DateChoiceForm, self).__init__(*args, **kwargs)
+
+        if trip_dates:
+            self.fields['trip_date'].queryset = trip_dates

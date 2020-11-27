@@ -39,6 +39,10 @@ class Trip(models.Model):
         self.seats_available = self.destination.max_passengers - reservations
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        date = (self.date).strftime("%A %d %B %Y")
+        return date
+
 
 class Booking(models.Model):
     """ Model stores information about each booking such as which trip

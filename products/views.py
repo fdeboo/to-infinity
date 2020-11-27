@@ -2,7 +2,7 @@
 Provides logic and context for the all_trips trip_detail
 """
 from django.shortcuts import render, get_object_or_404
-from bookings.forms import InitialForm
+from bookings.forms import InitialSearchForm
 from .models import Product
 
 
@@ -11,7 +11,7 @@ def all_trips(request):
 
     template = 'products/trips.html'
     destinations = Product.objects.filter(category=3)
-    intital_form = InitialForm()
+    intital_form = InitialSearchForm()
 
     context = {
         "destinations": destinations,

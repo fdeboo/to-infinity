@@ -43,15 +43,15 @@ body {
     box-sizing: content-box;
     border: 1px solid #000;
     border-radius: 0;
-    background-color: transparent;
+    background-color: #000;
     text-transform: uppercase;
     letter-spacing: .3rem;
     padding: 1rem 1.5rem;
     transition: background-color .75s, color .75s ease-out;
-    color: black;
+    color: $off-white;
     &:hover {
-        background-color: #000;
-        color: $off-white;
+        background-color: transparent;
+        color: #000;
     }
 }
 
@@ -133,6 +133,7 @@ body {
 }*/
 
 // Styles the search results; Hides radio inputs and styles the input labels
+
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
 	position: absolute;
@@ -142,13 +143,13 @@ body {
 	visibility: hidden;
 }
 
-.date-option:checked + label,
-.date-option:not(:checked) + label {
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label {
     position: relative;
 	display: inline-block;
 	padding: 20px;
-	width: 110px;
-	font-size: 14px;
+	width: 100%;
+	font-size: 1em;
 	line-height: 20px;
 	letter-spacing: 1px;
 	margin-top: 0;
@@ -156,7 +157,7 @@ body {
 	margin-right: 5px;
 	margin-bottom: 10px;
 	text-align: center;
-	border-radius: 50%;
+	border-radius: 4px;
 	overflow: hidden;
 	cursor: pointer;
 	color: black;
@@ -169,13 +170,13 @@ body {
         top: 0;
         height: 100%;
         width: 100%;
-        background-image: linear-gradient(298deg, red, yellow);
+        background-image: linear-gradient(298deg, blue, lightblue);
         border-radius: 4px;
         z-index: -1;
     }
 }
 
-.date-option:not(:checked) + label {
+[type="radio"]:not(:checked) + label {
     background-color: white;
 
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
@@ -184,7 +185,7 @@ body {
     }
 }
 
-.date-option:checked + label {
+[type="radio"]:checked + label {
     background-color: transparent;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }

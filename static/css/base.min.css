@@ -48,18 +48,18 @@ body {
           box-sizing: content-box;
   border: 1px solid #000;
   border-radius: 0;
-  background-color: transparent;
+  background-color: #000;
   text-transform: uppercase;
   letter-spacing: .3rem;
   padding: 1rem 1.5rem;
   -webkit-transition: background-color .75s, color .75s ease-out;
   transition: background-color .75s, color .75s ease-out;
-  color: black;
+  color: #F9F9F9;
 }
 
 .btn-outline:hover, .hero-btn:hover {
-  background-color: #000;
-  color: #F9F9F9;
+  background-color: transparent;
+  color: #000;
 }
 
 .hero-btn {
@@ -148,13 +148,13 @@ body {
   visibility: hidden;
 }
 
-.date-option:checked + label,
-.date-option:not(:checked) + label {
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label {
   position: relative;
   display: inline-block;
   padding: 20px;
-  width: 110px;
-  font-size: 14px;
+  width: 100%;
+  font-size: 1em;
   line-height: 20px;
   letter-spacing: 1px;
   margin-top: 0;
@@ -162,7 +162,7 @@ body {
   margin-right: 5px;
   margin-bottom: 10px;
   text-align: center;
-  border-radius: 50%;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
   color: black;
@@ -170,31 +170,31 @@ body {
   transition: all 300ms linear;
 }
 
-.date-option:checked + label::before,
-.date-option:not(:checked) + label::before {
+[type="radio"]:checked + label::before,
+[type="radio"]:not(:checked) + label::before {
   position: absolute;
   content: '';
   left: 0;
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: linear-gradient(298deg, red, yellow);
+  background-image: linear-gradient(298deg, blue, lightblue);
   border-radius: 4px;
   z-index: -1;
 }
 
-.date-option:not(:checked) + label {
+[type="radio"]:not(:checked) + label {
   background-color: white;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
-.date-option:not(:checked) + label:hover {
+[type="radio"]:not(:checked) + label:hover {
   -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
           box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }
 
-.date-option:checked + label {
+[type="radio"]:checked + label {
   background-color: transparent;
   -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
           box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
