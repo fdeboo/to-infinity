@@ -9,6 +9,7 @@
 
         <form action="." method="POST">
             {% csrf_token %}
+            {{ form.num_passengers }}
             <div class="row justify-content-center">
             {% for radio in form.trip_date %}
                 <div class="radio-options mx-2 col-2">

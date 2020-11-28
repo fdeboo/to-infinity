@@ -27,7 +27,6 @@ def trip_detail(request, product_id):
     destination = get_object_or_404(Product, pk=product_id)
 
     template = 'products/trip_detail.html'
-
     context = {
         "destination": destination,
     }

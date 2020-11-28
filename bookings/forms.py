@@ -138,6 +138,7 @@ class DateChoiceForm(forms.Form):
     By default the closest date to the searched date is selected.
     """
 
+    num_passengers = forms.IntegerField(widget=forms.HiddenInput())
     trip_date = forms.ModelChoiceField(
         queryset=None,
         widget=forms.RadioSelect()
@@ -145,7 +146,7 @@ class DateChoiceForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         trip_dates = kwargs.pop('trips', None)
-        super(DateChoiceForm, self).__init__(*args, **kwargs)
 
+        super(DateChoiceForm, self).__init__(*args, **kwargs)
         if trip_dates:
             self.fields['trip_date'].queryset = trip_dates
