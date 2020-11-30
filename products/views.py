@@ -2,23 +2,27 @@
 Provides logic and context for the all_trips trip_detail
 """
 from django.shortcuts import render, get_object_or_404
+from django.views import View
 from bookings.forms import InitialSearchForm
 from .models import Product
 
 
-def all_trips(request):
-    """ A view to show all trips """
+class AllTrips(View):
+    """ A view to show all trips and receive initial trip search """
 
     template = 'products/trips.html'
-    destinations = Product.objects.filter(category=3)
-    intital_form = InitialSearchForm()
+    form_class = InitialSearchForm
 
-    context = {
-        "destinations": destinations,
-        "form": intital_form
-    }
+    def get(self, request):
+        """ Renders the form to the template """
 
-    return render(request, template, context)
+        destinations = Product.objects.filter(category=3)
+        form = self.form_class()
+        context = {
+            "destinations": destinations,
+            "form": form
+        }
+        return render(request, self.template, context)
 
 
 def trip_detail(request, product_id):

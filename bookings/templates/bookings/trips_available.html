@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_nav %}
-{% include 'includes/dark_nav.html' %}
+    {% include 'includes/dark_nav.html' %}
 {% endblock page_nav %}
 
 {% block content %}
 <section class="container-fluid">
-
-        <form action="." method="POST">
+        <form action="{% url 'confirm' %}" method="POST">
             {% csrf_token %}
             {{ form.num_passengers }}
             <div class="row justify-content-center">
-            {% for radio in form.trip_date %}
+            {% for radio in form.trip %}
                 <div class="radio-options mx-2 col-2">
                     {{ radio.tag }}
                     <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
                 </div>
             {% endfor %}
             <div class="col-12 text-center">
-                <input type="submit" class="btn btn-outline" value="Search" />
+                <input type="submit" class="btn btn-outline" value="Confirm" />
             </div>
             </div>  
         </form>

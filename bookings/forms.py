@@ -97,7 +97,7 @@ class InitialSearchForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "POST"
-        self.helper.form_action = "initial_search"
+        self.helper.form_action = "selection"
         self.helper.form_class = "d-flex flex-column flex-lg-row"
         self.helper.field_class = 'col-12'
         self.helper.layout = Layout(
@@ -139,7 +139,7 @@ class DateChoiceForm(forms.Form):
     """
 
     num_passengers = forms.IntegerField(widget=forms.HiddenInput())
-    trip_date = forms.ModelChoiceField(
+    trip = forms.ModelChoiceField(
         queryset=None,
         widget=forms.RadioSelect()
     )
@@ -148,5 +148,4 @@ class DateChoiceForm(forms.Form):
         trip_dates = kwargs.pop('trips', None)
 
         super(DateChoiceForm, self).__init__(*args, **kwargs)
-        if trip_dates:
-            self.fields['trip_date'].queryset = trip_dates
+        self.fields['trip'].queryset = trip_dates
