@@ -12,13 +12,16 @@ class TripSelection(View):
     """ A view to show results of search """
 
     template = "bookings/trips_available.html"
-    form_class = DateChoiceForm
 
     def post(self, request):
-        """ Takes the POST data from the POST request """
+        """
+        Takes the POST data from the InitialSearchForm and uses it to
+        initialise the DateChoiceForm before passing to the template
+        """
 
         form = InitialSearchForm(request.POST)
         if form.is_valid():
+
             destination_choice = request.POST.get("destination")
             searched_date = request.POST.get("request_date")
             passenger_total = int(request.POST.get("passengers"))
@@ -41,7 +44,6 @@ class TripSelection(View):
             )[
                 :3
             ]  # Returns trips that are pre- searched_date
-
             # Merge both queries
             trips = gte_dates | lt_dates
 
@@ -75,7 +77,7 @@ class TripSelection(View):
                     "selected destination.",
                 )
 
-            form = self.form_class(
+            form = DateChoiceForm(
                 trips=trips,
                 initial={
                     "trip_date": default_selected,
@@ -98,18 +100,38 @@ def trip_confirmation(request):
     """ A view to confirm booking request """
 
     template = "bookings/confirm/trip.html"
-    context = {}
+    destination_choice = 11
+    searched_date = "2021-06-03"
+    passenger_total = 3
+    available_trips = Trip.objects.filter(
+        destination=destination_choice
+    ).filter(seats_available__gte=passenger_total)
+
+    # Refine to trips with dates closest to searched_date
+    # limit to 3 results
+    gte_dates = available_trips.filter(
+        date__gte=searched_date
+    ).order_by("date")[
+        :3
+    ]  # Returns trips that either match or are post- searched_date
+
+    lt_dates = available_trips.filter(date__lt=searched_date).order_by(
+                "-date"
+    )[
+        :3
+    ]  # Returns trips that are pre- searched_date
+
+    # Merge both queries
+    trips = gte_dates | lt_dates
 
     if request.method == "POST":
-        form = DateChoiceForm(request.POST)
+        form = DateChoiceForm(request.POST, trips=trips)
+
         if form.is_valid():
             passengers = request.POST.get("num_passengers")
             trip_choice = request.POST.get("trip")
 
-            context = {
-                "passengers": passengers,
-                "trip_choice": trip_choice
-            }
+            context = {"passengers": passengers, "trip_choice": trip_choice}
 
             return render(request, template, context)
 
