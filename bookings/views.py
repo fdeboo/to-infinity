@@ -1,139 +1,164 @@
-""" Views in this module provides logic for templates that guide
-the booking process """
+"""
+Views in this module provide logic for templates that guide the booking process
+"""
+
+import json
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
 from .models import Trip
-from .forms import DateChoiceForm, InitialSearchForm
+from .forms import DateChoiceForm
 
 
-class TripSelection(View):
-    """ A view to show results of search """
+class SelectTripView(View):
+    """
+    Provides the user a set of choice options based on their search input in
+    products.TripsView
+    """
 
-    template = "bookings/trips_available.html"
+    template_name = "bookings/trips_available.html"
+    form_class = DateChoiceForm
 
-    def post(self, request):
+    def available_trips(self, destination, passengers):
+        """ Find trips with enough seats for searched no. of passengers """
+
+        available_trips = Trip.objects.filter(
+            destination=destination
+        ).filter(seats_available__gte=passengers)
+
+        return available_trips
+
+    def trips_matched_or_post_date(self, date):
         """
-        Takes the POST data from the InitialSearchForm and uses it to
-        initialise the DateChoiceForm before passing to the template
+        Returns trips that either match or are post- searched_date
+        Refine to trips with dates closest to searched_date
+        limit to 3 results
         """
 
-        form = InitialSearchForm(request.POST)
-        if form.is_valid():
+        available_trips = self.available_trips(
+            self.request.session["destination_choice"],
+            self.request.session["passenger_total"]
+        )
+        gte_dates = available_trips.filter(date__gte=date).order_by("date")
 
-            destination_choice = request.POST.get("destination")
-            searched_date = request.POST.get("request_date")
-            passenger_total = int(request.POST.get("passengers"))
+        return gte_dates
 
-            # Find trips with enough seats for requested no. of passengers
-            available_trips = Trip.objects.filter(
-                destination=destination_choice
-            ).filter(seats_available__gte=passenger_total)
+    def trips_preceding_date(self, date):
+        """
+        Returns trips that are pre- searched_date
+        Refines to trips with dates closest to searched_date
+        limits to 3 results
+        """
 
-            # Refine to trips with dates closest to searched_date
-            # limit to 3 results
-            gte_dates = available_trips.filter(
-                date__gte=searched_date
-            ).order_by("date")[
-                :3
-            ]  # Returns trips that either match or are post- searched_date
+        available_trips = self.available_trips(
+            self.request.session["destination_choice"],
+            self.request.session["passenger_total"]
+        )
+        lt_dates = available_trips.filter(date__lt=date).order_by("-date")[:3]
 
-            lt_dates = available_trips.filter(date__lt=searched_date).order_by(
-                "-date"
-            )[
-                :3
-            ]  # Returns trips that are pre- searched_date
-            # Merge both queries
-            trips = gte_dates | lt_dates
+        return lt_dates
 
-            naive_searched_date = datetime.strptime(searched_date, "%Y-%m-%d")
+    def get_formfield_queryset(self):
+        """ Creates as queryset that can be used in the ModelChoiceField of
+        DateChoiceForm """
 
-            # Find trip closest to searched_date and make timezone naive
-            if gte_dates:
-                date_gte = gte_dates[0]
-                naive_closest_gte = self.timezone_naive(date_gte)
-                if lt_dates:
-                    date_lt = lt_dates[0]
-                    naive_closest_lt = self.timezone_naive(date_lt)
+        searched_date = self.request.session['searched_date'][0],
+        gte_dates = self.trips_matched_or_post_date(searched_date)
+        lt_dates = self.trips_preceding_date(searched_date)
 
-                    if (
-                        naive_closest_gte - naive_searched_date
-                        > naive_searched_date - naive_closest_lt
-                    ):
-                        default_selected = date_lt
-                    else:
-                        default_selected = date_gte
-                else:
-                    default_selected = date_gte
-            elif lt_dates:
-                date_lt = lt_dates[0]
-                naive_closest_lt = self.timezone_naive(date_lt)
-                default_selected = date_lt
-            else:
-                messages.error(
-                    request,
-                    "Sorry, there are no dates currently available for the"
-                    "selected destination.",
-                )
+        # Merge both queries
+        trips = gte_dates | lt_dates
 
-            form = DateChoiceForm(
-                trips=trips,
-                initial={
-                    "trip_date": default_selected,
-                    "num_passengers": passenger_total,
-                },
-            )
-            return render(request, self.template, {"form": form})
+        return trips
 
-    def timezone_naive(self, query_object):
+    def timezone_naive(self, model_object):
         """ Turns date attributes to a time-zone naive date """
 
-        date_attr = query_object.date
+        date_attr = model_object.date
         date_string = date_attr.strftime("%Y-%m-%d")
         date_obj_naive = datetime.strptime(date_string, "%Y-%m-%d")
 
         return date_obj_naive
 
+    def post(self, request):
+        """
+        Takes the POST data from the DateChoiceForm and stores the data
+        in the session
+        """
 
-def trip_confirmation(request):
+        trips = self.get_formfield_queryset()
+        form = self.form_class(request.POST, trips=trips)
+        if form.is_valid():
+            trip_choice = request.POST.get("trip")
+            request.session["trip_choice"] = trip_choice
+
+            return redirect('trip_confirmation')
+
+    def get(self, request):
+        """
+        Initialises the DateChoiceForm with data from SearchTripsForm
+        & render to the template
+        """
+
+        print(request.session['searched_date'])
+        searched_date = self.request.session['searched_date']
+        searched_date = json.loads(searched_date)
+        naive_searched_date = datetime.strptime(searched_date, "%Y-%m-%d")
+        gte_dates = self.trips_matched_or_post_date(searched_date)
+        lt_dates = self.trips_preceding_date(searched_date)
+
+        # Find the trip closest to searched_date and make timezone naive
+        if gte_dates:
+            gte_date = gte_dates[0]
+            naive_gte_date = self.timezone_naive(gte_date)
+            if lt_dates:
+                lt_date = lt_dates[0]
+                naive_lt_date = self.timezone_naive(lt_date)
+
+                if (
+                    naive_gte_date - naive_searched_date
+                    > naive_searched_date - naive_lt_date
+                ):
+                    default_selected = lt_date
+                else:
+                    default_selected = gte_date
+
+            else:
+                default_selected = gte_date
+
+        elif lt_dates:
+            lt_date = lt_dates[0]
+            default_selected = lt_date
+
+        else:
+            messages.error(
+                request,
+                "Sorry, there are no dates currently available for the"
+                "selected destination.",
+            )
+
+        trips = self.get_formfield_queryset()
+        form = self.form_class(
+            trips=trips,
+            initial={
+                "trip_date": default_selected,
+                "num_passengers": self.request.session.get("passenger_total")
+            },
+        )
+
+        return render(request, self.template_name, {"form": form})
+
+
+class ConfirmTripView(View):
     """ A view to confirm booking request """
 
-    template = "bookings/confirm/trip.html"
-    destination_choice = 11
-    searched_date = "2021-06-03"
-    passenger_total = 3
-    available_trips = Trip.objects.filter(
-        destination=destination_choice
-    ).filter(seats_available__gte=passenger_total)
+    template_name = ''
+    form_class = DateChoiceForm
 
-    # Refine to trips with dates closest to searched_date
-    # limit to 3 results
-    gte_dates = available_trips.filter(
-        date__gte=searched_date
-    ).order_by("date")[
-        :3
-    ]  # Returns trips that either match or are post- searched_date
-
-    lt_dates = available_trips.filter(date__lt=searched_date).order_by(
-                "-date"
-    )[
-        :3
-    ]  # Returns trips that are pre- searched_date
-
-    # Merge both queries
-    trips = gte_dates | lt_dates
-
-    if request.method == "POST":
-        form = DateChoiceForm(request.POST, trips=trips)
-
-        if form.is_valid():
-            passengers = request.POST.get("num_passengers")
-            trip_choice = request.POST.get("trip")
-
-            context = {"passengers": passengers, "trip_choice": trip_choice}
-
-            return render(request, template, context)
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {"form": form})
 
 
 def booking_details(request):

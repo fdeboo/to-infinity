@@ -1,28 +1,49 @@
 """
 Provides logic and context for the all_trips trip_detail
 """
-from django.shortcuts import render, get_object_or_404
-from django.views import View
-from bookings.forms import InitialSearchForm
+
+import json
+from django.shortcuts import render, get_object_or_404, reverse
+from django.views.generic.edit import FormView
+from django.core.serializers.json import DjangoJSONEncoder
+from bookings.forms import SearchTripsForm
 from .models import Product
 
 
-class AllTrips(View):
-    """ A view to show all trips and receive initial trip search """
+class TripsView(FormView):
+    """ A view to show all trips and receive trip search data """
 
-    template = 'products/trips.html'
-    form_class = InitialSearchForm
+    template_name = "products/trips.html"
+    form_class = SearchTripsForm
 
-    def get(self, request):
+    def form_valid(self, form):
+        """
+        Takes the POST data from the SearchTripsForm
+        """
+
+        date = form.cleaned_data["request_date"]
+        data = json.dumps(date, cls=DjangoJSONEncoder)
+
+        self.request.session["searched_date"] = data.strip('')
+        self.request.session["destination_choice"] = form.cleaned_data[
+            "destination"
+        ].id
+        self.request.session["passenger_total"] = form.cleaned_data[
+            "passengers"
+        ]
+        return super(TripsView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
         """ Renders the form to the template """
 
-        destinations = Product.objects.filter(category=3)
-        form = self.form_class()
-        context = {
-            "destinations": destinations,
-            "form": form
-        }
-        return render(request, self.template, context)
+        context = super().get_context_data(**kwargs)
+        context["destinations"] = Product.objects.filter(category=3)
+        return context
+
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+
+        return reverse("selection")
 
 
 def trip_detail(request, product_id):
@@ -30,7 +51,7 @@ def trip_detail(request, product_id):
 
     destination = get_object_or_404(Product, pk=product_id)
 
-    template = 'products/trip_detail.html'
+    template = "products/trip_detail.html"
     context = {
         "destination": destination,
     }

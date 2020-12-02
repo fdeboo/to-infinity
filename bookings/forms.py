@@ -74,7 +74,7 @@ class DestinationChoiceField(ModelChoiceField):
         }
 
 
-class InitialSearchForm(forms.Form):
+class SearchTripsForm(forms.Form):
     """
     Collects user's desired deestination, no. of passengers and date preference
     Fields include an id attribute for referencing in Javascript
@@ -97,7 +97,7 @@ class InitialSearchForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "POST"
-        self.helper.form_action = "selection"
+        self.helper.form_action = "trips"
         self.helper.form_class = "d-flex flex-column flex-lg-row"
         self.helper.field_class = 'col-12'
         self.helper.layout = Layout(
