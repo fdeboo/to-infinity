@@ -96,6 +96,7 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=20, null=False, blank=False)
     last_name = models.CharField(max_length=20, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
+    is_leaduser = models.BooleanField(null=False, blank=False, default=False)
     """"
     medical_assessment = models.OneToOneField(
         "Medical",

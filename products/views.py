@@ -16,22 +16,10 @@ class TripsView(FormView):
     template_name = "products/trips.html"
     form_class = SearchTripsForm
 
-    def form_valid(self, form):
-        """
-        Takes the POST data from the SearchTripsForm
-        """
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
 
-        date = form.cleaned_data["request_date"]
-        data = json.dumps(date, cls=DjangoJSONEncoder)
-
-        self.request.session["searched_date"] = data.strip('')
-        self.request.session["destination_choice"] = form.cleaned_data[
-            "destination"
-        ].id
-        self.request.session["passenger_total"] = form.cleaned_data[
-            "passengers"
-        ]
-        return super(TripsView, self).form_valid(form)
+        return reverse("selection")
 
     def get_context_data(self, **kwargs):
         """ Renders the form to the template """
@@ -40,10 +28,21 @@ class TripsView(FormView):
         context["destinations"] = Product.objects.filter(category=3)
         return context
 
-    def get_success_url(self):
-        """ Overides the success url when the view is run """
+    def form_valid(self, form):
+        """
+        Takes the POST data from the SearchTripsForm and sends to the session
+        """
 
-        return reverse("selection")
+        date = form.cleaned_data["request_date"]
+        date = json.dumps(date, cls=DjangoJSONEncoder)
+        self.request.session["searched_date"] = date
+        self.request.session["destination_choice"] = form.cleaned_data[
+            "destination"
+        ].id
+        self.request.session["passenger_total"] = form.cleaned_data[
+            "passengers"
+        ]
+        return super(TripsView, self).form_valid(form)
 
 
 def trip_detail(request, product_id):

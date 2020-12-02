@@ -6,7 +6,7 @@
 
 {% block content %}
 <section class="container-fluid">
-        <form action="{% url 'confirm' %}" method="POST">
+        <form action="{% url 'selection' %}" method="POST">
             {% csrf_token %}
             {{ form.num_passengers }}
             <div class="row justify-content-center">

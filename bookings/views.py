@@ -79,7 +79,8 @@ class SelectTripView(View):
         gte_dates = self.get_trips_matched_or_post_date(searched_date)
         lt_dates = self.get_trips_preceding_date(searched_date)
         # Merge both queries
-        trips = gte_dates | lt_dates
+        trips = lt_dates | gte_dates
+        trips = trips.order_by('date')
         return trips
 
     def post(self, request):
@@ -93,7 +94,7 @@ class SelectTripView(View):
         if form.is_valid():
             trip_choice = request.POST.get("trip")
             request.session["trip_choice"] = trip_choice
-            return redirect('trip_confirmation')
+            return redirect('confirm')
 
     def get(self, request):
         """
@@ -140,20 +141,23 @@ class SelectTripView(View):
         form = self.form_class(
             trips=trips,
             initial={
-                "trip_date": default_selected,
-            },
+                "trip": default_selected,
+                "num_passengers": self.request.session["passenger_total"]
+            }
         )
         return render(request, self.template_name, {"form": form})
+
 
 class ConfirmTripView(View):
     """ A view to confirm booking request """
 
-    template_name = ''
+    template_name = "bookings/confirm_trip.html"
     form_class = DateChoiceForm
 
     def get(self, request):
         form = self.form_class()
         return render(request, self.template_name, {"form": form})
+
 
 def booking_details(request):
     """ A view to collect all booking details needed for booking """
