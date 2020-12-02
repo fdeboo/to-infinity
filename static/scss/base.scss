@@ -58,6 +58,7 @@ body {
 .hero-btn {
     @extend .btn-outline;
     border: 1px solid $off-white;
+    background-color: transparent;
     color: $off-white;
     &:hover {
         background-color: $off-white;

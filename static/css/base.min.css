@@ -64,6 +64,7 @@ body {
 
 .hero-btn {
   border: 1px solid #F9F9F9;
+  background-color: transparent;
   color: #F9F9F9;
 }
 

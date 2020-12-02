@@ -8,10 +8,14 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
 from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import Trip
 from .forms import DateChoiceForm
 
 
+@method_decorator(never_cache, name='dispatch')
 class SelectTripView(View):
     """
     Provides the user a set of choice options based on their search input in
@@ -149,6 +153,7 @@ class SelectTripView(View):
         return render(request, self.template_name, {"form": form})
 
 
+@method_decorator(login_required, name='dispatch')
 class ConfirmTripView(TemplateView):
     """ A view to confirm booking request """
 
