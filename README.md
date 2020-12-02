@@ -415,6 +415,17 @@ You will need to set up a free account with Stripe and with AWS for a S3 bucket.
 
     **Solution:** There were a couple of solutions to this issue.  One option was to use lazy evaluation and pass products.Trip as a string in the ForeignKey, instead of just defining the model name. This would the alleviate the need to create an import. However, I did not want to use a lazy lookup so as to protect the performance. Instead, I reconsidered the arrangement of the models within the app and was able to solve the issue quite easily by moving the Trip model to the booking app and updating the imports as necessary.
 
+2.  'NoneType' object has no attribute 'model'
+
+    **Cause:** When the DateChoiceForm is initialised, the queryset, which is used to render the ModelChoiceField's choice options, is set to a dynamically generated queryset passed in the **kwargs. If no value found in the **kwargs, the fallback value for the parameter is None. 
+    
+    In the view that handles the POST request data for the DateChoiceFrom, the form is instantiated with request.POST in order to retrieve it's POST data. The problem was that the paramater required to initialise the form was not provided. Therefore the kwarg would take the fallback value of None and subsequently set the value of the queryset to None. 
+
+    **Solution:** I refactored the code so that a view that renders a form in it's get method also handles the form's POST data in it's post method. Since the DateChoiceForm relies on the data from the SearchTripsForm, I passed the SearchTripForm's input values to the session so that it could be accessed from the view associated with the DateChoiceForm. Within this view, I created a series of custom class methods to retrieve the data from the session and generate a queryset with it. The class methods were available to both the get and post method which meant that the DateChoiceForm could be inititalised with the same queryset in both the post and get methods.
+
+3.  User model imported from django.contrib.auth.models
+    This error has been reported [See here](https://github.com/PyCQA/pylint-django/issues/278)
+
 
 # Credits
 ## Content

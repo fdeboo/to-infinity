@@ -7,6 +7,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
+from django.views.generic import TemplateView
 from .models import Trip
 from .forms import DateChoiceForm
 
@@ -72,8 +73,8 @@ class SelectTripView(View):
         return datetime_naive
 
     def get_queryset(self):
-        """ Creates as queryset that can be used in the ModelChoiceField of
-        DateChoiceForm """
+        """ Creates the queryset that will be used by the ModelChoiceField
+        in the DateChoiceForm """
 
         searched_date = self.get_searched_date()
         gte_dates = self.get_trips_matched_or_post_date(searched_date)
@@ -148,15 +149,10 @@ class SelectTripView(View):
         return render(request, self.template_name, {"form": form})
 
 
-class ConfirmTripView(View):
+class ConfirmTripView(TemplateView):
     """ A view to confirm booking request """
 
     template_name = "bookings/confirm_trip.html"
-    form_class = DateChoiceForm
-
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {"form": form})
 
 
 def booking_details(request):

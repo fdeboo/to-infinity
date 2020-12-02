@@ -52,7 +52,8 @@
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.pylintArgs": [
-        "--load-plugins=pylint_django"
+        "--load-plugins=pylint_django",
+        "--disable=imported-auth-user",
     ],
     "python.linting.pylintEnabled": true,
     "liveSassCompile.settings.formats": [

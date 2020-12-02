@@ -5,6 +5,7 @@ import uuid
 from django.db import models
 from django.db.models import Count
 from products.models import Destination, Product
+from profiles.models import UserProfile
 
 
 class Trip(models.Model):
@@ -54,15 +55,15 @@ class Booking(models.Model):
     trip = models.ForeignKey(
         Trip, on_delete=models.SET_NULL, null=True, blank=False
     )
-    """
+
     lead_user = models.ForeignKey(
-        "UserProfile",
+        UserProfile,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="bookings",
     )
-    """
+
     booking_total = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, default=0
     )

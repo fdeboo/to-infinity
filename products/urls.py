@@ -1,11 +1,10 @@
 """ Defines the urls for bookings app including trips """
 
 from django.urls import path
-from products.views import TripsView
-from . import views
+from products.views import TripsView, TripDetail
 
 
 urlpatterns = [
-    path('trips', TripsView.as_view(), name='trips'),
-    path("trips/<int:product_id>/", views.trip_detail, name="trip_detail"),
+    path('trips/', TripsView.as_view(), name='trips'),
+    path("trips/<pk>/", TripDetail.as_view(), name="trip_detail"),
 ]

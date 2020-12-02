@@ -3,7 +3,8 @@ Provides logic and context for the all_trips trip_detail
 """
 
 import json
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import reverse
+from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 from django.core.serializers.json import DjangoJSONEncoder
 from bookings.forms import SearchTripsForm
@@ -45,14 +46,8 @@ class TripsView(FormView):
         return super(TripsView, self).form_valid(form)
 
 
-def trip_detail(request, product_id):
+class TripDetail(DetailView):
     """ A view to show individual destination details """
 
-    destination = get_object_or_404(Product, pk=product_id)
-
-    template = "products/trip_detail.html"
-    context = {
-        "destination": destination,
-    }
-
-    return render(request, template, context)
+    model = Product
+    template_name = "products/trip_detail.html"
