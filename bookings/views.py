@@ -27,7 +27,7 @@ class SelectTripView(View):
         searched_date = json.loads(searched_date)
         return searched_date
 
-    def available_trips(self, destination, passengers):
+    def get_available_trips(self, destination, passengers):
         """ Find trips with enough seats for searched no. of passengers """
 
         available_trips = Trip.objects.filter(
@@ -35,28 +35,28 @@ class SelectTripView(View):
         ).filter(seats_available__gte=passengers)
         return available_trips
 
-    def trips_matched_or_post_date(self, date):
+    def get_trips_matched_or_post_date(self, date):
         """
         Returns trips that either match or are post- searched_date
         Refine to trips with dates closest to searched_date
         limit to 3 results
         """
 
-        available_trips = self.available_trips(
+        available_trips = self.get_available_trips(
             self.request.session["destination_choice"],
             self.request.session["passenger_total"]
         )
         gte_dates = available_trips.filter(date__gte=date).order_by("date")[:3]
         return gte_dates
 
-    def trips_preceding_date(self, date):
+    def get_trips_preceding_date(self, date):
         """
         Returns trips that are pre- searched_date
         Refines to trips with dates closest to searched_date
         limits to 3 results
         """
 
-        available_trips = self.available_trips(
+        available_trips = self.get_available_trips(
             self.request.session["destination_choice"],
             self.request.session["passenger_total"]
         )
@@ -76,8 +76,8 @@ class SelectTripView(View):
         DateChoiceForm """
 
         searched_date = self.get_searched_date()
-        gte_dates = self.trips_matched_or_post_date(searched_date)
-        lt_dates = self.trips_preceding_date(searched_date)
+        gte_dates = self.get_trips_matched_or_post_date(searched_date)
+        lt_dates = self.get_trips_preceding_date(searched_date)
         # Merge both queries
         trips = gte_dates | lt_dates
         return trips
@@ -103,8 +103,8 @@ class SelectTripView(View):
 
         searched_date = self.get_searched_date()
         naive_searched_date = datetime.strptime(searched_date, "%Y-%m-%d")
-        gte_dates = self.trips_matched_or_post_date(searched_date)
-        lt_dates = self.trips_preceding_date(searched_date)
+        gte_dates = self.get_trips_matched_or_post_date(searched_date)
+        lt_dates = self.get_trips_preceding_date(searched_date)
 
         # Find the trip closest to searched_date and make timezone naive
         if gte_dates:
