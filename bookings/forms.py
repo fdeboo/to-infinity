@@ -138,7 +138,6 @@ class DateChoiceForm(forms.Form):
     By default the closest date to the searched date is selected.
     """
 
-    num_passengers = forms.IntegerField(widget=forms.HiddenInput())
     trip = forms.ModelChoiceField(
         queryset=None,
         widget=forms.RadioSelect()

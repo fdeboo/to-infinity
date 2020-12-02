@@ -14,11 +14,18 @@ from .forms import DateChoiceForm
 class SelectTripView(View):
     """
     Provides the user a set of choice options based on their search input in
-    products.TripsView
+    the products.TripsView
     """
 
     template_name = "bookings/trips_available.html"
     form_class = DateChoiceForm
+
+    def get_searched_date(self):
+        """ Deserialises the searched_date value from the session """
+
+        searched_date = self.request.session['searched_date']
+        searched_date = json.loads(searched_date)
+        return searched_date
 
     def available_trips(self, destination, passengers):
         """ Find trips with enough seats for searched no. of passengers """
@@ -26,7 +33,6 @@ class SelectTripView(View):
         available_trips = Trip.objects.filter(
             destination=destination
         ).filter(seats_available__gte=passengers)
-
         return available_trips
 
     def trips_matched_or_post_date(self, date):
@@ -40,8 +46,7 @@ class SelectTripView(View):
             self.request.session["destination_choice"],
             self.request.session["passenger_total"]
         )
-        gte_dates = available_trips.filter(date__gte=date).order_by("date")
-
+        gte_dates = available_trips.filter(date__gte=date).order_by("date")[:3]
         return gte_dates
 
     def trips_preceding_date(self, date):
@@ -56,43 +61,38 @@ class SelectTripView(View):
             self.request.session["passenger_total"]
         )
         lt_dates = available_trips.filter(date__lt=date).order_by("-date")[:3]
-
         return lt_dates
 
-    def get_formfield_queryset(self):
+    def make_timezone_naive(self, obj):
+        """ Turns date attribute to a time-zone naive date object """
+
+        date_attr = obj.date
+        date_string = date_attr.strftime("%Y-%m-%d")
+        datetime_naive = datetime.strptime(date_string, "%Y-%m-%d")
+        return datetime_naive
+
+    def get_queryset(self):
         """ Creates as queryset that can be used in the ModelChoiceField of
         DateChoiceForm """
 
-        searched_date = self.request.session['searched_date'][0],
+        searched_date = self.get_searched_date()
         gte_dates = self.trips_matched_or_post_date(searched_date)
         lt_dates = self.trips_preceding_date(searched_date)
-
         # Merge both queries
         trips = gte_dates | lt_dates
-
         return trips
-
-    def timezone_naive(self, model_object):
-        """ Turns date attributes to a time-zone naive date """
-
-        date_attr = model_object.date
-        date_string = date_attr.strftime("%Y-%m-%d")
-        date_obj_naive = datetime.strptime(date_string, "%Y-%m-%d")
-
-        return date_obj_naive
 
     def post(self, request):
         """
-        Takes the POST data from the DateChoiceForm and stores the data
-        in the session
+        Takes the POST data from the DateChoiceForm and stores it in
+        the session.
         """
 
-        trips = self.get_formfield_queryset()
+        trips = self.get_queryset()
         form = self.form_class(request.POST, trips=trips)
         if form.is_valid():
             trip_choice = request.POST.get("trip")
             request.session["trip_choice"] = trip_choice
-
             return redirect('trip_confirmation')
 
     def get(self, request):
@@ -101,9 +101,7 @@ class SelectTripView(View):
         & render to the template
         """
 
-        print(request.session['searched_date'])
-        searched_date = self.request.session['searched_date']
-        searched_date = json.loads(searched_date)
+        searched_date = self.get_searched_date()
         naive_searched_date = datetime.strptime(searched_date, "%Y-%m-%d")
         gte_dates = self.trips_matched_or_post_date(searched_date)
         lt_dates = self.trips_preceding_date(searched_date)
@@ -111,10 +109,10 @@ class SelectTripView(View):
         # Find the trip closest to searched_date and make timezone naive
         if gte_dates:
             gte_date = gte_dates[0]
-            naive_gte_date = self.timezone_naive(gte_date)
+            naive_gte_date = self.make_timezone_naive(gte_date)
             if lt_dates:
                 lt_date = lt_dates[0]
-                naive_lt_date = self.timezone_naive(lt_date)
+                naive_lt_date = self.make_timezone_naive(lt_date)
 
                 if (
                     naive_gte_date - naive_searched_date
@@ -138,17 +136,14 @@ class SelectTripView(View):
                 "selected destination.",
             )
 
-        trips = self.get_formfield_queryset()
+        trips = self.get_queryset()
         form = self.form_class(
             trips=trips,
             initial={
                 "trip_date": default_selected,
-                "num_passengers": self.request.session.get("passenger_total")
             },
         )
-
         return render(request, self.template_name, {"form": form})
-
 
 class ConfirmTripView(View):
     """ A view to confirm booking request """
@@ -159,7 +154,6 @@ class ConfirmTripView(View):
     def get(self, request):
         form = self.form_class()
         return render(request, self.template_name, {"form": form})
-
 
 def booking_details(request):
     """ A view to collect all booking details needed for booking """
