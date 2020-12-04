@@ -4,11 +4,12 @@ Includes a form to search available dates
 """
 from datetime import date
 from django import forms
+
 from django.forms import ModelChoiceField, NumberInput
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field, ButtonHolder
-from .models import Destination
+from .models import Destination, Passenger
 
 
 class DateInput(forms.DateInput):
@@ -149,3 +150,12 @@ class DateChoiceForm(forms.Form):
 
         super(DateChoiceForm, self).__init__(*args, **kwargs)
         self.fields['trip'].queryset = trip_dates
+
+
+passenger_total = (self.request.session['passenger_total'] - 1)
+PassengerFormset = inlineformset_factory(
+            Booking,
+            Passenger,
+            fields=('first_name', 'last_name', 'email'),
+            extra=passenger_total,
+        )        

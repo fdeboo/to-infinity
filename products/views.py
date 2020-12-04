@@ -17,11 +17,6 @@ class TripsView(FormView):
     template_name = "products/trips.html"
     form_class = SearchTripsForm
 
-    def get_success_url(self):
-        """ Overides the success url when the view is run """
-
-        return reverse("selection")
-
     def get_context_data(self, **kwargs):
         """ Renders the form to the template """
 
@@ -44,6 +39,11 @@ class TripsView(FormView):
             "passengers"
         ]
         return super(TripsView, self).form_valid(form)
+    
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+
+        return reverse("selection")
 
 
 class TripDetail(DetailView):

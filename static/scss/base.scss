@@ -80,10 +80,12 @@ body {
 
 .bg-hero {
     z-index: -1;
-    background: #000 url("/media/international-space-station-1176518.jpg") no-repeat center bottom fixed;
-    background-size: contain;
+    background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
+    background-size: cover;
+    background-position: bottom -20vh right 50%;
     position: fixed;
     height: 100vh;
+    width: 100vw;
     bottom: 0;
     left: 0;
     right: 0;
@@ -107,10 +109,10 @@ body {
     position: relative;
     a {
         position: absolute;
-        top: 100%;
-        bottom: -50%;
-        right: 100%;
-        left: -50vw;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
     }
     img {
         object-fit: cover;
@@ -119,13 +121,45 @@ body {
     }
 }
 
+.icon-menu-bar {
+    background-color:  whitesmoke;
+}
+
 // Styles initial search form
-.booking-form {
+.search-trips-form {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: white;
+
+	@media only screen and (max-width: 992px) {
+        bottom: -316px;
+        height: 316px;
+        transition: 1s;
+        
+        &.position-translate {
+            visibility: visible;
+            bottom: 0px;
+        }
+	}
+
+	.toggle-form {
+        visibility: hidden;
+        background-color: blue;
+        border-radius: 50%;
+        position: absolute;
+        padding: 1em;
+        margin: 1.5em;
+        top: -6em;
+        right: 3em;
+        color: white;
+        z-index: 10;
+
+		@media only screen and (max-width: 992px) {
+            visibility: visible;
+		}
+	}
 }
 
 /*.form-group {

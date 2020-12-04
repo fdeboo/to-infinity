@@ -4,14 +4,16 @@ Views in this module provide logic for templates that guide the booking process
 
 import json
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from django.views.decorators.cache import never_cache
+from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Trip
+from profiles.models import UserProfile
+from .models import Trip, Passenger, Booking
 from .forms import DateChoiceForm
 
 
@@ -160,9 +162,45 @@ class ConfirmTripView(TemplateView):
     template_name = "bookings/confirm_trip.html"
 
 
-def booking_details(request):
-    """ A view to collect all booking details needed for booking """
+@method_decorator(login_required, name='dispatch')
+class CreateBookingView(CreateView):
+    """ A view to collect all booking details needed for booking including
+    Passengers details from child model """
 
-    context = {}
-    template = ""
-    return render(request, template, context)
+    model = Booking
+    fields = ['trip', 'booking_total', 'num_passengers']
+
+    def get_context_data(self, **kwargs):
+        """ Overwrite default method to render Passenger formset """
+        data = super().get_context_data(**kwargs)
+        passenger_total = (self.request.session['passenger_total'] - 1)
+        PassengerFormset = inlineformset_factory(
+                Booking,
+                Passenger,
+                fields=('first_name', 'last_name', 'email'),
+                extra=passenger_total,
+            )
+        if self.request.POST:
+            data["passengers"] = PassengerFormset(self.request.POST)
+        else:
+            profile = UserProfile.objects.get(user=self.request.user)
+            data["passengers"] = PassengerFormset(
+                initial=[{
+                    "first_name": profile.user.first_name,
+                    "last_name": profile.user.last_name,
+                    "email": profile.user.email,
+                }]
+            )
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        passengers = context["passengers"]
+        self.object = form.save()
+        if passengers.is_valid():
+            passengers.instance = self.object
+            passengers.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("")

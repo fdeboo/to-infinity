@@ -3,8 +3,8 @@
 
 {% block page_nav %}
 {% include 'includes/light_nav.html' %}
-<div class="row justify-content-center py-3 bg-white">
-    <div class="col-12 col-md-7 icon-menu-bar d-flex justify-content-around align-items-center">
+<div class="row justify-content-center py-3 icon-menu-bar">
+    <div class="col-12 col-md-7 d-flex justify-content-around align-items-center">
         <a href="#trip1"><img src="{% static '../media/missiontomars.png' %}" alt="Moon Landing Icon"></a>
         <a href="#trip2"><img src="{% static '../media/moonlanding.png' %}" alt="Earth Orbit Icon"></a>
         <a href="#trip3"><img src="{% static '../media/earthorbit.png' %}" alt="Earth Orbit Icon"></a>
@@ -16,20 +16,20 @@
 {% block content %}
 <section class="container-fluid">
     
-    {%for destination in destinations %}
+    
     <div class="row">
-        <div class="col-12 image-container" id="trip{{ forloop.counter }}">
+        {%for destination in destinations %}
+        <div class="col-12 col-lg-6 image-container" id="trip{{ forloop.counter }}">
             <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
             <a href="{% url 'trip_detail' destination.id %}">
                 <p>{{ destination.name }}</p>
             </a>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-    <div class="row booking-form justify-content-center">
-        <div class="col-12 d-block d-lg-none text-right">
-            <a href=""><i class="fas fa-times fa-2x p-2"></i></a>
-        </div>
+    
+    <div class="row search-trips-form justify-content-center">
+        <button type="button" class="toggle-form"><i class="far fa-calendar-alt fa-2x"></i></button>
         <div class="col-md-10 col-xl-9 py-4">
             {% crispy form %}   
         </div>
@@ -40,19 +40,20 @@
 
 {% block postloadjs %}
 <script>
-    document.getElementById("selected-trip").onchange = function() {
-        let elemSelect = document.getElementById("selected-trip");
-        if (elemSelect.value == '') {
+
+    $('#selected-trip').change(function() {
+        if ($('#selected-trip').val() == '') {
             $('#passengers-max').prop("disabled", true);
         }
         else {
-            let tripChoice = elemSelect.options[elemSelect.selectedIndex];
-
-            // From http://html5doctor.com/html5-custom-data-attributes/
-            let maxNm = tripChoice.dataset.maxNum;
-            
+            let maxNm = $('#selected-trip option:selected').data('maxNum');         
             $('#passengers-max').attr("max", maxNm).prop("disabled", false);
         }
-    };
+    });
+
+    $('.toggle-form').click(function(){
+        $(".search-trips-form").toggleClass("position-translate");
+    });
+        
 </script>
 {% endblock postloadjs %}
