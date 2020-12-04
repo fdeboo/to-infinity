@@ -49,13 +49,17 @@ class Booking(models.Model):
     """ Model stores information about each booking such as which trip
     the booking is for, details of the passengers and the overall cost  """
 
+    BOOKING_STATUS_CHOICES = [
+        ('INITIAL', 'initial'),
+        ('RESERVED', 'Reserved'),
+        ('COMPLETE', 'Complete'),
+    ]
     booking_ref = models.CharField(
         primary_key=True, max_length=20, null=False, editable=False
     )
     trip = models.ForeignKey(
         Trip, on_delete=models.SET_NULL, null=True, blank=False
     )
-
     lead_user = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
@@ -63,14 +67,20 @@ class Booking(models.Model):
         blank=True,
         related_name="bookings",
     )
-
     booking_total = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, default=0
     )
     stripe_pid = models.CharField(
-        max_length=254, null=False, blank=False, default=""
+        max_length=254, null=False, blank=False, default="0"
     )
     num_passengers = models.IntegerField(null=False, blank=False)
+    status = models.CharField(
+        max_length=10,
+        null=False,
+        blank=False,
+        choices=BOOKING_STATUS_CHOICES,
+        default='INITIAL'
+    )
 
     def _generate_booking_ref(self):
         """ Generate a random, unique order number using UUID """
