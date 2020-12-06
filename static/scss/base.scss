@@ -225,3 +225,17 @@ body {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }
 
+
+.formatted-day {
+    display: block;
+    font: {
+        weight: 700;
+        size: 1.5em;
+    }
+}
+
+.formatted-price {
+    font-weight: bold;
+    display: block;
+
+}

@@ -63,7 +63,7 @@ class SelectWithOptionAttributes(Select):
 class DestinationChoiceField(ModelChoiceField):
     """
     Overrides the label_from_instance method from Django's ModelChoiceField:
-    Passes the 'max_passengers' value from the object as an html5 
+    Passes the 'max_passengers' value from the object as an html5
     data-attribute
     """
 
@@ -78,22 +78,17 @@ class DestinationChoiceField(ModelChoiceField):
             "data-max-num": obj.max_passengers,
         }
 
-"""
+
 class TripSelectField(ModelChoiceField):
-    
+    """
     Overrides the label_from_instance method from Django's ModelChoiceField:
     Overwrites the display tezt
-    
-
-    widget = SelectWithOptionAttribut
+    """
 
     def label_from_instance(self, obj):
         # 'obj' will be a Destination
-        date = (obj.date).strftime("%A %d %B %Y")
-        return {
-            # the usual label:
-            f"{obj.date}"
-"""
+        date_string = (obj.date).strftime("%A %d %B %Y")
+        return f'{date_string} £{obj.destination.price}'
 
 
 class SearchTripsForm(forms.Form):
@@ -158,9 +153,8 @@ class DateChoiceForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ["trip"]
-        widgets = {
-            "trip": RadioSelect(),
-        }
+        field_classes = {"trip": TripSelectField}
+        widgets = {"trip": RadioSelect()}
 
     def __init__(self, *args, **kwargs):
         trip_dates = kwargs.pop("trips", None)

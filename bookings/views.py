@@ -160,7 +160,11 @@ class SelectTripView(View):
             trips=trips,
             initial={"trip": default_selected}
         )
-        return render(request, self.template_name, {"form": form})
+        return render(
+            request,
+            self.template_name,
+            {"form": form, "trips": trips}
+            )
 
 
 @method_decorator(login_required, name='dispatch')

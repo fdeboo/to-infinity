@@ -13,7 +13,8 @@
             {% for radio in form.trip %}
                 <div class="radio-options mx-2 col-2">
                     {{ radio.tag }}
-                    <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+                    <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}
+                        {{ trip.destination.price }}</label>
                 </div>
             {% endfor %}
             <div class="col-12 text-center">
@@ -25,3 +26,33 @@
 </section>
 
 {% endblock content %}
+
+{% block postloadjs %}
+<script>
+$(document).ready(function(){
+    $('.date-option').each(function(index){
+        const text = $(this).text();
+        const text_array = text.split(" ");
+        const dayHtml = '<span class="day">'+ text_array[0]+'</span>';
+        const date = text_array[1] + " " + text_array[2] + " " + text_array[3];
+        const price = text_array[4].slice(0,-4);
+        
+        //credit: https://stackoverflow.com/a/26549774/2342815
+        // Inserts a character at the given index where: (index, 'inserted')
+        String.prototype.insert = function (index, string) {
+            var i = index < 0 ? this.length + index  :  index;
+            return  this.substring(0, i) + string + this.substr(i);
+        };
+
+        const prix = price.insert(-3, ',');
+
+        const priceHtml = '<span class="price">' + prix +'</span>';
+        const htmlString = dayHtml + " " + date + " " + priceHtml;
+        $(this).html(htmlString);
+    });
+    $('.date-option').addClass('formatted-label');
+    $('.day').addClass('formatted-day');
+    $('.price').addClass('formatted-price');
+});
+</script>
+{% endblock postloadjs %}
