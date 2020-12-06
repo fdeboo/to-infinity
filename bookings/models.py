@@ -3,7 +3,7 @@ Models include Trip, Passenger and Booking Line Item
 """
 import uuid
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Sum
 from products.models import Destination, Product
 from profiles.models import UserProfile
 
@@ -41,8 +41,11 @@ class Trip(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        date = (self.date).strftime("%A %d %B %Y")
-        return date
+        date = (self.date).strftime("%d/%m/%Y")
+        return f"{self.destination} on {date}"
+
+    class Meta:
+        ordering = ["date"]
 
 
 class Booking(models.Model):
@@ -50,12 +53,12 @@ class Booking(models.Model):
     the booking is for, details of the passengers and the overall cost  """
 
     BOOKING_STATUS_CHOICES = [
-        ('INITIAL', 'initial'),
+        ('INITIAL', 'Initial'),
         ('RESERVED', 'Reserved'),
         ('COMPLETE', 'Complete'),
     ]
     booking_ref = models.CharField(
-        primary_key=True, max_length=20, null=False, editable=False
+        primary_key=True, max_length=32, null=False, editable=False
     )
     trip = models.ForeignKey(
         Trip, on_delete=models.SET_NULL, null=True, blank=False
@@ -73,7 +76,6 @@ class Booking(models.Model):
     stripe_pid = models.CharField(
         max_length=254, null=False, blank=False, default="0"
     )
-    num_passengers = models.IntegerField(null=False, blank=False)
     status = models.CharField(
         max_length=10,
         null=False,
@@ -85,6 +87,18 @@ class Booking(models.Model):
     def _generate_booking_ref(self):
         """ Generate a random, unique order number using UUID """
         return uuid.uuid4().hex.upper()
+
+    def update_total(self):
+        """
+        Update booking total each time a line item is added
+        """
+
+        self.booking_total = (
+            self.lineitems.aggregate(Sum("line_total"))[
+                "line_total__sum"
+            ]
+        )
+        self.save()
 
     def save(self, *args, **kwargs):
         """
@@ -121,7 +135,7 @@ class Passenger(models.Model):
 class BookingLineItem(models.Model):
     """
     Related to the products being sold as part of the booking.
-    Each instance is an individual product that make up the order.
+    Each instance is an individual product that makes up the order.
     Calculates the total based on the quantity applied.
     """
 
@@ -139,3 +153,12 @@ class BookingLineItem(models.Model):
     line_total = models.DecimalField(
         max_digits=8, decimal_places=2, null=False, blank=False, editable=False
     )
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides the original save method to set the line total
+        and update the order total
+        """
+        self.line_total = self.product.price * self.quantity
+        print('saved')
+        super().save(*args, **kwargs)

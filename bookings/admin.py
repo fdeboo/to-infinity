@@ -19,12 +19,16 @@ class BookingAdmin(admin.ModelAdmin):
         "booking_ref",
         "booking_total",
         "stripe_pid",
+        "trip",
+        "status",
     )
 
     fields = (
         "booking_ref",
         "booking_total",
         "stripe_pid",
+        "trip",
+        "status",
     )
 
     """ Fields displayed in add or change """

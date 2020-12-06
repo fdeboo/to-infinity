@@ -8,7 +8,6 @@ from django import forms
 from django.forms import (
     ModelChoiceField,
     NumberInput,
-    HiddenInput,
     RadioSelect,
 )
 from django.forms.widgets import Select
@@ -27,7 +26,7 @@ class DateInput(forms.DateInput):
     input_type = "date"
 
 
-class SelectWithOptionAttribute(Select):
+class SelectWithOptionAttributes(Select):
     """
     Creates a custom widget that sublasses Django's select widget.
     Customises it's create_option method
@@ -53,7 +52,7 @@ class SelectWithOptionAttribute(Select):
             label = opt_attrs.pop("label")
         else:
             opt_attrs = {}
-        option_dict = super(SelectWithOptionAttribute, self).create_option(
+        option_dict = super(SelectWithOptionAttributes, self).create_option(
             name, value, label, selected, index, subindex=subindex, attrs=attrs
         )
         for key, val in opt_attrs.items():
@@ -63,12 +62,12 @@ class SelectWithOptionAttribute(Select):
 
 class DestinationChoiceField(ModelChoiceField):
     """
-    Subclasses Django's ModelChoiceField and customises it's
-    label_from_instance method to include 'max_passengers' from
-    the queryset as an data-attribute in the html element
+    Overrides the label_from_instance method from Django's ModelChoiceField:
+    Passes the 'max_passengers' value from the object as an html5 
+    data-attribute
     """
 
-    widget = SelectWithOptionAttribute
+    widget = SelectWithOptionAttributes
 
     def label_from_instance(self, obj):
         # 'obj' will be a Destination
@@ -78,6 +77,23 @@ class DestinationChoiceField(ModelChoiceField):
             # the new data attribute:
             "data-max-num": obj.max_passengers,
         }
+
+"""
+class TripSelectField(ModelChoiceField):
+    
+    Overrides the label_from_instance method from Django's ModelChoiceField:
+    Overwrites the display tezt
+    
+
+    widget = SelectWithOptionAttribut
+
+    def label_from_instance(self, obj):
+        # 'obj' will be a Destination
+        date = (obj.date).strftime("%A %d %B %Y")
+        return {
+            # the usual label:
+            f"{obj.date}"
+"""
 
 
 class SearchTripsForm(forms.Form):
@@ -90,7 +106,7 @@ class SearchTripsForm(forms.Form):
         queryset=Destination.objects.all(),
         label="",
         empty_label="Destination",
-        widget=SelectWithOptionAttribute(),
+        widget=SelectWithOptionAttributes(),
     )
     request_date = forms.DateField(required=True, label="", widget=DateInput())
     passengers = forms.IntegerField(label="", widget=NumberInput())
@@ -141,9 +157,8 @@ class DateChoiceForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ["trip", "num_passengers"]
+        fields = ["trip"]
         widgets = {
-            "num_passengers": HiddenInput(),
             "trip": RadioSelect(),
         }
 

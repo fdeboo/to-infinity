@@ -13,7 +13,7 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from profiles.models import UserProfile
-from .models import Trip, Passenger, Booking
+from .models import Trip, Passenger, Booking, BookingLineItem
 from .forms import DateChoiceForm
 
 
@@ -53,7 +53,7 @@ class SelectTripView(View):
             self.request.session["destination_choice"],
             self.request.session["passenger_total"]
         )
-        gte_dates = available_trips.filter(date__gte=date).order_by("date")[:3]
+        gte_dates = available_trips.filter(date__gte=date)[:3]
         return gte_dates
 
     def get_trips_preceding_date(self, date):
@@ -92,21 +92,32 @@ class SelectTripView(View):
 
     def post(self, request):
         """
-        Takes the POST data from the DateChoiceForm and stores it in
-        the session.
+        Takes the POST data from the DateChoiceForm and creates an
+        Intitial Booking in the database
         """
 
         trips = self.get_queryset()
         form = self.form_class(request.POST, trips=trips)
         if form.is_valid():
-            trip_choice = request.POST.get("trip")
-            request.session["trip_choice"] = trip_choice
+            booking = form.save(commit=False)
+            booking.status = "RESERVED"
+            booking.save()
+            trip = form.cleaned_data['trip']
+            destination = trip.destination
+
+            booking_line_item = BookingLineItem(
+                booking=booking,
+                product=destination,
+                quantity=self.request.session["passenger_total"]
+            )
+            booking_line_item.save()
+
             return redirect('confirm')
 
     def get(self, request):
         """
         Initialises the DateChoiceForm with data from SearchTripsForm
-        & render to the template
+        & renders to the template
         """
 
         searched_date = self.get_searched_date()
@@ -147,10 +158,7 @@ class SelectTripView(View):
         trips = self.get_queryset()
         form = self.form_class(
             trips=trips,
-            initial={
-                "trip": default_selected,
-                "num_passengers": self.request.session["passenger_total"]
-            }
+            initial={"trip": default_selected}
         )
         return render(request, self.template_name, {"form": form})
 
@@ -168,7 +176,7 @@ class CreateBookingView(CreateView):
     Passengers details from child model """
 
     model = Booking
-    fields = ['trip', 'booking_total', 'num_passengers']
+    fields = ['trip', 'booking_total']
 
     def get_context_data(self, **kwargs):
         """ Overwrite default method to render Passenger formset """
