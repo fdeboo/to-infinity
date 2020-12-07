@@ -160,5 +160,4 @@ class BookingLineItem(models.Model):
         and update the order total
         """
         self.line_total = self.product.price * self.quantity
-        print('saved')
         super().save(*args, **kwargs)

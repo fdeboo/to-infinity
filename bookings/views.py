@@ -7,7 +7,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.views import View
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, UpdateView
 from django.views.decorators.cache import never_cache
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
@@ -111,8 +111,9 @@ class SelectTripView(View):
                 quantity=self.request.session["passenger_total"]
             )
             booking_line_item.save()
+            print(booking.pk)
 
-            return redirect('confirm')
+            return redirect('confirm', booking.pk)
 
     def get(self, request):
         """
@@ -163,15 +164,12 @@ class SelectTripView(View):
             trips=trips,
             initial={"trip": default_selected}
         )
-        return render(
-            request,
-            self.template_name,
-            {
-                "form": form,
-                "passengers": passengers,
-                "destination_obj": destination,
-            }
-        )
+        context = {
+            "form": form,
+            "passengers": passengers,
+            "destination_obj": destination,
+        }
+        return render(request, self.template_name, context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -182,12 +180,13 @@ class ConfirmTripView(TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class CreateBookingView(UpdateView):
+class UpdateBookingView(UpdateView):
     """ A view to collect all booking details needed for booking including
     Passengers details from child model """
 
     model = Booking
     fields = ['trip', 'booking_total']
+    template_name_suffix = '_form'
 
     def get_context_data(self, **kwargs):
         """ Overwrite default method to render Passenger formset """

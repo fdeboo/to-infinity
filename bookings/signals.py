@@ -10,5 +10,4 @@ def update_on_save(sender, instance, created, **kwargs):
     """
     Update booking total on lineitem update/create
     """
-    print("postsaved")
     instance.booking.update_total()

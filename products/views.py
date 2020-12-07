@@ -39,7 +39,7 @@ class TripsView(FormView):
             "passengers"
         ]
         return super(TripsView, self).form_valid(form)
-    
+
     def get_success_url(self):
         """ Overides the success url when the view is run """
 

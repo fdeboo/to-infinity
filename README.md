@@ -71,6 +71,25 @@
  
  </div>
 
+
+<div align="center">
+
+<img src="media/wireframes/searchtripsform.png" alt="Search trips"/>
+ 
+ </div>
+
+ <div align="center">
+
+<img src="media/wireframes/selecttrips.png" alt="Search trips"/>
+ 
+ </div>
+
+ <div align="center">
+
+<img src="media/wireframes/passengerdetailsform.png" alt="Search trips"/>
+ 
+ </div>
+
 ## Design Notes <a name="design"></a>
 ### Typography
 + The fonts chosen for this project are <b>"Orbitron,"</b> <b>"Euphoria"</b> and <b>"."</b> from google fonts
