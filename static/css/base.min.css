@@ -43,11 +43,11 @@ body {
   color: #F9F9F9;
 }
 
-.btn-outline, .hero-btn {
+.btn-outline, .btn-outline-reverse, .hero-btn {
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
-  border: 1px solid #000;
   border-radius: 0;
+  border: 1px solid #000;
   background-color: #000;
   text-transform: uppercase;
   letter-spacing: .3rem;
@@ -57,9 +57,22 @@ body {
   color: #F9F9F9;
 }
 
-.btn-outline:hover, .hero-btn:hover {
+.btn-outline:hover, .btn-outline-reverse:hover, .hero-btn:hover {
   background-color: transparent;
   color: #000;
+}
+
+.btn-outline-reverse {
+  border: 1px solid #000;
+  background-color: transparent;
+  -webkit-transition: background-color .75s, color .75s ease-out;
+  transition: background-color .75s, color .75s ease-out;
+  color: #000;
+}
+
+.btn-outline-reverse:hover {
+  background-color: #000;
+  color: #F9F9F9;
 }
 
 .hero-btn {

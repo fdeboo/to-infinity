@@ -21,7 +21,7 @@ class TripsView(FormView):
         """ Renders the form to the template """
 
         context = super().get_context_data(**kwargs)
-        context["destinations"] = Product.objects.filter(category=3)
+        context["products"] = Product.objects.filter(category=3)
         return context
 
     def form_valid(self, form):

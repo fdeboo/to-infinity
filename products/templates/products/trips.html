@@ -18,11 +18,11 @@
     
     
     <div class="row">
-        {%for destination in destinations %}
+        {%for product in products %}
         <div class="col-12 col-lg-6 image-container" id="trip{{ forloop.counter }}">
-            <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
-            <a href="{% url 'trip_detail' destination.id %}">
-                <p>{{ destination.name }}</p>
+            <img class="" src="{{ product.image.url }}" alt="{{ product.name }}" />
+            <a href="{% url 'trip_detail' product.id %}">
+                <p>{{ product.name }}</p>
             </a>
         </div>
         {% endfor %}

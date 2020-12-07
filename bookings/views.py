@@ -7,13 +7,13 @@ from datetime import datetime
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.views import View
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView
 from django.views.decorators.cache import never_cache
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from profiles.models import UserProfile
-from .models import Trip, Passenger, Booking, BookingLineItem
+from .models import Trip, Passenger, Booking, BookingLineItem, Product
 from .forms import DateChoiceForm
 
 
@@ -156,6 +156,9 @@ class SelectTripView(View):
             )
 
         trips = self.get_queryset()
+        passengers = self.request.session["passenger_total"]
+        destination_id = self.request.session["destination_choice"]
+        destination = Product.objects.filter(id=destination_id)
         form = self.form_class(
             trips=trips,
             initial={"trip": default_selected}
@@ -163,8 +166,12 @@ class SelectTripView(View):
         return render(
             request,
             self.template_name,
-            {"form": form, "trips": trips}
-            )
+            {
+                "form": form,
+                "passengers": passengers,
+                "destination_obj": destination,
+            }
+        )
 
 
 @method_decorator(login_required, name='dispatch')
@@ -175,7 +182,7 @@ class ConfirmTripView(TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class CreateBookingView(CreateView):
+class CreateBookingView(UpdateView):
     """ A view to collect all booking details needed for booking including
     Passengers details from child model """
 
@@ -185,7 +192,7 @@ class CreateBookingView(CreateView):
     def get_context_data(self, **kwargs):
         """ Overwrite default method to render Passenger formset """
         data = super().get_context_data(**kwargs)
-        passenger_total = (self.request.session['passenger_total'] - 1)
+        passenger_total = (self.request.session['passenger_total'])
         PassengerFormset = inlineformset_factory(
                 Booking,
                 Passenger,

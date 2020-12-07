@@ -1,27 +1,67 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_nav %}
-    {% include 'includes/light_nav.html' %}
+{% include 'includes/light_nav.html' %}
 {% endblock page_nav %}
 
 {% block content %}
 <section class="container-fluid">
-        <form action="{% url 'selection' %}" method="POST">
-            {% csrf_token %}
-            {{ form.num_passengers }}
-            <div class="row justify-content-center">
+    <form action="{% url 'selection' %}" method="POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
             {% for radio in form.trip %}
-                <div class="radio-options mx-2 col-2">
-                    {{ radio.tag }}
-                    <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}
-                        {{ trip.destination.price }}</label>
-                </div>
+            <div class="radio-options mx-2 col-2">
+                {{ radio.tag }}
+                <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+            </div>
             {% endfor %}
             <div class="col-12 text-center">
-                <input type="submit" class="btn btn-outline" value="Confirm" />
-            </div>
-            </div>  
-        </form>
+                <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal" data-target="#confirmModal"
+                    data-whatever="@getbootstrap">Confirm</button>
+
+
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm Selection</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                    {% for destination in  destination_obj %}
+                                        <p>{{ destination.name }}</p>
+                                        <p id="date-choice"></p>
+                                        <p id="booking-details">
+                                            <span id="quantity">{{ passengers }}</span>
+                                            x £
+                                            <span id="cost">{{ destination.price }}</span>
+                                        </p>
+                                        <p id="total">Total:</p>
+                                    {% endfor %}
+                                
+                                    
+                                    </div>
+                                    <div class="form-group">
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-reverse" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-outline" value="Proceed" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End of modal-->
+            {{ endfor }}
+        </div>
+    </form>
 
 </section>
 
@@ -29,30 +69,69 @@
 
 {% block postloadjs %}
 <script>
-$(document).ready(function(){
-    $('.date-option').each(function(index){
-        const text = $(this).text();
-        const text_array = text.split(" ");
-        const dayHtml = '<span class="day">'+ text_array[0]+'</span>';
-        const date = text_array[1] + " " + text_array[2] + " " + text_array[3];
-        const price = text_array[4].slice(0,-4);
-        
-        //credit: https://stackoverflow.com/a/26549774/2342815
-        // Inserts a character at the given index where: (index, 'inserted')
-        String.prototype.insert = function (index, string) {
-            var i = index < 0 ? this.length + index  :  index;
-            return  this.substring(0, i) + string + this.substr(i);
+    $(document).ready(function () {
+        // Provides markup to input options
+
+        let price;
+        let priceTotal;
+
+        // credit: https://stackoverflow.com/a/26549774/2342815
+        // Renders a formatted price with no floating decimals unless necessary      
+        String.prototype.insert = function () {            
+            if (this.substr(-3) === '.00') {
+                priceInt = this.slice(0, -3); // Removes trailing zeros
+                return priceInt.substring(0, (priceInt.length - 3)) +
+                ',' + priceInt.substr(-3); // Formats with a thousands separator ','
+            } else {
+                priceFloat = this;
+                return priceFloat.substring(0, (priceFloat.length - 3)) + ',' +
+                priceFloat.substr(-3);
+            }
         };
-
-        const prix = price.insert(-3, ',');
-
-        const priceHtml = '<span class="price">' + prix +'</span>';
-        const htmlString = dayHtml + " " + date + " " + priceHtml;
-        $(this).html(htmlString);
+        
+        $('.date-option').each(function (index) {
+            // Applies html markup and css to data in input labels
+            const text = $(this).text();
+            const text_array = text.split(" ");
+            const dayHtml = '<span class="day">' + text_array[0] + '</span>';
+            const date = text_array[1] + " " + text_array[2] + " " + text_array[3];
+            const price = text_array[4]
+            const priceHtml = '<span class="price">' + price.insert() + '</span>';
+            const htmlString = dayHtml + " " + date + " " + priceHtml;
+            $(this).html(htmlString);
+        });
+        $('.date-option').addClass('formatted-label');
+        $('.day').addClass('formatted-day');
+        $('.price').addClass('formatted-price');
     });
-    $('.date-option').addClass('formatted-label');
-    $('.day').addClass('formatted-day');
-    $('.price').addClass('formatted-price');
-});
+
+    $('#confirm-btn').click(function() {
+        // Populates modal with data value from context
+        if (typeof price == 'undefined') {
+            const quantity = Number($('#quantity').text());
+            const strPrice = $('#cost').text();
+            const numPrice = Number(strPrice);
+            const math = String(quantity * numPrice);
+            priceTotal = math.insert();
+            price = strPrice.insert();
+        }       
+        $('#total').text("Total: £" +  priceTotal);
+        $('#cost').text(price);
+
+        $("input[type='radio']:checked").each(function() {
+            // Populates modal with date selected in form and converts to d/m/y
+            const radioId = $(this).attr("id");
+            const labelText = $("label[for='"+ radioId + "']").text();
+            const arrayText = labelText.split(" ");
+            const dateString = arrayText[0] + " " + arrayText[1] + " " + arrayText[2] + " " + arrayText[3];
+            const dateChoice = new Date(dateString);
+            const day = dateChoice.getDate();
+            const month = dateChoice.getMonth() + 1;
+            const year = dateChoice.getFullYear();
+
+            $('#date-choice').text(day + "/" + month + "/" + year);
+        
+        })
+    })
 </script>
 {% endblock postloadjs %}
