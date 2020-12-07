@@ -33,23 +33,21 @@
 
 ## User Stories <a name="users"></a>
 "As a user, I would like to ___________"
-+ View the different types of trips available
-+ View individual trips in more detail
-+ Book my place on a trip
-+ Provide details of the number of passengers and passenger information
-+ Review booking before placing it
-+ Easily Enter Payment information
-+ Feel my personal and payment information is secure
-+ View my order confirmation after checkout
-+ Receive a confirmation email after the checokout is complete
-+ Modifiy my booking details
-+ View my bookings
++ As a user, I would like to view the different types of trips available
++ As a user, I would like to view individual trips in more detail
++ As a user, I would like to view book my place on a trip
++ As a user, I would like to provide details of the number of passengers and passenger information
++ As a user, I would like to review my booking before placing it
++ As a user, I would like to easily Enter Payment information
++ As a user, I would like to feel my personal and payment information is secure
++ As a user, I would like to view my order confirmation after checkout
++ As a user, I would like to receive a confirmation email after the checokout is complete
++ As a user, I would like to modifiy my booking details
++ As a user, I would like to view my bookings
 
-
-"As a buisness owner I would like to _________"
-+ Add new trips and experiences
-+ View the number of seats available for each trip
-
+"As a business user, I would like to ___________"
++ As a buisness owner I would like to add new trips and experiences
++ As a buisness owner I would like to view the number of seats available for each trip
 
 
 ## Wireframes <a name="wireframes"></a>
