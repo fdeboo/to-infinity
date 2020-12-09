@@ -2,23 +2,23 @@
 Views in this module provide logic for templates that guide the booking process
 """
 
-import json
 from datetime import datetime
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.views import View
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import FormView
+from django.views.generic.detail import SingleObjectMixin
 from django.views.decorators.cache import never_cache
-from django.forms import inlineformset_factory
+from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from profiles.models import UserProfile
 from .models import Trip, Passenger, Booking, BookingLineItem, Product
-from .forms import DateChoiceForm
+from .forms import DateChoiceForm, PassengerForm, PassengerFormSet
 
 
 @method_decorator(never_cache, name='dispatch')
-class SelectTripView(View):
+class ConfirmTripView(View):
     """
     Provides the user a set of choice options based on their search input in
     the products.TripsView
@@ -27,12 +27,12 @@ class SelectTripView(View):
     template_name = "bookings/trips_available.html"
     form_class = DateChoiceForm
 
-    def get_searched_date(self):
-        """ Deserialises the searched_date value from the session """
+    def convert_to_int(self, type_tuple):
+        """ Converts tuple value to integer """
 
-        searched_date = self.request.session['searched_date']
-        searched_date = json.loads(searched_date)
-        return searched_date
+        type_int = int(''.join(type_tuple))
+        print(type_int)
+        return type_int
 
     def get_available_trips(self, destination, passengers):
         """ Find trips with enough seats for searched no. of passengers """
@@ -48,10 +48,12 @@ class SelectTripView(View):
         Refine to trips with dates closest to searched_date
         limit to 3 results
         """
-
+        destination_id = self.convert_to_int(
+            self.request.GET.get("destination")
+        )
         available_trips = self.get_available_trips(
-            self.request.session["destination_choice"],
-            self.request.session["passenger_total"]
+            destination_id,
+            self.request.GET.get("passengers")
         )
         gte_dates = available_trips.filter(date__gte=date)[:3]
         return gte_dates
@@ -62,10 +64,12 @@ class SelectTripView(View):
         Refines to trips with dates closest to searched_date
         limits to 3 results
         """
-
+        destination_id = self.convert_to_int(
+            self.request.GET.get("destination")
+        )
         available_trips = self.get_available_trips(
-            self.request.session["destination_choice"],
-            self.request.session["passenger_total"]
+            destination_id,
+            self.request.GET.get("passengers")
         )
         lt_dates = available_trips.filter(date__lt=date).order_by("-date")[:3]
         return lt_dates
@@ -82,7 +86,7 @@ class SelectTripView(View):
         """ Creates the queryset that will be used by the ModelChoiceField
         in the DateChoiceForm """
 
-        searched_date = self.get_searched_date()
+        searched_date = self.request.GET.get('request_date')
         gte_dates = self.get_trips_matched_or_post_date(searched_date)
         lt_dates = self.get_trips_preceding_date(searched_date)
         # Merge both queries
@@ -108,12 +112,12 @@ class SelectTripView(View):
             booking_line_item = BookingLineItem(
                 booking=booking,
                 product=destination,
-                quantity=self.request.session["passenger_total"]
+                quantity=self.request.GET.get("passengers")
             )
             booking_line_item.save()
             print(booking.pk)
 
-            return redirect('confirm', booking.pk)
+            return redirect('create_passengers', booking.pk)
 
     def get(self, request):
         """
@@ -121,7 +125,7 @@ class SelectTripView(View):
         & renders to the template
         """
 
-        searched_date = self.get_searched_date()
+        searched_date = self.request.GET.get('request_date')
         naive_searched_date = datetime.strptime(searched_date, "%Y-%m-%d")
         gte_dates = self.get_trips_matched_or_post_date(searched_date)
         lt_dates = self.get_trips_preceding_date(searched_date)
@@ -157,8 +161,10 @@ class SelectTripView(View):
             )
 
         trips = self.get_queryset()
-        passengers = self.request.session["passenger_total"]
-        destination_id = self.request.session["destination_choice"]
+        passengers = self.request.GET.get("passengers")
+        destination_id = self.convert_to_int(
+            self.request.GET.get("destination")
+        )
         destination = Product.objects.filter(id=destination_id)
         form = self.form_class(
             trips=trips,
@@ -173,52 +179,49 @@ class SelectTripView(View):
 
 
 @method_decorator(login_required, name='dispatch')
-class ConfirmTripView(TemplateView):
-    """ A view to confirm booking request """
-
-    template_name = "bookings/confirm_trip.html"
-
-
-@method_decorator(login_required, name='dispatch')
-class UpdateBookingView(UpdateView):
-    """ A view to collect all booking details needed for booking including
-    Passengers details from child model """
+class CreatePassengersView(SingleObjectMixin, FormView):
+    """
+    A view to update booking with passenger details based on number of
+    passengers in search
+    """
 
     model = Booking
-    fields = ['trip', 'booking_total']
-    template_name_suffix = '_form'
+    template_name = 'bookings/passenger_details.html'
 
-    def get_context_data(self, **kwargs):
-        """ Overwrite default method to render Passenger formset """
-        data = super().get_context_data(**kwargs)
-        passenger_total = (self.request.session['passenger_total'])
-        PassengerFormset = inlineformset_factory(
-                Booking,
-                Passenger,
-                fields=('first_name', 'last_name', 'email'),
-                extra=passenger_total,
-            )
-        if self.request.POST:
-            data["passengers"] = PassengerFormset(self.request.POST)
-        else:
-            profile = UserProfile.objects.get(user=self.request.user)
-            data["passengers"] = PassengerFormset(
-                initial=[{
-                    "first_name": profile.user.first_name,
-                    "last_name": profile.user.last_name,
-                    "email": profile.user.email,
-                }]
-            )
-        return data
+    def get(self, request, *args, **kwargs):
+        # The Booking being updated:
+        self.object = self.get_object(queryset=Booking.objects.all())
+        print(self.object)
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # The Booking being updated:
+        self.object = self.get_object(queryset=Booking.objects.all())
+        print(self.object)
+        return super().post(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        """ Use custom formset """
+
+        return PassengerFormSet(
+            **self.get_form_kwargs(),
+            instance=self.object
+        )
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        passengers = context["passengers"]
-        self.object = form.save()
-        if passengers.is_valid():
-            passengers.instance = self.object
-            passengers.save()
-        return super().form_valid(form)
+        """ If the form is valid, redirect to the supplied URL"""
+
+        form.save()
+
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            'Changes were saved.'
+        )
 
     def get_success_url(self):
-        return reverse("")
+        return reverse("complete_booking")
+
+
+class CompleteBookingView(View):
+    template = 'checkout.html'
+    print('HERE')

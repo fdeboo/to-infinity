@@ -13,6 +13,7 @@ django-allauth = "*"
 pillow = "*"
 psycopg2-binary = "*"
 django-crispy-forms = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"

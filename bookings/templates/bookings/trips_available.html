@@ -6,7 +6,7 @@
 
 {% block content %}
 <section class="container-fluid">
-    <form action="{% url 'selection' %}" method="POST">
+    <form action="{% url 'confirm_trip' %}" method="POST">
         {% csrf_token %}
         <div class="row justify-content-center">
             {% for radio in form.trip %}

@@ -2,51 +2,27 @@
 Provides logic and context for the all_trips trip_detail
 """
 
-import json
-from django.shortcuts import reverse
-from django.views.generic import DetailView
-from django.views.generic.edit import FormView
-from django.core.serializers.json import DjangoJSONEncoder
+from django.views.generic import DetailView, ListView
 from bookings.forms import SearchTripsForm
-from .models import Product
+from .models import Product, Destination
 
 
-class TripsView(FormView):
+class DestinationListView(ListView):
     """ A view to show all trips and receive trip search data """
 
-    template_name = "products/trips.html"
-    form_class = SearchTripsForm
+    model = Destination
+    context_object_name = "destinations"
+    template_name = "products/destinations/destination_list.html"
 
     def get_context_data(self, **kwargs):
-        """ Renders the form to the template """
+        """ Add Search Trips form to the context """
 
         context = super().get_context_data(**kwargs)
-        context["products"] = Product.objects.filter(category=3)
+        context['form'] = SearchTripsForm()
         return context
 
-    def form_valid(self, form):
-        """
-        Takes the POST data from the SearchTripsForm and sends to the session
-        """
 
-        date = form.cleaned_data["request_date"]
-        date = json.dumps(date, cls=DjangoJSONEncoder)
-        self.request.session["searched_date"] = date
-        self.request.session["destination_choice"] = form.cleaned_data[
-            "destination"
-        ].id
-        self.request.session["passenger_total"] = form.cleaned_data[
-            "passengers"
-        ]
-        return super(TripsView, self).form_valid(form)
-
-    def get_success_url(self):
-        """ Overides the success url when the view is run """
-
-        return reverse("selection")
-
-
-class TripDetail(DetailView):
+class DestinationDetailView(DetailView):
     """ A view to show individual destination details """
 
     model = Product

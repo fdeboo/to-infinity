@@ -9,11 +9,12 @@ from django.forms import (
     ModelChoiceField,
     NumberInput,
     RadioSelect,
+    modelformset_factory,
 )
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field, ButtonHolder
-from .models import Destination, Booking
+from .models import Destination, Booking, Passenger
 
 
 class DateInput(forms.DateInput):
@@ -79,7 +80,7 @@ class DestinationChoiceField(ModelChoiceField):
         }
 
 
-class TripSelectField(ModelChoiceField):
+class TripChoiceField(ModelChoiceField):
     """
     Overrides the label_from_instance method from Django's ModelChoiceField:
     Overwrites the display tezt
@@ -109,8 +110,8 @@ class SearchTripsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = "POST"
-        self.helper.form_action = "trips"
+        self.helper.form_method = "GET"
+        self.helper.form_action = "confirm_trip"
         self.helper.form_class = "d-flex flex-column flex-lg-row"
         self.helper.field_class = "col-12"
         self.helper.layout = Layout(
@@ -146,14 +147,14 @@ class SearchTripsForm(forms.Form):
 class DateChoiceForm(forms.ModelForm):
     """
     Provides user with a choices of available dates beased on their preference.
-    Uses input type, 'radio' and allows the user to select only one option.
+    Uses input type, 'radio' meaning the user can select only one option.
     By default the closest date to the searched date is selected.
     """
 
     class Meta:
         model = Booking
         fields = ["trip"]
-        field_classes = {"trip": TripSelectField}
+        field_classes = {"trip": TripChoiceField}
         widgets = {"trip": RadioSelect()}
 
     def __init__(self, *args, **kwargs):
@@ -161,3 +162,18 @@ class DateChoiceForm(forms.ModelForm):
 
         super(DateChoiceForm, self).__init__(*args, **kwargs)
         self.fields["trip"].queryset = trip_dates
+
+
+class PassengerForm(forms.ModelForm):
+    """ Customises validation for Passenger form """
+
+    class Meta:
+        model = Passenger
+        fields = ('first_name', 'last_name', 'email', 'trip_addons')
+
+
+PassengerFormSet = modelformset_factory(
+    Passenger,
+    form=PassengerForm,
+    extra=4,
+)

@@ -71,6 +71,7 @@ class Destination(Product):
 
     max_passengers = models.IntegerField(null=True, blank=True)
     duration = models.CharField(max_length=20, blank=True)
+    addons = models.ManyToManyField(AddOn)
     min_medical_threshold = models.IntegerField(
         default=0, null=False, blank=False
     )

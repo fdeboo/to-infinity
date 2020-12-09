@@ -15,25 +15,25 @@
 
 {% block content %}
 <section class="container-fluid">
-    
-    
+
     <div class="row">
-        {%for product in products %}
+        {%for destination in destinations %}
         <div class="col-12 col-lg-6 image-container" id="trip{{ forloop.counter }}">
-            <img class="" src="{{ product.image.url }}" alt="{{ product.name }}" />
-            <a href="{% url 'trip_detail' product.id %}">
-                <p>{{ product.name }}</p>
+            <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
+            <a href="{% url 'trip_detail' destination.id %}">
+                <p>{{ destination.name }}</p>
             </a>
         </div>
         {% endfor %}
     </div>
-    
+
     <div class="row search-trips-form justify-content-center">
         <button type="button" class="toggle-form"><i class="far fa-calendar-alt fa-2x"></i></button>
         <div class="col-md-10 col-xl-9 py-4">
-            {% crispy form %}   
+            {% crispy form %}
         </div>
     </div>
+
 </section>
 {% endblock content %}
 

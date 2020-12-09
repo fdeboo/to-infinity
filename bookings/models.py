@@ -4,7 +4,7 @@ Models include Trip, Passenger and Booking Line Item
 import uuid
 from django.db import models
 from django.db.models import Count, Sum
-from products.models import Destination, Product
+from products.models import Destination, Product, AddOn, Insurance
 from profiles.models import UserProfile
 
 
@@ -122,6 +122,8 @@ class Passenger(models.Model):
     last_name = models.CharField(max_length=20, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     is_leaduser = models.BooleanField(null=False, blank=False, default=False)
+    trip_addons = models.ManyToManyField(AddOn)
+    trip_insurance = models.ManyToManyField(Insurance)
     """"
     medical_assessment = models.OneToOneField(
         "Medical",
