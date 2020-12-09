@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path(
-        'confirm/',
+        'confirm/<>',
         views.ConfirmTripView.as_view(),
         name="confirm_trip"),
 
