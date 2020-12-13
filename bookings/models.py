@@ -58,7 +58,7 @@ class Booking(models.Model):
         ('COMPLETE', 'Complete'),
     ]
     booking_ref = models.CharField(
-        primary_key=True, max_length=32, null=False, editable=False
+        max_length=32, null=False, editable=False
     )
     trip = models.ForeignKey(
         Trip, on_delete=models.SET_NULL, null=True, blank=False
@@ -122,7 +122,7 @@ class Passenger(models.Model):
     last_name = models.CharField(max_length=20, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     is_leaduser = models.BooleanField(null=False, blank=False, default=False)
-    trip_addons = models.ManyToManyField(AddOn)
+    trip_addons = models.ManyToManyField(AddOn, blank=True)
     trip_insurance = models.ManyToManyField(Insurance)
     """"
     medical_assessment = models.OneToOneField(

@@ -113,14 +113,11 @@ WSGI_APPLICATION = 'to_infinity.wsgi.application'
     }
 else:"""
 DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "2infinity",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get('POSTGRES_PASSWORD', ''),
-        "HOST": "localhost",
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 # Password validation

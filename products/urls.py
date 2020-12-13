@@ -1,17 +1,20 @@
 """ Defines the urls for bookings app including trips """
 
 from django.urls import path
-from products.views import DestinationListView, DestinationDetailView
+from products.views import (
+    DestinationListView,
+    DestinationDetailView,
+)
 
 
 urlpatterns = [
     path(
         'destinations/',
         DestinationListView.as_view(),
-        name='trips'),
+        name='destinations'),
 
     path(
         "destinations/<int:pk>/",
         DestinationDetailView.as_view(),
-        name="trip_detail"),
+        name="destination_detail"),
 ]

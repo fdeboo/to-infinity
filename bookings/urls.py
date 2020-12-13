@@ -12,7 +12,7 @@ urlpatterns = [
 
     path(
         '<pk>/passengers/add',
-        views.CreatePassengersView.as_view(),
+        views.InputPassengersView.as_view(),
         name="create_passengers"),
 
     path(

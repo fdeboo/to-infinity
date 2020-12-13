@@ -9,7 +9,8 @@ from django.forms import (
     ModelChoiceField,
     NumberInput,
     RadioSelect,
-    modelformset_factory,
+    HiddenInput,
+    ModelForm
 )
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
@@ -110,8 +111,8 @@ class SearchTripsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = "GET"
-        self.helper.form_action = "confirm_trip"
+        self.helper.form_method = "POST"
+        self.helper.form_action = "destinations"
         self.helper.form_class = "d-flex flex-column flex-lg-row"
         self.helper.field_class = "col-12"
         self.helper.layout = Layout(
@@ -144,7 +145,7 @@ class SearchTripsForm(forms.Form):
         )
 
 
-class DateChoiceForm(forms.ModelForm):
+class DateChoiceForm(ModelForm):
     """
     Provides user with a choices of available dates beased on their preference.
     Uses input type, 'radio' meaning the user can select only one option.
@@ -164,16 +165,41 @@ class DateChoiceForm(forms.ModelForm):
         self.fields["trip"].queryset = trip_dates
 
 
-class PassengerForm(forms.ModelForm):
+class PassengerForm(ModelForm):
+    """ Customises validation for Passenger form """
+    class Meta:
+        model = Passenger
+        fields = ('first_name', 'last_name', 'email')
+
+
+class InputPassengersForm(ModelForm):
     """ Customises validation for Passenger form """
 
     class Meta:
-        model = Passenger
-        fields = ('first_name', 'last_name', 'email', 'trip_addons')
+        model = Booking
+        fields = ('trip',)
+        widgets = {'trip': forms.HiddenInput()}
 
 
-PassengerFormSet = modelformset_factory(
-    Passenger,
-    form=PassengerForm,
-    extra=4,
-)
+
+class PassengerFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.helper.layout = Layout(
+            Field(
+                "first_name",
+                wrapper_class="mb-0 d-flex align-items-center",
+                css_class="form-control mb-3 mb-lg-0",
+            ),
+            Field(
+                "last_name",
+                wrapper_class="mb-0 d-flex align-items-center",
+                css_class="form-control mb-3 mb-lg-0",
+            ),
+            Field(
+                "email",
+                wrapper_class="mb-0 d-flex align-items-center",
+                css_class="form-control mb-3 mb-lg-0",
+            )
+        )
