@@ -55,6 +55,7 @@ class InsuranceAdmin(ProductAdmin):
 
 class DestinationAdmin(ProductAdmin):
     list_display = (
+        'product_id',
         'name',
         'max_passengers',
         'duration',

@@ -454,6 +454,8 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 
 + [HTML5 Date Input With Django Forms](https://www.youtube.com/watch?v=I2-JYxnSiB0) by Pretty Printed
 
++ [Inline Formsets](https://dev.to/zxenia/django-inline-formsets-with-class-based-views-and-crispy-forms-14o6)
+
 + Stack overflow 
 [For forms](https://stackoverflow.com/questions/34781524/django-populate-a-form-choicefield-field-from-a-queryset-and-relate-the-choice-b)
 

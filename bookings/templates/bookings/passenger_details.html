@@ -8,24 +8,9 @@
 
 
 {% block content %}
-<section class="container-fluid">
-
-
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
-
-                <h2>Passengers</h2>
-
-
-                    {% crispy formset %}
-                    
-                <input class="btn btn-outline" type="submit" value="Save">
-            </form>
-        </div>
-    </div>
-
-</section>
-
+    <section class="container-fluid">
+        {% crispy form %}
+    </section>
 {% endblock content %}
 
 

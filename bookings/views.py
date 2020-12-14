@@ -24,7 +24,6 @@ from .forms import (
     DateChoiceForm,
     PassengerForm,
     InputPassengersForm,
-    PassengerFormSetHelper
 )
 
 
@@ -42,7 +41,7 @@ class ConfirmTripView(FormView):
     def __init__(self):
         self.searched_date = None
         self.passengers = None
-        self.destination_id = None
+        self.destination_pk = None
         self.gte_dates = None
         self.lt_dates = None
 
@@ -101,14 +100,15 @@ class ConfirmTripView(FormView):
         date = self.request.session["request_date"]
         self.searched_date = json.loads(date)
         self.passengers = self.request.session["passenger_total"]
-        self.destination_id = self.request.session["destination_choice"]
+        print(self.request.session["destination_choice"])
+        self.destination_pk = self.request.session["destination_choice"]
 
         # Return querysets for dates before/beyond searched_date respectively:
         self.gte_dates = self.get_trips_matched_or_post_date(
-            self.searched_date, self.destination_id, self.passengers
+            self.searched_date, self.destination_pk, self.passengers
         )
         self.lt_dates = self.get_trips_preceding_date(
-            self.searched_date, self.destination_id, self.passengers
+            self.searched_date, self.destination_pk, self.passengers
         )
 
         naive_searched_date = datetime.strptime(self.searched_date, "%Y-%m-%d")
@@ -159,7 +159,7 @@ class ConfirmTripView(FormView):
     def get_context_data(self, **kwargs):
 
         context = super(ConfirmTripView, self).get_context_data(**kwargs)
-        destination = Destination.objects.filter(id=self.destination_id)
+        destination = Destination.objects.filter(pk=self.destination_pk)
         context["passengers"] = self.passengers
         context["destination_obj"] = destination
         return context
@@ -181,6 +181,7 @@ class ConfirmTripView(FormView):
             quantity=self.request.session["passenger_total"],
         )
         booking_line_item.save()
+
         return redirect("create_passengers", booking.id)
 
 
@@ -210,15 +211,14 @@ class InputPassengersView(UpdateView):
 
         )
         data = super(InputPassengersView, self).get_context_data(**kwargs)
-        helper = PassengerFormSetHelper()
         profile = UserProfile.objects.get(user=self.request.user)
         if self.request.POST:
-            data['formset'] = PassengerFormSet(
+            data['passenger_formset'] = PassengerFormSet(
                 self.request.POST,
                 instance=self.object
             )
         else:
-            data['formset'] = PassengerFormSet(
+            data['passenger_formset'] = PassengerFormSet(
                 initial=[{
                     "first_name": profile.user.first_name,
                     "last_name": profile.user.last_name,
@@ -226,25 +226,34 @@ class InputPassengersView(UpdateView):
                 }],
                 instance=self.object
             )
-            data['helper'] = helper
         return data
 
     def form_valid(self, form):
+
         context = self.get_context_data()
-        formset = context['formset']
+        formset = context['passenger_formset']
         instances = formset.save(commit=False)
         for instance in instances:
-            instance.save()
-            formset.save_m2m()
 
-            messages.add_message(
-                self.request, messages.SUCCESS, "Changes were saved."
-            )
+            instance.save()
+        formset.save_m2m()
+
+
+        messages.add_message(
+            self.request, messages.SUCCESS, "Changes were saved."
+        )
+        return super(InputPassengersView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse("complete_booking")
+        return reverse("complete_booking",  formset.id)
+
+    def form_invalid(self, form):
+        print('form invalid:failed')
+        return 
+
 
 
 class CompleteBookingView(View):
     template = "checkout.html"
+
     print("MADE IT")

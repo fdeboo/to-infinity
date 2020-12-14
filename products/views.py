@@ -34,7 +34,7 @@ class DestinationListView(ListView):
             date = json.dumps(date, cls=DjangoJSONEncoder)
             self.request.session['request_date'] = date
             self.request.session["destination_choice"] = form.cleaned_data[
-                "destination"].id
+                "destination"].pk
             self.request.session["passenger_total"] = form.cleaned_data[
                 "passengers"]
 

@@ -14,7 +14,7 @@ urlpatterns = [
         name='destinations'),
 
     path(
-        "destinations/<int:pk>/",
+        "destinations/<pk>/",
         DestinationDetailView.as_view(),
         name="destination_detail"),
 ]

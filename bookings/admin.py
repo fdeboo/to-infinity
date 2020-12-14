@@ -41,15 +41,24 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 class TripAdmin(admin.ModelAdmin):
-    list_display = (
-        'date',
-        'destination',
-        'seats_available',
+    readonly_fields = (
+        "trip_ref",
     )
 
-    ordering = (
-        'date',
+    list_display = (
+        "trip_ref",
+        "date_display",
+        "destination",
+        "seats_available",
     )
+
+    ordering = ("date",)
+
+    def date_display(self, obj):
+        return obj.date.strftime("%Y %b %d %H:%M:%S")
+
+    date_display.admin_order_field = "date"
+    date_display.short_description = "Precise Time"
 
 
 admin.site.register(Booking, BookingAdmin)

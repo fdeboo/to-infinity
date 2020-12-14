@@ -20,7 +20,7 @@
         {%for destination in destinations %}
         <div class="col-12 col-lg-6 image-container" id="trip{{ forloop.counter }}">
             <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
-            <a href="{% url 'destination_detail' destination.id %}">
+            <a href="{% url 'destination_detail' destination.pk %}">
                 <p>{{ destination.name }}</p>
             </a>
         </div>

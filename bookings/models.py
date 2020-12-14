@@ -25,8 +25,11 @@ class Trip(models.Model):
     seats_available = models.IntegerField(
         null=False, blank=False, editable=False
     )
+    trip_ref = models.CharField(
+        max_length=32, null=True, editable=True, blank=True
+    )
 
-    def save(self, *args, **kwargs):
+    def update_seats_available(self):
         """
         Override the original save method and update the number of
         seats available
@@ -38,6 +41,20 @@ class Trip(models.Model):
             ["num_passengers"] or 0
         )
         self.seats_available = self.destination.max_passengers - reservations
+        self.save()
+
+    def save(self, *args, **kwargs):
+        """
+        Override the original save method to set the trip reference
+        if it hasn't been set already
+        """
+
+        if not self.trip_ref:
+            date = (self.date).strftime("%m%d-%y")
+            self.trip_ref = self.destination.pk + "-" + date
+
+        if not self.seats_available:
+            self.seats_available = self.destination.max_passengers
         super().save(*args, **kwargs)
 
     def __str__(self):

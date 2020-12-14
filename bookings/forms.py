@@ -10,11 +10,21 @@ from django.forms import (
     NumberInput,
     RadioSelect,
     HiddenInput,
-    ModelForm
+    ModelForm,
+    CheckboxSelectMultiple
 )
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, ButtonHolder
+from crispy_forms.layout import (
+    Layout,
+    Submit,
+    Field,
+    ButtonHolder,
+    Fieldset,
+    HTML,
+    Div,
+)
+from .custom_layout_object import *
 from .models import Destination, Booking, Passenger
 
 
@@ -169,7 +179,8 @@ class PassengerForm(ModelForm):
     """ Customises validation for Passenger form """
     class Meta:
         model = Passenger
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name', 'email', 'trip_addons')
+        widgets = {'trip_addons': CheckboxSelectMultiple()}
 
 
 class InputPassengersForm(ModelForm):
@@ -178,28 +189,22 @@ class InputPassengersForm(ModelForm):
     class Meta:
         model = Booking
         fields = ('trip',)
-        widgets = {'trip': forms.HiddenInput()}
+        widgets = {'trip': HiddenInput()}
 
-
-
-class PassengerFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.form_method = 'post'
+        super(InputPassengersForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.helper.form_class = 'form-vertical'
+        self.helper.label_class = 'col-md-3 create-label'
+        self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(
-            Field(
-                "first_name",
-                wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
-            ),
-            Field(
-                "last_name",
-                wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
-            ),
-            Field(
-                "email",
-                wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
+            Div(
+                Field("trip"),
+                Fieldset('Add passengers', Formset('passenger_formset')),
+                HTML("<hr>"),
+                ButtonHolder(Submit(
+                    'submit', 'Save', css_class="btn btn-outline"
+                    )),
+                )
             )
-        )
