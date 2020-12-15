@@ -24,6 +24,7 @@ from .forms import (
     DateChoiceForm,
     PassengerForm,
     InputPassengersForm,
+    RequiredFormSet,
 )
 
 
@@ -196,19 +197,22 @@ class InputPassengersView(UpdateView):
     form_class = InputPassengersForm
     template_name = "bookings/passenger_details.html"
 
+    def __init__(self):
+        self.booking = None
+
     def get_context_data(self, **kwargs):
-        passengers = self.request.session["passenger_total"]
+        forms_total = self.request.session["passenger_total"]
         PassengerFormSet = inlineformset_factory(
             Booking,
             Passenger,
             form=PassengerForm,
-            extra=passengers,
-            max_num=passengers,
-            min_num=passengers,
+            formset=RequiredFormSet,
+            extra=forms_total,
+            max_num=forms_total,
+            min_num=forms_total,
             validate_max=True,
             validate_min=True,
             can_delete=False
-
         )
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
@@ -232,28 +236,31 @@ class InputPassengersView(UpdateView):
 
         context = self.get_context_data()
         formset = context['passenger_formset']
+        booking = context['booking']
         instances = formset.save(commit=False)
         for instance in instances:
-
             instance.save()
         formset.save_m2m()
-
 
         messages.add_message(
             self.request, messages.SUCCESS, "Changes were saved."
         )
-        return super(InputPassengersView, self).form_valid(form)
+        return redirect("complete_booking", booking.id)
 
+    """
     def get_success_url(self):
-        return reverse("complete_booking",  formset.id)
+        return reverse(complete_booking",  self.booking.id)
+        """
 
     def form_invalid(self, form):
         print('form invalid:failed')
-        return 
-
 
 
 class CompleteBookingView(View):
     template = "checkout.html"
+
+    def get(self):
+        context = {}
+        return render(request, template, context)
 
     print("MADE IT")

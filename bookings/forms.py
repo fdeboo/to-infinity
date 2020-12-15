@@ -2,15 +2,18 @@
 Defines the form objects to be used for the booking aspects of the app
 Includes a form to search available dates
 """
-from datetime import date
+from datetime import date, datetime
+from django.contrib import messages
 from django import forms
-
 from django.forms import (
     ModelChoiceField,
     NumberInput,
     RadioSelect,
+    TextInput,
+    EmailInput,
     HiddenInput,
     ModelForm,
+    BaseInlineFormSet,
     CheckboxSelectMultiple
 )
 from django.forms.widgets import Select
@@ -24,7 +27,7 @@ from crispy_forms.layout import (
     HTML,
     Div,
 )
-from .custom_layout_object import *
+from .custom_layout_object import Formset
 from .models import Destination, Booking, Passenger
 
 
@@ -154,6 +157,36 @@ class SearchTripsForm(forms.Form):
             ),
         )
 
+    def clean(self):
+        """ Form validation in case bad data passes validation in browser """
+
+        # Data from the form is fetched using super function
+        super(SearchTripsForm, self).clean()
+
+        # Extract the individual fields from the data
+        destination = self.cleaned_data.get('destination')
+        request_date = self.cleaned_data.get('request_date')
+        passengers = self.cleaned_data.get('passengers')
+
+        if not isinstance(destination, Destination):
+            self._errors['destimation'] = self.error_class([
+                'Please choose an option from the list'])
+
+        elif passengers > destination.max_passengers:
+            self._errors['passengers'] = self.error_class([
+                'Sorry, this exceeds the maximum for selected trip'])
+
+        elif passengers < 0:
+            self._errors['passengers'] = self.error_class([
+                'Please choose at least one passenger'])
+
+        if request_date < date.today():
+            self._errors['request_date'] = self.error_class([
+                'Searched date should not be in the past'])
+
+        # return any errors if found
+        return self.cleaned_data
+
 
 class DateChoiceForm(ModelForm):
     """
@@ -180,7 +213,26 @@ class PassengerForm(ModelForm):
     class Meta:
         model = Passenger
         fields = ('first_name', 'last_name', 'email', 'trip_addons')
-        widgets = {'trip_addons': CheckboxSelectMultiple()}
+        widgets = {
+            'first_name': TextInput(attrs={
+                'class': 'form-control', 'required': 'required'
+            }),
+            'last_name': TextInput(attrs={
+                'class': 'form-control', 'required': 'required'
+            }),
+            'email': EmailInput(attrs={
+                'class': 'form-control', 'required': 'required'
+            }),
+            'trip_addons': CheckboxSelectMultiple(),
+        }
+
+
+class RequiredFormSet(BaseInlineFormSet):
+    """ Ensures all forms in formset are completed """
+    def __init__(self, *args, **kwargs):
+        super(RequiredFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
 
 
 class InputPassengersForm(ModelForm):

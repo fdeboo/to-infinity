@@ -3,6 +3,8 @@ Provides logic and context for the all_trips trip_detail
 """
 
 import json
+from datetime import datetime
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
@@ -39,6 +41,7 @@ class DestinationListView(ListView):
                 "passengers"]
 
             return HttpResponseRedirect(reverse("confirm_trip"))
+        return render(request, self.template_name, {'form': form})
 
 
 class DestinationDetailView(DetailView):

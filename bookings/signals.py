@@ -22,7 +22,7 @@ def update_seats_available_on_save(sender, instance, created, **kwargs):
 
 
 @receiver(post_delete, sender=Booking)
-def update_seats_available_on_save(sender, instance, created, **kwargs):
+def remove_seats_reserved_on_save(sender, instance, created, **kwargs):
     """
     Update number of passengers on passengers update/create
     """
