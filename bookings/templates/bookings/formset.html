@@ -1,16 +1,12 @@
-<table>
-    {{ formset.management_form|crispy }}
+{% load static %}
 
-    {% for form in formset.forms %}
-    <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ formset.prefix }}">
-        {% for field in form.visible_fields %}
-        <td>
-            {{ field.errors.as_ul }}
-            {{ field|as_crispy_field }}
-        </td>
+<div class="row justify-content-center">
+    <div class="col-7">
+        {{ formset.management_form | crispy }}
+        {% for form in formset.forms %}
+            <h3>Passenger {{forloop.counter}}</h3>
+            {% crispy form %}
         {% endfor %}
-    </tr>
-    {% endfor %}
-
-</table>
+    </div>
 <br>
+</div>

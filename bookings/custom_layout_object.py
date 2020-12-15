@@ -8,15 +8,19 @@ from django.template.loader import render_to_string
 
 class Formset(LayoutObject):
     """
-    Create a new fieldtype that renders a formset as though it were just a field
+    Create a new fieldtype that renders a formset as though it were a field
     """
 
     template = 'bookings/formset.html'
 
     def __init__(self, formset_name_in_context, template=None):
         self.formset_name_in_context = formset_name_in_context
-        self.fields = []  # Fields property required by crispy_forms/layout.py
-        if template:  # Creates an instance level variable from variable 'template'
+
+        # Fields property required by crispy_forms/layout.py
+        self.fields = []
+
+        # Creates an instance level variable from the variable 'template'
+        if template:
             self.template = template
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):

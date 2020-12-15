@@ -4,7 +4,7 @@ Views in this module provide logic for templates that guide the booking process
 
 import json
 from datetime import datetime
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.views import View
 from django.views.generic import FormView, UpdateView

@@ -2,15 +2,13 @@
 Defines the form objects to be used for the booking aspects of the app
 Includes a form to search available dates
 """
-from datetime import date, datetime
-from django.contrib import messages
+import re
+from datetime import date
 from django import forms
 from django.forms import (
     ModelChoiceField,
     NumberInput,
     RadioSelect,
-    TextInput,
-    EmailInput,
     HiddenInput,
     ModelForm,
     BaseInlineFormSet,
@@ -26,7 +24,9 @@ from crispy_forms.layout import (
     Fieldset,
     HTML,
     Div,
+    Row,
 )
+
 from .custom_layout_object import Formset
 from .models import Destination, Booking, Passenger
 
@@ -214,17 +214,25 @@ class PassengerForm(ModelForm):
         model = Passenger
         fields = ('first_name', 'last_name', 'email', 'trip_addons')
         widgets = {
-            'first_name': TextInput(attrs={
-                'class': 'form-control', 'required': 'required'
-            }),
-            'last_name': TextInput(attrs={
-                'class': 'form-control', 'required': 'required'
-            }),
-            'email': EmailInput(attrs={
-                'class': 'form-control', 'required': 'required'
-            }),
             'trip_addons': CheckboxSelectMultiple(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        formtag_prefix = re.sub('-[0-9]+$', '', kwargs.get('prefix', ''))
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Div(
+                Field('first_name'),
+                Field('last_name'),
+                Field('email'),
+                css_class='formset_row-{}'.format(formtag_prefix)
+            ),
+            HTML("<hr>"),
+        )
 
 
 class RequiredFormSet(BaseInlineFormSet):
@@ -247,7 +255,7 @@ class InputPassengersForm(ModelForm):
         super(InputPassengersForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.form_class = 'form-vertical'
+        self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3 create-label'
         self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(
