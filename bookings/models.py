@@ -35,26 +35,22 @@ class Trip(models.Model):
         seats available
         """
         reservations = (
-            Booking.objects.aggregate(
-                num_passengers=Count("passengers")
-            )
-            ["num_passengers"] or 0
-        )
-        self.seats_available = self.destination.max_passengers - reservations
-        self.save()
+            self.bookings.aggregate(num_passengers=Count("passengers"))
+            ["num_passengers"])
+        self.save(reservations=reservations)
 
     def save(self, *args, **kwargs):
         """
-        Override the original save method to set the trip reference
-        if it hasn't been set already
+        Override the original save method to set the trip reference and
+        seats_available if not set already
         """
 
         if not self.trip_ref:
             date = (self.date).strftime("%m%d-%y")
             self.trip_ref = self.destination.pk + "-" + date
 
-        if not self.seats_available:
-            self.seats_available = self.destination.max_passengers
+        reservations = kwargs.pop('reservations', 0)
+        self.seats_available = self.destination.max_passengers - reservations
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -78,7 +74,11 @@ class Booking(models.Model):
         max_length=32, null=False, editable=False
     )
     trip = models.ForeignKey(
-        Trip, on_delete=models.SET_NULL, null=True, blank=False
+        Trip,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+        related_name="bookings"
     )
     lead_user = models.ForeignKey(
         UserProfile,

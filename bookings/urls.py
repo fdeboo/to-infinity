@@ -6,12 +6,12 @@ from . import views
 
 urlpatterns = [
     path(
-        'confirm/<>',
+        'confirm/',
         views.ConfirmTripView.as_view(),
         name="confirm_trip"),
 
     path(
-        '<pk>/passengers/add',
+        '<pk>/passengers/add/',
         views.InputPassengersView.as_view(),
         name="create_passengers"),
 

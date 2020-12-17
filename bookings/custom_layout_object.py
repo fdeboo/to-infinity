@@ -1,5 +1,6 @@
 """
-Credit to https://stackoverflow.com/questions/15157262/django-crispy-forms-nesting-a-formset-within-a-form/22053952#22053952
+Credit:
+https://stackoverflow.com/questions/15157262/django-crispy-forms-nesting-a-formset-within-a-form/22053952#22053952
 """
 
 from crispy_forms.layout import LayoutObject, TEMPLATE_PACK

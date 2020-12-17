@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_nav %}
+{% include 'includes/light_nav.html' %}
+{% endblock page_nav %}
+
+{% block content %}
+<section class="container-fluid">
+<div class="row justify-content-center mt-5">
+<div class="col-10 text-center">
+    <h2>
+        Dammit! There are currently no {{ destination.name }} trips with
+        availability for {{ passengers }}
+        {% if passengers > 1 %} passengers. {% else %} passenger.{% endif %}
+    </h2>
+</div>
+</div>
+</section>
+
+{% endblock content %}

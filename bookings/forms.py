@@ -24,7 +24,6 @@ from crispy_forms.layout import (
     Fieldset,
     HTML,
     Div,
-    Row,
 )
 
 from .custom_layout_object import Formset
@@ -212,9 +211,15 @@ class PassengerForm(ModelForm):
     """ Customises validation for Passenger form """
     class Meta:
         model = Passenger
-        fields = ('first_name', 'last_name', 'email', 'trip_addons')
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'trip_addons',
+        )
         widgets = {
             'trip_addons': CheckboxSelectMultiple(),
+            'is_leaduser': HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -229,16 +234,31 @@ class PassengerForm(ModelForm):
                 Field('first_name'),
                 Field('last_name'),
                 Field('email'),
+                Field('trip_addons'),
                 css_class='formset_row-{}'.format(formtag_prefix)
             ),
             HTML("<hr>"),
         )
 
+    """
+    def clean(self):
+        Form validation on fields in each form
 
-class RequiredFormSet(BaseInlineFormSet):
+        # Data from the form is fetched using super function
+        super(PassengerForm, self).clean()
+
+        first_name = self.cleaned_data.get('first_name')
+        last_name = self.cleaned_data.get('last_name')
+        email = self.cleaned_data.get('email')
+        addon = self.cleaned_data.get('trip_addon')
+    """
+
+
+class RequiredPassengerFormSet(BaseInlineFormSet):
     """ Ensures all forms in formset are completed """
+
     def __init__(self, *args, **kwargs):
-        super(RequiredFormSet, self).__init__(*args, **kwargs)
+        super(RequiredPassengerFormSet, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = False
 
@@ -255,16 +275,21 @@ class InputPassengersForm(ModelForm):
         super(InputPassengersForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3 create-label'
         self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(
             Div(
                 Field("trip"),
-                Fieldset('Add passengers', Formset('passenger_formset')),
-                HTML("<hr>"),
+                Div(
+                    Fieldset(
+                        'Add passengers',
+                        Formset('passenger_formset'),
+                        css_class="border col-12"
+                    ), css_class="col-8"
+                ),
                 ButtonHolder(Submit(
                     'submit', 'Save', css_class="btn btn-outline"
-                    )),
-                )
+                ), css_class="col-12"),
+                css_class="row border justify-items-center"
             )
+        )

@@ -4,9 +4,8 @@ Views in this module provide logic for templates that guide the booking process
 
 import json
 from datetime import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
-from django.views import View
 from django.views.generic import FormView, UpdateView
 from django.forms import inlineformset_factory
 from django.views.decorators.cache import never_cache
@@ -24,7 +23,7 @@ from .forms import (
     DateChoiceForm,
     PassengerForm,
     InputPassengersForm,
-    RequiredFormSet,
+    RequiredPassengerFormSet,
 )
 
 
@@ -93,16 +92,33 @@ class ConfirmTripView(FormView):
         trips = trips.order_by("date")
         return trips
 
-    def get_initial(self):
-        """Retrieves values from session and formulates variables
-        to be used in the form"""
-
+    def get(self, request, *args, **kwargs):
         # Retrieve values from the session
         date = self.request.session["request_date"]
         self.searched_date = json.loads(date)
         self.passengers = self.request.session["passenger_total"]
-        print(self.request.session["destination_choice"])
         self.destination_pk = self.request.session["destination_choice"]
+
+        # check if any trips with 'seats_available' = the requested number of passengers
+        available_trips = self.get_available_trips(
+            self.destination_pk,
+            self.passengers
+        )
+        if not available_trips:
+            template_name = "bookings/unavailable.html"
+            destination = Destination.objects.get(pk=self.destination_pk)
+            context = {
+                "destination": destination,
+                "passengers": self.passengers,
+            }
+            return render(request, template_name, context)
+        return super().get(request, *args, **kwargs)
+
+    def get_initial(self):
+        """ 
+        Finds the closest available date relative to searched date to use
+        as intial selected value in the form
+        """
 
         # Return querysets for dates before/beyond searched_date respectively:
         self.gte_dates = self.get_trips_matched_or_post_date(
@@ -142,6 +158,7 @@ class ConfirmTripView(FormView):
                 "Sorry, there are no dates currently available for the"
                 "selected destination.",
             )
+            return redirect("home.home")
 
         # Get initial valuees for the form
         initial = super(ConfirmTripView, self).get_initial()
@@ -155,6 +172,7 @@ class ConfirmTripView(FormView):
 
         trips = self.get_trips_queryset(self.gte_dates, self.lt_dates)
         kwargs.update({"trips": trips})
+
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -182,7 +200,6 @@ class ConfirmTripView(FormView):
             quantity=self.request.session["passenger_total"],
         )
         booking_line_item.save()
-
         return redirect("create_passengers", booking.id)
 
 
@@ -197,19 +214,16 @@ class InputPassengersView(UpdateView):
     form_class = InputPassengersForm
     template_name = "bookings/passenger_details.html"
 
-    def __init__(self):
-        self.booking = None
-
     def get_context_data(self, **kwargs):
-        forms_total = self.request.session["passenger_total"]
+        passenger_total = self.request.session["passenger_total"]
         PassengerFormSet = inlineformset_factory(
             Booking,
             Passenger,
             form=PassengerForm,
-            formset=RequiredFormSet,
-            extra=forms_total,
-            max_num=forms_total,
-            min_num=forms_total,
+            formset=RequiredPassengerFormSet,
+            extra=passenger_total,
+            max_num=passenger_total,
+            min_num=passenger_total,
             validate_max=True,
             validate_min=True,
             can_delete=False
@@ -233,34 +247,30 @@ class InputPassengersView(UpdateView):
         return data
 
     def form_valid(self, form):
+        """ Runs when the form is valid """
 
         context = self.get_context_data()
         formset = context['passenger_formset']
-        booking = context['booking']
-        instances = formset.save(commit=False)
-        for instance in instances:
-            instance.save()
-        formset.save_m2m()
-
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            return super(InputPassengersView, self).form_valid(form)
+        else:
+            return super(InputPassengersView, self).form_invalid(form)
         messages.add_message(
             self.request, messages.SUCCESS, "Changes were saved."
         )
-        return redirect("complete_booking", booking.id)
 
-    """
     def get_success_url(self):
-        return reverse(complete_booking",  self.booking.id)
-        """
+        return reverse("complete_booking", args=(self.object.id,))
 
     def form_invalid(self, form):
         print('form invalid:failed')
 
 
-class CompleteBookingView(View):
-    template = "checkout.html"
-
-    def get(self):
-        context = {}
-        return render(request, template, context)
+class CompleteBookingView(UpdateView):
+    """ A view to complete the booking and fill out payment information """
+    template_name = "checkout.html"
 
     print("MADE IT")
