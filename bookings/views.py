@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.views.generic import FormView, UpdateView
 from django.forms import inlineformset_factory
 from django.views.decorators.cache import never_cache
+from django.http import HttpResponseRedirect
+from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import (
@@ -20,11 +22,33 @@ from .models import (
     UserProfile
 )
 from .forms import (
+    SearchTripsForm,
     DateChoiceForm,
     PassengerForm,
     InputPassengersForm,
     RequiredPassengerFormSet,
 )
+
+
+class SearchTripsView(FormView):
+    """
+    Renders an initial search form for users to search availabiltiy for
+    trips to a destination
+    """
+
+    template_name = "bookings/search_trips.html"
+    form_class = SearchTripsForm
+
+    def form_valid(self, form):
+        date = form.cleaned_data["request_date"]
+        date = json.dumps(date, cls=DjangoJSONEncoder)
+        self.request.session['request_date'] = date
+        self.request.session["destination_choice"] = form.cleaned_data[
+                "destination"].pk
+        self.request.session["passenger_total"] = form.cleaned_data[
+                "passengers"]
+
+        return HttpResponseRedirect(reverse("confirm_trip"))
 
 
 @method_decorator(never_cache, name="dispatch")
@@ -115,10 +139,16 @@ class ConfirmTripView(FormView):
         return super().get(request, *args, **kwargs)
 
     def get_initial(self):
-        """ 
+        """
         Finds the closest available date relative to searched date to use
         as intial selected value in the form
         """
+
+        # Retrieve values from the session
+        date = self.request.session["request_date"]
+        self.searched_date = json.loads(date)
+        self.passengers = self.request.session["passenger_total"]
+        self.destination_pk = self.request.session["destination_choice"]
 
         # Return querysets for dates before/beyond searched_date respectively:
         self.gte_dates = self.get_trips_matched_or_post_date(

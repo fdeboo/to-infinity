@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_nav %}
+    {% include 'includes/light_nav.html' %}
+{% endblock page_nav %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock content %}
+
+
+
+{% block postlosdjs %}
+    <script src="{% static 'js/scripts.js' %}" crossorigin="anonymous"></script>
+{% endblock postlosdjs %}

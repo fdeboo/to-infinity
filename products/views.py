@@ -20,14 +20,14 @@ class DestinationListView(ListView):
     context_object_name = 'destinations'
 
     def get_context_data(self, **kwargs):
-        """ Add Search Trips form to the context """
+        """ Add SearchTripsForm to the context """
 
         context = super(DestinationListView, self).get_context_data(**kwargs)
         context['form'] = SearchTripsForm()
         return context
 
     def post(self, request):
-        """ Process the SearchTripForm and save input values to session """
+        """ Process the SearchTripForm and saves input values to session """
 
         form = SearchTripsForm(self.request.POST)
         if form.is_valid():

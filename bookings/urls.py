@@ -6,7 +6,12 @@ from . import views
 
 urlpatterns = [
     path(
-        'confirm/',
+        'search/',
+        views.SearchTripsView.as_view(),
+        name="search_trip"),
+
+    path(
+        'search/confirm/',
         views.ConfirmTripView.as_view(),
         name="confirm_trip"),
 

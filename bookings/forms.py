@@ -208,7 +208,11 @@ class DateChoiceForm(ModelForm):
 
 
 class PassengerForm(ModelForm):
-    """ Customises validation for Passenger form """
+    """
+    Defines the fields to be used in each Passenger form that will make up
+    the PassengersFormSet 
+    """
+
     class Meta:
         model = Passenger
         fields = (
@@ -255,7 +259,7 @@ class PassengerForm(ModelForm):
 
 
 class RequiredPassengerFormSet(BaseInlineFormSet):
-    """ Ensures all forms in formset are completed """
+    """ Validates that all forms in the formset are completed """
 
     def __init__(self, *args, **kwargs):
         super(RequiredPassengerFormSet, self).__init__(*args, **kwargs)
