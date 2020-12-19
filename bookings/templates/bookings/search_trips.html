@@ -6,11 +6,18 @@
 {% endblock page_nav %}
 
 {% block content %}
-    {% crispy form %}
+<section>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-6" id="focus-search">
+            <h2>Start your booking:</h2>
+            {% crispy form %}
+        </div>
+    </div>
+</section>
 {% endblock content %}
 
 
 
-{% block postlosdjs %}
+{% block postloadjs %}
     <script src="{% static 'js/scripts.js' %}" crossorigin="anonymous"></script>
-{% endblock postlosdjs %}
+{% endblock postloadjs %}

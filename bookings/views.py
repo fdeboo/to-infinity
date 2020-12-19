@@ -3,30 +3,43 @@ Views in this module provide logic for templates that guide the booking process
 """
 
 import json
+import re
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
+from django.conf import settings
 from django.views.generic import FormView, UpdateView
-from django.forms import inlineformset_factory
+from django.forms import (
+    inlineformset_factory, CheckboxSelectMultiple, HiddenInput
+)
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (
+    Layout,
+    Field,
+    Div,
+    HTML
+)
+from products.models import AddOn
 from .models import (
     Trip,
     Booking,
     BookingLineItem,
     Destination,
     Passenger,
-    UserProfile
+    UserProfile,
 )
 from .forms import (
     SearchTripsForm,
     DateChoiceForm,
-    PassengerForm,
     InputPassengersForm,
     RequiredPassengerFormSet,
+    BookingPaymentForm
 )
 
 
@@ -123,7 +136,8 @@ class ConfirmTripView(FormView):
         self.passengers = self.request.session["passenger_total"]
         self.destination_pk = self.request.session["destination_choice"]
 
-        # check if any trips with 'seats_available' = the requested number of passengers
+        # check for any trips with enough 'seats_available' for the
+        # requested number of passengers
         available_trips = self.get_available_trips(
             self.destination_pk,
             self.passengers
@@ -190,7 +204,7 @@ class ConfirmTripView(FormView):
             )
             return redirect("home.home")
 
-        # Get initial valuees for the form
+        # Provide initial values for the form
         initial = super(ConfirmTripView, self).get_initial()
         initial.update({"trip": default_selected})
         return initial
@@ -244,8 +258,83 @@ class InputPassengersView(UpdateView):
     form_class = InputPassengersForm
     template_name = "bookings/passenger_details.html"
 
+    def make_passenger_form(self, booking):
+        """ Create class for Passenger form and modify to accept kwargs """
+        class PassengerForm(forms.ModelForm):
+            """
+            Defines the fields to be used in the form instances that make up
+            the PassengerFormSet
+            """
+
+            class Meta:
+                model = Passenger
+                fields = (
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'passport_no',
+                    'trip_addons',
+                )
+                widgets = {
+                    'trip_addons': CheckboxSelectMultiple(),
+                    'is_leaduser': HiddenInput(),
+                }
+
+            def __init__(self, *args, **kwargs):
+                super(PassengerForm, self).__init__(*args, **kwargs)
+                self.fields["trip_addons"].queryset = AddOn.objects.filter(
+                    destination=booking.trip.destination
+                )
+                formtag_prefix = re.sub(
+                    '-[0-9]+$', '', kwargs.get('prefix', '')
+                )
+
+                self.helper = FormHelper()
+                self.helper.form_tag = False
+                self.helper.layout = Layout(
+                    Div(
+                        Field(
+                            'first_name',
+                            css_class="form-control-lg mb-3 all-form-input",
+                            ),
+                        Field(
+                            'last_name',
+                            css_class="form-control-lg mb-3 all-form-input",
+                            ),
+                        Field(
+                            'email',
+                            css_class="form-control-lg mb-3 all-form-input",
+                            ),
+                        Field(
+                            'passport_no',
+                            css_class="form-control-lg mb-3 all-form-input",
+                            ),
+                        Field(
+                            'trip_addons',
+                            css_class="form-control-lg mb-3 all-form-input",
+                            ),
+                        css_class='formset_row-{}'.format(formtag_prefix)
+                    ),
+                    HTML("<hr>"),
+                )
+
+            def clean(self):
+                """ Form validation on fields in each form """
+
+                # Data from the form is fetched using super function
+                super(PassengerForm, self).clean()
+
+                first_name = self.cleaned_data.get('first_name')
+                last_name = self.cleaned_data.get('last_name')
+                email = self.cleaned_data.get('email')
+                passport_no = self.cleaned_data.get('passport_no')
+                addon = self.cleaned_data.get('trip_addon')
+
+        return PassengerForm
+
     def get_context_data(self, **kwargs):
         passenger_total = self.request.session["passenger_total"]
+        PassengerForm = self.make_passenger_form(self.object)
         PassengerFormSet = inlineformset_factory(
             Booking,
             Passenger,
@@ -256,7 +345,7 @@ class InputPassengersView(UpdateView):
             min_num=passenger_total,
             validate_max=True,
             validate_min=True,
-            can_delete=False
+            can_delete=False,
         )
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
@@ -283,6 +372,24 @@ class InputPassengersView(UpdateView):
         formset = context['passenger_formset']
         if formset.is_valid():
             self.object = form.save()
+            bag = {}
+            for form in formset:
+                # input validation here
+                addons = form.cleaned_data["trip_addons"]
+                for addon in addons:
+                    product_id = addon.product_id
+                    quantity = 1
+                    if product_id in bag:
+                        quantity += bag.get(product_id)
+                    bag[product_id] = quantity
+            for product_id, quantity in bag.items():
+                product = AddOn.objects.get(product_id=product_id)
+                lineitem = BookingLineItem(
+                    booking=self.object,
+                    product=product,
+                    quantity=quantity,
+                )
+                lineitem.save()
             formset.instance = self.object
             formset.save()
             return super(InputPassengersView, self).form_valid(form)
@@ -301,6 +408,56 @@ class InputPassengersView(UpdateView):
 
 class CompleteBookingView(UpdateView):
     """ A view to complete the booking and fill out payment information """
-    template_name = "checkout.html"
+    model = Booking
+    form_class = BookingPaymentForm
+    template_name = "bookings/checkout.html"
 
-    print("MADE IT")
+    '''
+    def get_initial(self):
+        # Provide initial values for the form
+        print("MADE IT")
+        initial = super(CompleteBookingView, self).get_initial()
+        if self.request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=self.request.user)
+                initial.update({
+                    "full_name": profile.user.get_full_name(),
+                    "email": profile.user.email,
+                    "phone_number": profile.default_phone_number,
+                    "country": profile.default_country,
+                    "postcode": profile.default_postcode,
+                    "town_or_city": profile.default_town_or_city,
+                    "street_address1": profile.default_street_address1,
+                    "street_address2": profile.default_street_address2,
+                    "county": profile.default_county,
+                })
+            except UserProfile.DoesNotExist:
+                pass
+        else:
+            pass
+        return initial'''
+
+    def get_context_data(self, **kwargs):
+        """ Retrieves the booking so far """
+
+        booking = self.get_object()
+        order_items = BookingLineItem.objects.filter(booking=booking.pk)
+        order_total = booking.booking_total
+        stripe_total = round(order_total * 100)
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+        stripe_public_key = settings.STRIPE_PUBLIC_KEY
+        if not stripe_public_key:
+            messages.warning(
+                self.request,
+                "Stripe public ley is missing. \
+                Did you forget to set it in your environment?",
+            )
+        data = super(CompleteBookingView, self).get_context_data(**kwargs)
+        data["stripe_public_key"] = stripe_public_key
+        data["client_secret"] = intent.client_secret
+        data["order_items"] = order_items
+        return data

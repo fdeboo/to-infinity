@@ -1,6 +1,8 @@
 @import 'config';
 @import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap');
 
+/* --------------- Universal Styles --------------- */
+
 body {
     font: {
         family: $font-stack;
@@ -67,6 +69,15 @@ body {
     }
 }
 
+.all-form-input {
+    font-size: 1rem;
+    border-radius: 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+/* --------------- Landing Page --------------- */
+
 .hero-btn {
     @extend .btn-outline;
     border: 1px solid $off-white;
@@ -103,15 +114,7 @@ body {
     right: 0;
 }
 
-.search-relative {
-    position: relative;
-    button {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: .5rem;
-    }
-}
+/* --------------- Destination List Template --------------- */
 
 .image-container {
     height: 100vh;
@@ -137,7 +140,7 @@ body {
     background-color:  whitesmoke;
 }
 
-// Styles initial search form
+// Styles instance of 'trips' search form
 .search-trips-form {
     position: fixed;
     bottom: 0;
@@ -145,7 +148,21 @@ body {
     right: 0;
     background-color: white;
 
-	@media only screen and (max-width: 992px) {
+    #featured-search > form {
+        flex-direction: column !important;
+        @media only screen and (min-width: 992px) {
+            flex-direction: row !important;
+        }
+    }
+
+    #featured-search .all-form-input {
+        @media only screen and (min-width: 992px) {
+            margin-bottom: 0 !important;
+        }
+    }
+
+
+	@media only screen and (max-width: 991px) {
         bottom: -316px;
         height: 316px;
         transition: 1s;
@@ -168,18 +185,30 @@ body {
         color: white;
         z-index: 10;
 
-		@media only screen and (max-width: 992px) {
+		@media only screen and (max-width: 991px) {
             visibility: visible;
 		}
 	}
 }
 
-/*.form-group {
-    margin-bottom: 0;
-    align-items: center;
-}*/
 
-// Styles the search results; Hides radio inputs and styles the input labels
+/* --------------- Destination Details Template --------------- */
+
+/* --------------- Add on List Template --------------- */
+
+/* --------------- Insurance List Template --------------- */
+
+/* --------------- Add on List Template --------------- */
+
+/* --------------- Search Trips Template --------------- */
+#focus-search > form {
+    flex-direction: column !important;
+}
+/* --------------- Unavailalbe Template --------------- */
+
+/* --------------- Confirim Trip Template --------------- */
+
+//Styles the search results; Hides radio inputs and styles the input labels
 
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {

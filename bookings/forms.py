@@ -2,7 +2,6 @@
 Defines the form objects to be used for the booking aspects of the app
 Includes a form to search available dates
 """
-import re
 from datetime import date
 from django import forms
 from django.forms import (
@@ -12,7 +11,6 @@ from django.forms import (
     HiddenInput,
     ModelForm,
     BaseInlineFormSet,
-    CheckboxSelectMultiple
 )
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
@@ -20,14 +18,13 @@ from crispy_forms.layout import (
     Layout,
     Submit,
     Field,
-    ButtonHolder,
     Fieldset,
-    HTML,
     Div,
+    ButtonHolder
 )
 
 from .custom_layout_object import Formset
-from .models import Destination, Booking, Passenger
+from .models import Destination, Booking
 
 
 class DateInput(forms.DateInput):
@@ -107,8 +104,9 @@ class TripChoiceField(ModelChoiceField):
 
 class SearchTripsForm(forms.Form):
     """
-    Collects user's desired deestination, no. of passengers and date preference
-    Fields include an id attribute for referencing in Javascript
+    Provides a list of deestination options and inputs for no. of passengers
+    and date preference.
+    All fields include an id attribute for referencing in Javascript
     """
 
     destination = DestinationChoiceField(
@@ -125,13 +123,13 @@ class SearchTripsForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = "POST"
         self.helper.form_action = "destinations"
-        self.helper.form_class = "d-flex flex-column flex-lg-row"
+        self.helper.form_class = "d-flex"
         self.helper.field_class = "col-12"
         self.helper.layout = Layout(
             Field(
                 "destination",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
+                css_class="form-control-lg mb-3 all-form-input",
                 id="selected-trip",
             ),
             Field(
@@ -139,7 +137,7 @@ class SearchTripsForm(forms.Form):
                 min=date.today(),
                 max="2040-12-20",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
+                css_class="form-control-lg mb-3 all-form-input",
             ),
             Field(
                 "passengers",
@@ -148,7 +146,7 @@ class SearchTripsForm(forms.Form):
                 id="passengers-max",
                 placeholder="No. of Passengers",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control mb-3 mb-lg-0",
+                css_class="form-control-lg mb-3 all-form-input",
             ),
             ButtonHolder(
                 Submit("submit", "Search", css_class="btn btn-outline"),
@@ -189,9 +187,9 @@ class SearchTripsForm(forms.Form):
 
 class DateChoiceForm(ModelForm):
     """
-    Provides user with a choices of available dates beased on their preference.
-    Uses input type, 'radio' meaning the user can select only one option.
-    By default the closest date to the searched date is selected.
+    Provides user a choice of available dates relative to their preference.
+    Uses 'radio' type input which allows only one option to be selected.
+    By default the closest date to the users searched date is selected.
     """
 
     class Meta:
@@ -202,60 +200,8 @@ class DateChoiceForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         trip_dates = kwargs.pop("trips", None)
-
         super(DateChoiceForm, self).__init__(*args, **kwargs)
         self.fields["trip"].queryset = trip_dates
-
-
-class PassengerForm(ModelForm):
-    """
-    Defines the fields to be used in each Passenger form that will make up
-    the PassengersFormSet 
-    """
-
-    class Meta:
-        model = Passenger
-        fields = (
-            'first_name',
-            'last_name',
-            'email',
-            'trip_addons',
-        )
-        widgets = {
-            'trip_addons': CheckboxSelectMultiple(),
-            'is_leaduser': HiddenInput(),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        formtag_prefix = re.sub('-[0-9]+$', '', kwargs.get('prefix', ''))
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.layout = Layout(
-            Div(
-                Field('first_name'),
-                Field('last_name'),
-                Field('email'),
-                Field('trip_addons'),
-                css_class='formset_row-{}'.format(formtag_prefix)
-            ),
-            HTML("<hr>"),
-        )
-
-    """
-    def clean(self):
-        Form validation on fields in each form
-
-        # Data from the form is fetched using super function
-        super(PassengerForm, self).clean()
-
-        first_name = self.cleaned_data.get('first_name')
-        last_name = self.cleaned_data.get('last_name')
-        email = self.cleaned_data.get('email')
-        addon = self.cleaned_data.get('trip_addon')
-    """
 
 
 class RequiredPassengerFormSet(BaseInlineFormSet):
@@ -296,4 +242,14 @@ class InputPassengersForm(ModelForm):
                 ), css_class="col-12"),
                 css_class="row border justify-items-center"
             )
+        )
+
+
+class BookingPaymentForm(forms.ModelForm):
+    """ Form to collect payment information to conclude the booking """
+
+    class Meta:
+        model = Booking
+        fields = (
+            "trip",
         )
