@@ -3,43 +3,31 @@ Views in this module provide logic for templates that guide the booking process
 """
 
 import json
-import re
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 from django.conf import settings
 from django.views.generic import FormView, UpdateView
-from django.forms import (
-    inlineformset_factory, CheckboxSelectMultiple, HiddenInput
-)
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import (
-    Layout,
-    Field,
-    Div,
-    HTML
-)
 from products.models import AddOn
 from .models import (
     Trip,
     Booking,
     BookingLineItem,
     Destination,
-    Passenger,
     UserProfile,
 )
 from .forms import (
     SearchTripsForm,
     DateChoiceForm,
     InputPassengersForm,
-    RequiredPassengerFormSet,
-    BookingPaymentForm
+    BookingPaymentForm,
+    make_passenger_form,
+    make_passenger_formset
 )
 
 
@@ -258,104 +246,20 @@ class InputPassengersView(UpdateView):
     form_class = InputPassengersForm
     template_name = "bookings/passenger_details.html"
 
-    def make_passenger_form(self, booking):
-        """ Create class for Passenger form and modify to accept kwargs """
-        class PassengerForm(forms.ModelForm):
-            """
-            Defines the fields to be used in the form instances that make up
-            the PassengerFormSet
-            """
-
-            class Meta:
-                model = Passenger
-                fields = (
-                    'first_name',
-                    'last_name',
-                    'email',
-                    'passport_no',
-                    'trip_addons',
-                )
-                widgets = {
-                    'trip_addons': CheckboxSelectMultiple(),
-                    'is_leaduser': HiddenInput(),
-                }
-
-            def __init__(self, *args, **kwargs):
-                super(PassengerForm, self).__init__(*args, **kwargs)
-                self.fields["trip_addons"].queryset = AddOn.objects.filter(
-                    destination=booking.trip.destination
-                )
-                formtag_prefix = re.sub(
-                    '-[0-9]+$', '', kwargs.get('prefix', '')
-                )
-
-                self.helper = FormHelper()
-                self.helper.form_tag = False
-                self.helper.layout = Layout(
-                    Div(
-                        Field(
-                            'first_name',
-                            css_class="form-control-lg mb-3 all-form-input",
-                            ),
-                        Field(
-                            'last_name',
-                            css_class="form-control-lg mb-3 all-form-input",
-                            ),
-                        Field(
-                            'email',
-                            css_class="form-control-lg mb-3 all-form-input",
-                            ),
-                        Field(
-                            'passport_no',
-                            css_class="form-control-lg mb-3 all-form-input",
-                            ),
-                        Field(
-                            'trip_addons',
-                            css_class="form-control-lg mb-3 all-form-input",
-                            ),
-                        css_class='formset_row-{}'.format(formtag_prefix)
-                    ),
-                    HTML("<hr>"),
-                )
-
-            def clean(self):
-                """ Form validation on fields in each form """
-
-                # Data from the form is fetched using super function
-                super(PassengerForm, self).clean()
-
-                first_name = self.cleaned_data.get('first_name')
-                last_name = self.cleaned_data.get('last_name')
-                email = self.cleaned_data.get('email')
-                passport_no = self.cleaned_data.get('passport_no')
-                addon = self.cleaned_data.get('trip_addon')
-
-        return PassengerForm
-
     def get_context_data(self, **kwargs):
         passenger_total = self.request.session["passenger_total"]
-        PassengerForm = self.make_passenger_form(self.object)
-        PassengerFormSet = inlineformset_factory(
-            Booking,
-            Passenger,
-            form=PassengerForm,
-            formset=RequiredPassengerFormSet,
-            extra=passenger_total,
-            max_num=passenger_total,
-            min_num=passenger_total,
-            validate_max=True,
-            validate_min=True,
-            can_delete=False,
-        )
+        booking = self.object
+        passenger_form = make_passenger_form(booking)
+        formset = make_passenger_formset(passenger_form, passenger_total)
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
         if self.request.POST:
-            data['passenger_formset'] = PassengerFormSet(
+            data['passenger_formset'] = formset(
                 self.request.POST,
                 instance=self.object
             )
         else:
-            data['passenger_formset'] = PassengerFormSet(
+            data['passenger_formset'] = formset(
                 initial=[{
                     "first_name": profile.user.first_name,
                     "last_name": profile.user.last_name,
@@ -366,23 +270,25 @@ class InputPassengersView(UpdateView):
         return data
 
     def form_valid(self, form):
-        """ Runs when the form is valid """
+        """
+        Updates Booking with validated form data and creates new
+        BookingLineItems for each Addon.
+        """
 
         context = self.get_context_data()
         formset = context['passenger_formset']
         if formset.is_valid():
             self.object = form.save()
-            bag = {}
+            basket = {}
             for form in formset:
-                # input validation here
                 addons = form.cleaned_data["trip_addons"]
                 for addon in addons:
                     product_id = addon.product_id
                     quantity = 1
-                    if product_id in bag:
-                        quantity += bag.get(product_id)
-                    bag[product_id] = quantity
-            for product_id, quantity in bag.items():
+                    if product_id in basket:
+                        quantity += basket.get(product_id)
+                    basket[product_id] = quantity
+            for product_id, quantity in basket.items():
                 product = AddOn.objects.get(product_id=product_id)
                 lineitem = BookingLineItem(
                     booking=self.object,
@@ -392,12 +298,15 @@ class InputPassengersView(UpdateView):
                 lineitem.save()
             formset.instance = self.object
             formset.save()
+            messages.add_message(
+                self.request, messages.SUCCESS, "Changes were saved."
+            )
             return super(InputPassengersView, self).form_valid(form)
         else:
+            messages.add_message(
+                self.request, messages.WARNING, "Check the form errors."
+            )
             return super(InputPassengersView, self).form_invalid(form)
-        messages.add_message(
-            self.request, messages.SUCCESS, "Changes were saved."
-        )
 
     def get_success_url(self):
         return reverse("complete_booking", args=(self.object.id,))

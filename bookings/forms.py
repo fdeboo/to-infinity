@@ -2,7 +2,9 @@
 Defines the form objects to be used for the booking aspects of the app
 Includes a form to search available dates
 """
+import re
 from datetime import date
+from django.core.exceptions import ValidationError
 from django import forms
 from django.forms import (
     ModelChoiceField,
@@ -10,7 +12,9 @@ from django.forms import (
     RadioSelect,
     HiddenInput,
     ModelForm,
+    inlineformset_factory,
     BaseInlineFormSet,
+    CheckboxSelectMultiple,
 )
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
@@ -20,11 +24,12 @@ from crispy_forms.layout import (
     Field,
     Fieldset,
     Div,
-    ButtonHolder
+    HTML,
+    ButtonHolder,
 )
-
+from products.models import AddOn
 from .custom_layout_object import Formset
-from .models import Destination, Booking
+from .models import Destination, Booking, Passenger
 
 
 class DateInput(forms.DateInput):
@@ -99,7 +104,7 @@ class TripChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         # 'obj' will be a Destination
         date_string = (obj.date).strftime("%A %d %B %Y")
-        return f'{date_string} £{obj.destination.price}'
+        return f"{date_string} £{obj.destination.price}"
 
 
 class SearchTripsForm(forms.Form):
@@ -161,25 +166,29 @@ class SearchTripsForm(forms.Form):
         super(SearchTripsForm, self).clean()
 
         # Extract the individual fields from the data
-        destination = self.cleaned_data.get('destination')
-        request_date = self.cleaned_data.get('request_date')
-        passengers = self.cleaned_data.get('passengers')
+        destination = self.cleaned_data.get("destination")
+        request_date = self.cleaned_data.get("request_date")
+        passengers = self.cleaned_data.get("passengers")
 
         if not isinstance(destination, Destination):
-            self._errors['destimation'] = self.error_class([
-                'Please choose an option from the list'])
+            self._errors["destimation"] = self.error_class(
+                ["Please choose an option from the list"]
+            )
 
         elif passengers > destination.max_passengers:
-            self._errors['passengers'] = self.error_class([
-                'Sorry, this exceeds the maximum for selected trip'])
+            self._errors["passengers"] = self.error_class(
+                ["Sorry, this exceeds the maximum for selected trip"]
+            )
 
         elif passengers < 0:
-            self._errors['passengers'] = self.error_class([
-                'Please choose at least one passenger'])
+            self._errors["passengers"] = self.error_class(
+                ["Please choose at least one passenger"]
+            )
 
         if request_date < date.today():
-            self._errors['request_date'] = self.error_class([
-                'Searched date should not be in the past'])
+            self._errors["request_date"] = self.error_class(
+                ["Searched date should not be in the past"]
+            )
 
         # return any errors if found
         return self.cleaned_data
@@ -204,43 +213,178 @@ class DateChoiceForm(ModelForm):
         self.fields["trip"].queryset = trip_dates
 
 
+def make_passenger_form(active_booking):
+    """
+    Provides the PassengerForm with the booking instance received in params
+    (used to create queryset for addon field, and to validate each individual
+    form instance.
+    """
+
+    class PassengerForm(forms.ModelForm):
+        """
+        Defines the form used in the PassengerFormset and validates each form
+        individually
+        """
+
+        class Meta:
+            model = Passenger
+            fields = (
+                "first_name",
+                "last_name",
+                "email",
+                "passport_no",
+                "trip_addons",
+            )
+            widgets = {
+                "trip_addons": CheckboxSelectMultiple(),
+                "is_leaduser": HiddenInput(),
+            }
+
+        def __init__(self, *args, **kwargs):
+            super(PassengerForm, self).__init__(*args, **kwargs)
+
+            # Uses value from function param to create query for qs.
+            self.fields["trip_addons"].queryset = AddOn.objects.filter(
+                destination=active_booking.trip.destination
+            )
+            formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
+            self.helper = FormHelper()
+            self.helper.form_tag = False
+
+            # CSS classes added to form elements
+            self.helper.layout = Layout(
+                Div(
+                    Field(
+                        "first_name",
+                        css_class="form-control-lg mb-3 all-form-input",
+                    ),
+                    Field(
+                        "last_name",
+                        css_class="form-control-lg mb-3 all-form-input",
+                    ),
+                    Field(
+                        "email",
+                        css_class="form-control-lg mb-3 all-form-input",
+                    ),
+                    Field(
+                        "passport_no",
+                        css_class="form-control-lg mb-3 all-form-input",
+                    ),
+                    Field(
+                        "trip_addons",
+                        css_class="form-control-lg mb-3 all-form-input",
+                    ),
+                    css_class="formset_row-{}".format(formtag_prefix),
+                ),
+                HTML("<hr>"),
+            )
+
+        def clean(self):
+            """ Validation for fields in each individual form """
+
+            # Data from the form fetched using super function
+            super(PassengerForm, self).clean()
+
+            # Collect data from field
+            passport_no = self.cleaned_data.get("passport_no")
+
+            # Validate if passenger already exists on any bookings
+            # from the same trip
+            existing_passengers = Passenger.objects.filter(
+                booking__trip=active_booking.trip
+            ).filter(
+                booking__trip__bookings__passengers__passport_no=passport_no
+            )
+            if existing_passengers:
+                self._errors["passport_no"] = self.error_class(
+                    ["Error, please check passport number or contact us"]
+                )
+
+    return PassengerForm
+
+
+def make_passenger_formset(form, passenger_total):
+    """Receives a dynamic value to be used in construction of inlineformset."""
+
+    PassengerFormSet = inlineformset_factory(
+        Booking,
+        Passenger,
+        form=form,
+        formset=RequiredPassengerFormSet,
+        extra=passenger_total,
+        max_num=passenger_total,
+        min_num=passenger_total,
+        validate_max=True,
+        validate_min=True,
+        can_delete=False,
+    )
+
+    return PassengerFormSet
+
+
 class RequiredPassengerFormSet(BaseInlineFormSet):
-    """ Validates that all forms in the formset are completed """
+    """
+    Validation for the formset as a whole.
+    Validates that all forms in the formset are completed and nopassenger is
+    entered more than once.
+    """
 
     def __init__(self, *args, **kwargs):
         super(RequiredPassengerFormSet, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = False
 
+    def clean(self):
+        if any(self.errors):
+            return
+        passengers = []
+        for form in self.forms:
+            passport_no = form.cleaned_data.get("passport_no")
+            if passport_no in passengers:
+                form._errors["first_name"] = form.error_class(
+                    ["Check duplicate passenger"]
+                )
+                form._errors["last_name"] = form.error_class(
+                    ["Check duplicate passenger"]
+                )
+                form._errors["email"] = form.error_class(
+                    ["Check duplicate passenger"]
+                )
+                raise ValidationError("Duplicate passenger")
+            else:
+                passengers.append(passport_no)
+
 
 class InputPassengersForm(ModelForm):
-    """ Customises validation for Passenger form """
+    """Defines the overall form within which the PassengerFormset is nested."""
 
     class Meta:
         model = Booking
-        fields = ('trip',)
-        widgets = {'trip': HiddenInput()}
+        fields = ("trip",)
+        widgets = {"trip": HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(InputPassengersForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.label_class = 'col-md-3 create-label'
-        self.helper.field_class = 'col-md-9'
+        self.helper.label_class = "col-md-3 create-label"
+        self.helper.field_class = "col-md-9"
         self.helper.layout = Layout(
             Div(
                 Field("trip"),
                 Div(
                     Fieldset(
-                        'Add passengers',
-                        Formset('passenger_formset'),
-                        css_class="border col-12"
-                    ), css_class="col-8"
+                        "Add passengers",
+                        Formset("passenger_formset"),
+                        css_class="border col-12",
+                    ),
+                    css_class="col-8",
                 ),
-                ButtonHolder(Submit(
-                    'submit', 'Save', css_class="btn btn-outline"
-                ), css_class="col-12"),
-                css_class="row border justify-items-center"
+                ButtonHolder(
+                    Submit("submit", "Save", css_class="btn btn-outline"),
+                    css_class="col-12",
+                ),
+                css_class="row border justify-items-center",
             )
         )
 
@@ -250,6 +394,4 @@ class BookingPaymentForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = (
-            "trip",
-        )
+        fields = ("trip",)

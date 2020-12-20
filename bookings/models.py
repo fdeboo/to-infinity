@@ -150,6 +150,8 @@ class Passenger(models.Model):
         blank=True,
     )
     """
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 
 class BookingLineItem(models.Model):

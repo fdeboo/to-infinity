@@ -11,6 +11,25 @@ class PassengerAdminInline(admin.TabularInline):
     model = Passenger
 
 
+class BookingAdminInline(admin.TabularInline):
+    model = Booking
+    readonly_fields = (
+        "booking_ref",
+        "lead_user",
+        "booking_total",
+        "status",
+    )
+
+
+class PassengerAdmin(admin.ModelAdmin):
+    fields = (
+        "first_name",
+        "last_name",
+        "booking",
+        "passport_no",
+    )
+
+
 class BookingAdmin(admin.ModelAdmin):
     inlines = (BookingLineItemAdminInline, PassengerAdminInline)
 
@@ -41,6 +60,7 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 class TripAdmin(admin.ModelAdmin):
+    inlines = (BookingAdminInline,)
     readonly_fields = (
         "trip_ref",
     )
@@ -63,3 +83,4 @@ class TripAdmin(admin.ModelAdmin):
 
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(Trip, TripAdmin)
+admin.site.register(Passenger, PassengerAdmin)
