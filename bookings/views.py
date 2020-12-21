@@ -6,7 +6,6 @@ import json
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
-from django.conf import settings
 from django.views.generic import FormView, UpdateView
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
@@ -246,10 +245,13 @@ class InputPassengersView(UpdateView):
     form_class = InputPassengersForm
     template_name = "bookings/passenger_details.html"
 
+    def __init__(self):
+        self.booking = None
+    
     def get_context_data(self, **kwargs):
         passenger_total = self.request.session["passenger_total"]
-        booking = self.object
-        passenger_form = make_passenger_form(booking)
+        self.booking = self.object
+        passenger_form = make_passenger_form(self.booking)
         formset = make_passenger_formset(passenger_form, passenger_total)
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
@@ -271,12 +273,13 @@ class InputPassengersView(UpdateView):
 
     def form_valid(self, form):
         """
-        Updates Booking with validated form data and creates new
-        BookingLineItems for each Addon.
+        Updates Booking with validated form data and creates BookingLineItems
+        for each Addon.
         """
 
         context = self.get_context_data()
         formset = context['passenger_formset']
+
         if formset.is_valid():
             self.object = form.save()
             basket = {}
@@ -303,14 +306,14 @@ class InputPassengersView(UpdateView):
             )
             return super(InputPassengersView, self).form_valid(form)
         else:
-            print(formset.non_form_errors)
             messages.add_message(
                 self.request, messages.WARNING, "Check the form errors."
             )
             return super(InputPassengersView, self).form_invalid(form)
 
     def get_success_url(self):
-        return reverse("complete_booking", args=(self.object.id,))
+        booking = self.booking
+        return reverse("complete_booking", args=(booking.id,))
 
     def form_invalid(self, form):
         print('form invalid:failed')
@@ -322,10 +325,8 @@ class CompleteBookingView(UpdateView):
     form_class = BookingPaymentForm
     template_name = "bookings/checkout.html"
 
-    '''
     def get_initial(self):
         # Provide initial values for the form
-        print("MADE IT")
         initial = super(CompleteBookingView, self).get_initial()
         if self.request.user.is_authenticated:
             try:
@@ -345,29 +346,14 @@ class CompleteBookingView(UpdateView):
                 pass
         else:
             pass
-        return initial'''
+        return initial
 
     def get_context_data(self, **kwargs):
         """ Retrieves the booking so far """
 
         booking = self.get_object()
         order_items = BookingLineItem.objects.filter(booking=booking.pk)
-        order_total = booking.booking_total
-        stripe_total = round(order_total * 100)
-        stripe.api_key = stripe_secret_key
-        intent = stripe.PaymentIntent.create(
-            amount=stripe_total,
-            currency=settings.STRIPE_CURRENCY,
-        )
-        stripe_public_key = settings.STRIPE_PUBLIC_KEY
-        if not stripe_public_key:
-            messages.warning(
-                self.request,
-                "Stripe public ley is missing. \
-                Did you forget to set it in your environment?",
-            )
+        print(order_items)
         data = super(CompleteBookingView, self).get_context_data(**kwargs)
-        data["stripe_public_key"] = stripe_public_key
-        data["client_secret"] = intent.client_secret
         data["order_items"] = order_items
         return data
