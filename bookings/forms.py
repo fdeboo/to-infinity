@@ -250,6 +250,8 @@ def make_passenger_form(active_booking):
             formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
             self.helper = FormHelper()
             self.helper.form_tag = False
+            self.helper.form_error_title = "Form Errors"
+            self.helper.formset_error_title = "Formset Errors"
 
             # CSS classes added to form elements
             self.helper.layout = Layout(
@@ -325,7 +327,7 @@ def make_passenger_formset(form, passenger_total):
 class RequiredPassengerFormSet(BaseInlineFormSet):
     """
     Validation for the formset as a whole.
-    Validates that all forms in the formset are completed and nopassenger is
+    Validates that all forms in the formset are completed and no passenger is
     entered more than once.
     """
 
@@ -341,18 +343,8 @@ class RequiredPassengerFormSet(BaseInlineFormSet):
         for form in self.forms:
             passport_no = form.cleaned_data.get("passport_no")
             if passport_no in passengers:
-                form._errors["first_name"] = form.error_class(
-                    ["Check duplicate passenger"]
-                )
-                form._errors["last_name"] = form.error_class(
-                    ["Check duplicate passenger"]
-                )
-                form._errors["email"] = form.error_class(
-                    ["Check duplicate passenger"]
-                )
                 raise ValidationError("Duplicate passenger")
-            else:
-                passengers.append(passport_no)
+            passengers.append(passport_no)
 
 
 class InputPassengersForm(ModelForm):

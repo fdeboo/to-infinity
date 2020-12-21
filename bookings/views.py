@@ -306,6 +306,7 @@ class InputPassengersView(UpdateView):
             messages.add_message(
                 self.request, messages.WARNING, "Check the form errors."
             )
+            print(form._errors)
             return super(InputPassengersView, self).form_invalid(form)
 
     def get_success_url(self):

@@ -21,6 +21,3 @@ $('#selected-trip').change(function() {
 $('.toggle-form').click(function(){
     $(".search-trips-form").toggleClass("position-translate");
 });
-
-
-$('.toast').toast('show');
