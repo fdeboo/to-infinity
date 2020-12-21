@@ -9,8 +9,9 @@
 
 {% block content %}
     <section class="container-fluid">
-    <div id='form-errors'>{{ form.errors }}</div>
-    {% crispy form %}
+        <div class="crispyform">
+            {% crispy form %}
+        </div>
     </section>
 {% endblock content %}
 

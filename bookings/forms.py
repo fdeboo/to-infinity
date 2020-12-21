@@ -338,6 +338,7 @@ class RequiredPassengerFormSet(BaseInlineFormSet):
 
     def clean(self):
         if any(self.errors):
+            print('yes')
             return
         passengers = []
         for form in self.forms:

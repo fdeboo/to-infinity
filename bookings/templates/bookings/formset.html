@@ -3,6 +3,7 @@
 <div class="row justify-content-center">
     <div class="col-7">
         {{ formset.management_form | crispy }}
+        {{ formset.non_form_errors }}
         {% for form in formset.forms %}
             <h3>Passenger {{forloop.counter}}</h3>
             {% crispy form %}
