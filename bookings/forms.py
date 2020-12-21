@@ -6,16 +6,6 @@ import re
 from datetime import date
 from django.core.exceptions import ValidationError
 from django import forms
-from django.forms import (
-    ModelChoiceField,
-    NumberInput,
-    RadioSelect,
-    HiddenInput,
-    ModelForm,
-    inlineformset_factory,
-    BaseInlineFormSet,
-    CheckboxSelectMultiple,
-)
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (
@@ -76,7 +66,7 @@ class SelectWithOptionAttributes(Select):
         return option_dict
 
 
-class DestinationChoiceField(ModelChoiceField):
+class DestinationChoiceField(forms.ModelChoiceField):
     """
     Overrides the label_from_instance method from Django's ModelChoiceField:
     Passes the 'max_passengers' value from the object as an html5
@@ -95,7 +85,7 @@ class DestinationChoiceField(ModelChoiceField):
         }
 
 
-class TripChoiceField(ModelChoiceField):
+class TripChoiceField(forms.ModelChoiceField):
     """
     Overrides the label_from_instance method from Django's ModelChoiceField:
     Overwrites the display tezt
@@ -121,7 +111,7 @@ class SearchTripsForm(forms.Form):
         widget=SelectWithOptionAttributes(),
     )
     request_date = forms.DateField(required=True, label="", widget=DateInput())
-    passengers = forms.IntegerField(label="", widget=NumberInput())
+    passengers = forms.IntegerField(label="", widget=forms.NumberInput())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -194,7 +184,7 @@ class SearchTripsForm(forms.Form):
         return self.cleaned_data
 
 
-class DateChoiceForm(ModelForm):
+class DateChoiceForm(forms.ModelForm):
     """
     Provides user a choice of available dates relative to their preference.
     Uses 'radio' type input which allows only one option to be selected.
@@ -205,7 +195,7 @@ class DateChoiceForm(ModelForm):
         model = Booking
         fields = ["trip"]
         field_classes = {"trip": TripChoiceField}
-        widgets = {"trip": RadioSelect()}
+        widgets = {"trip": forms.RadioSelect()}
 
     def __init__(self, *args, **kwargs):
         trip_dates = kwargs.pop("trips", None)
@@ -236,8 +226,8 @@ def make_passenger_form(active_booking):
                 "trip_addons",
             )
             widgets = {
-                "trip_addons": CheckboxSelectMultiple(),
-                "is_leaduser": HiddenInput(),
+                "trip_addons": forms.CheckboxSelectMultiple(),
+                "is_leaduser": forms.HiddenInput(),
             }
 
         def __init__(self, *args, **kwargs):
@@ -308,7 +298,7 @@ def make_passenger_form(active_booking):
 def make_passenger_formset(form, passenger_total):
     """Receives a dynamic value to be used in construction of inlineformset."""
 
-    PassengerFormSet = inlineformset_factory(
+    PassengerFormSet = forms.inlineformset_factory(
         Booking,
         Passenger,
         form=form,
@@ -324,7 +314,7 @@ def make_passenger_formset(form, passenger_total):
     return PassengerFormSet
 
 
-class RequiredPassengerFormSet(BaseInlineFormSet):
+class RequiredPassengerFormSet(forms.BaseInlineFormSet):
     """
     Validation for the formset as a whole.
     Validates that all forms in the formset are completed and no passenger is
@@ -348,13 +338,13 @@ class RequiredPassengerFormSet(BaseInlineFormSet):
             passengers.append(passport_no)
 
 
-class InputPassengersForm(ModelForm):
+class InputPassengersForm(forms.ModelForm):
     """Defines the overall form within which the PassengerFormset is nested."""
 
     class Meta:
         model = Booking
         fields = ("trip",)
-        widgets = {"trip": HiddenInput()}
+        widgets = {"trip": forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(InputPassengersForm, self).__init__(*args, **kwargs)
@@ -387,4 +377,42 @@ class BookingPaymentForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ("trip",)
+        fields = (
+            "full_name",
+            "email",
+            "phone_number",
+            "street_address1",
+            "street_address2",
+            "town_or_city",
+            "postcode",
+            "country",
+            "county",
+        )
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+        placeholders = {
+            "full_name": "Full Name",
+            "email": "Email Address",
+            "phone_number": "Phone Number",
+            "postcode": "Postal Code",
+            "town_or_city": "Town or City",
+            "street_address1": "Street Address 1",
+            "street_address2": "Street Address 2",
+            "county": "County, State or Locality",
+        }
+
+        self.fields["full_name"].widget.attrs["autofocus"] = True
+        for field in self.fields:
+            if field != "country":
+                if self.fields[field].required:
+                    placeholder = f"{placeholders[field]} *"
+                else:
+                    placeholder = placeholders[field]
+                self.fields[field].widget.attrs["placeholder"] = placeholder
+            self.fields[field].widget.attrs["class"] = "stripe-style-input"
+            self.fields[field].label = False
