@@ -23,6 +23,31 @@
         <div class="row">
             <div class="col-7 offset-2">
                 <p class="mb-1 mt-0 small text-muted">Item</p>
+                <h4>Trip</h2>
+                    <ul>
+                    {% for item in order_items  %}
+                    {{ item.product.category }}
+                        {% if item.product.category == 'destinations' %}
+                        <li>{{ item }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                <h4>Activities:</h2>
+                    <ul>
+                        {% for item in order_items %}
+                        {% if item.product.category == 'add_ons' %}
+                        <li>{{ item }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                <h4>Insurance Cover:</h2>
+                    <ul>
+                        {% for item in order_items  %}
+                        {% if item.product.category == '3' %}
+                        <li>{{ item }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
             </div>
                 <div class="col-3 text-right">
                     <p class="mb-1 mt-0 small text-muted">Subtotal</p>
@@ -45,22 +70,15 @@
                         {% if item.product.has_sizes  %}{{ item.size|upper }}{% else %}N/A{% endif %}</p>
                     <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                 </div>
-                <div class="col-3 text-right">
-                    <p class="my-0 small text-muted">${{ item.product.price | calc_subtotal:item.quantity }}</p>
-                </div>
             </div>
             {% endfor %}
             <hr class="my-0">
             <div class="row text-black text-right">
                 <div class="col-7 offset-2">
                     <p class="my-0">Order Total:</p>
-                    <p class="my-0">Delivery:</p>
-                    <p class="my-0">Grand Total:</p>
                 </div>
                 <div class="col-3">
                     <p class="my-0">${{ total | floatformat:2 }}</p>
-                    <p class="my-0">${{ delivery | floatformat:2 }}</p>
-                    <p class="my-0"><strong>${{ grand_total | floatformat:2 }}</strong></p>
                 </div>
             </div>
         </div>
@@ -68,36 +86,28 @@
             <p class="text-muted">Please fill out the form below to complete your order</p>
 
             <!-- Checkout Form -->
-            <form action="{% url 'checkout' %}" method="POST" id="payment-form">
+            <form action="#" method="POST" id="payment-form">
                 {% csrf_token %}
                 <fieldset class="rounded px-3 mb-5">
                     <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                    {{ order_form.full_name | as_crispy_field }}
-                    {{ order_form.email | as_crispy_field }}
+                    {{ form.full_name | as_crispy_field }}
+                    {{ form.email | as_crispy_field }}
                 </fieldset>
                 <fieldset class="rounded px-3 mb-5">
                     <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
-                    {{ order_form.phone_number | as_crispy_field }}
-                    {{ order_form.street_address1 | as_crispy_field }}
-                    {{ order_form.street_address2 | as_crispy_field }}
-                    {{ order_form.town_or_city | as_crispy_field }}
-                    {{ order_form.county | as_crispy_field }}
-                    {{ order_form.postcode | as_crispy_field }}
-                    {{ order_form.country | as_crispy_field }}
+                    {{ form.phone_number | as_crispy_field }}
+                    {{ form.street_address1 | as_crispy_field }}
+                    {{ form.street_address2 | as_crispy_field }}
+                    {{ form.town_or_city | as_crispy_field }}
+                    {{ form.county | as_crispy_field }}
+                    {{ form.postcode | as_crispy_field }}
+                    {{ form.country | as_crispy_field }}
                     <div class="form-check form-check-inline float-right mr-0">
-                        {% if user.is_authenticated %}
-                        <label class="form-check-label" for="id-save-info">
-                            Save this delivery information to my profile
-                        </label>
-                        <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info"
-                            checked />
-
-                        {% else %}
-                        <label class="form-check-label" for="id-save-info">
-                            <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
-                            <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
-                        </label>
-                        {% endif %}
+                    <label class="form-check-label" for="id-save-info">
+                        Save this delivery information to my profile
+                    </label>
+                    <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info"
+                        checked />
                     </div>
                 </fieldset>
                 <fieldset class="px-3">
@@ -112,11 +122,11 @@
                 </fieldset>
 
                 <div class="submit-button text-right mt-5 mb-2">
-                    <a href="{% url 'view_bag' %}" class="btn btn-outline-black rounded-0">
+                    <a href="#" class="btn btn-outline-black rounded-0">
                         <span class="icon">
                             <i class="fas fa-chevron-left"></i>
                         </span>
-                        <span class="font-weight-bold">Adjust bag</span>
+                        <span class="font-weight-bold">Adjust Booking</span>
                     </a>
 
                     <!-- Form Submit button -->
@@ -130,7 +140,7 @@
                         <span class="icon">
                             <i class="fas fa-exclamation-circle"></i>
                         </span>
-                        <span>Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong></span>
+                        <span>Your card will be charged <strong>${{ order_total|floatformat:2 }}</strong></span>
                     </p>
                 </div>
             </form>
