@@ -1,4 +1,6 @@
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, View
+from django.views.generic.detail import SingleObjectMixin
+from django.shortcuts import reverse, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -10,7 +12,8 @@ from .forms import BookingPaymentForm
 
 @method_decorator(login_required, name="dispatch")
 class CompleteBookingView(UpdateView):
-    """ A view to complete the booking and fill out payment information """
+    """ A view to complete the booking with payment information """
+
     model = Booking
     form_class = BookingPaymentForm
     template_name = "checkout/checkout.html"
@@ -43,6 +46,7 @@ class CompleteBookingView(UpdateView):
 
         stripe_public_key = settings.STRIPE_PUBLIC_KEY
         stripe_secret_key = settings.STRIPE_SECRET_KEY
+
         booking = self.get_object()
         order_items = BookingLineItem.objects.filter(booking=booking.pk)
         addon_items = order_items.filter(product__category=1)
@@ -52,7 +56,7 @@ class CompleteBookingView(UpdateView):
         stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
-            currency=settings.STRIPE_CURRENCY,
+            currency=settings.STRIPE_CURRENCY
         )
 
         if not stripe_public_key:
@@ -72,3 +76,44 @@ class CompleteBookingView(UpdateView):
         data["stripe_public_key"] = stripe_public_key
         data["client_secret"] = intent.client_secret
         return data
+
+    def form_valid(self, form):
+        print(self.object)
+        self.object = form.save()
+        return super(CompleteBookingView, self).form_valid(form)
+
+    def get_success_url(self):
+        booking = self.get_object()
+        print(booking)
+        return reverse("complete_booking", args=(booking.id,))
+
+    def form_invalid(self, form):
+        messages.add_message(
+                self.request, messages.WARNING, "Check the form errors."
+            )
+        return super(CompleteBookingView, self).form_invalid(form)
+
+
+class CheckoutSuccessView(SingleObjectMixin, View):
+    """ Handle successful checkouts """
+
+    def get(self, request):
+        save_info = self.request.session.get("save_info")
+        booking = self.get_object()
+
+        messages.success(
+            self.request,
+            f"Booking successfully processed! \
+            Your booking number is {booking.booking_ref}. A confirmation \
+            email will be sent to {booking.email}.",
+        )
+
+        if "passengers" in self.request.session:
+            del self.request.session["passengers"]
+
+        template = "checkout/checkout_success.html"
+        context = {
+            "booking": booking,
+        }
+
+        return render(request, template, context)

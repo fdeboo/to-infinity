@@ -50,6 +50,10 @@ class BookingAdmin(admin.ModelAdmin):
         "stripe_pid",
         "trip",
         "status",
+        "full_name",
+        "email",
+        "street_address1",
+        "phone_number",
     )
 
     """ Fields displayed in add or change """
