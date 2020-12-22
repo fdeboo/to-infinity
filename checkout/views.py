@@ -1,7 +1,9 @@
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 from django.conf import settings
+import stripe
 from bookings.models import Booking, BookingLineItem, UserProfile
 from .forms import BookingPaymentForm
 
@@ -40,12 +42,25 @@ class CompleteBookingView(UpdateView):
         """ Retrieves the booking so far """
 
         stripe_public_key = settings.STRIPE_PUBLIC_KEY
-
+        stripe_secret_key = settings.STRIPE_SECRET_KEY
         booking = self.get_object()
         order_items = BookingLineItem.objects.filter(booking=booking.pk)
         addon_items = order_items.filter(product__category=1)
         insurance_items = order_items.filter(product__category=2)
         trip_items = order_items.filter(product__category=3)
+        stripe_total = round(booking.booking_total * 100)
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+
+        if not stripe_public_key:
+            messages.warning(
+                self.request,
+                "Stripe public ley is missing. \
+                Did you forget to set it in your environment?",
+            )
 
         # Add data to the get_context_data dictionary
         data = super(CompleteBookingView, self).get_context_data(**kwargs)
@@ -55,4 +70,5 @@ class CompleteBookingView(UpdateView):
         data["addon_items"] = addon_items
         data["insurance_items"] = insurance_items
         data["stripe_public_key"] = stripe_public_key
+        data["client_secret"] = intent.client_secret
         return data
