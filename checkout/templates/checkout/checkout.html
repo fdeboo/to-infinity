@@ -24,13 +24,13 @@
                 <div class="col-12 col-lg-6 order-lg-last mb-5">
                     <p class="text-muted">Booking Summary ({{ order_items| length }})</p>
                     </p>
-                    {% include 'bookings/includes/summary-headers.html' %}
+                    {% include 'checkout/includes/summary-headers.html' %}
                     <div class="row">
                         <div class="col-12">
                             <p class="mb-1 mt-0 text-bold">Trip:</p>
                         </div>
                         {% for item in trip_items  %}
-                        {% include 'bookings/includes/line-item-summary.html' %}
+                        {% include 'checkout/includes/line-item-summary.html' %}
                         {% endfor %}
                     </div>
                     <hr class="my-2">
@@ -40,7 +40,7 @@
                                 <p class="mb-1 mt-0 text-bold">Activities:</p>
                             </div>
                             {% for item in addon_items  %}
-                            {% include 'bookings/includes/line-item-summary.html' %}
+                            {% include 'checkout/includes/line-item-summary.html' %}
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -51,7 +51,7 @@
                                 <p class="mb-1 mt-0 text-bold">Insurances:</p>
                             </div>
                             {% for item in insurance_items  %}
-                            {% include 'bookings/includes/line-item-summary.html' %}
+                            {% include 'checkout/includes/line-item-summary.html' %}
                             {% endfor %}
                         </div>
                     {% endif %}
