@@ -91,7 +91,7 @@
         };
         
         $('.date-option').each(function (index) {
-            // Applies html markup and css to data in input labels
+            // Applies html markup and css to data passed in the input labels
             const text = $(this).text();
             const text_array = text.split(" ");
             const dayHtml = '<span class="day">' + text_array[0] + '</span>';
@@ -107,7 +107,7 @@
     });
 
     $('#confirm-btn').click(function() {
-        // Populates modal with data value from context
+        // Calculates the booking total using data values from context and applies result to modal
         if (typeof price == 'undefined') {
             const quantity = Number($('#quantity').text());
             const strPrice = $('#cost').text();
