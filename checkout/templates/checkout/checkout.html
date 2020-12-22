@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/checkout.min.css' %}">
+{% endblock extra_css %}
 
 {% block page_nav %}
-{% include 'includes/light_nav.html' %}
+    {% include 'includes/light_nav.html' %}
 {% endblock page_nav %}
 
 {% block content %}

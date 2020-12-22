@@ -4,4 +4,5 @@ __pycache__
 .env
 _config.scss
 base.scss
+checkout.scss
 .vscode
