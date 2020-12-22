@@ -247,7 +247,7 @@ class InputPassengersView(UpdateView):
 
     def __init__(self):
         self.booking = None
-    
+
     def get_context_data(self, **kwargs):
         passenger_total = self.request.session["passenger_total"]
         self.booking = self.object
@@ -353,7 +353,12 @@ class CompleteBookingView(UpdateView):
 
         booking = self.get_object()
         order_items = BookingLineItem.objects.filter(booking=booking.pk)
-        print(order_items)
+        addon_items = order_items.filter(product__category=1)
+        insurance_items = order_items.filter(product__category=2)
+        trip_items = order_items.filter(product__category=3)
         data = super(CompleteBookingView, self).get_context_data(**kwargs)
-        data["order_items"] = order_items
+        data["booking"] = booking
+        data["trip_items"] = trip_items
+        data["addon_items"] = addon_items
+        data["insurance_items"] = insurance_items
         return data
