@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'products',
     'bookings.apps.BookingsConfig',
     'profiles',
+    'checkout',
 
     # Other
     'crispy_forms',
