@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="col-2 mb-1">
     <a href="#">
         {% if item.product.image %}
@@ -12,5 +13,5 @@
     <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
 </div>
 <div class="col-2 mb-1 text-right">
-    <p class="my-0 small text-muted">{{ item.line_total }}</p>
+    <p class="my-0 small text-muted">{{ item.line_total|intcomma }}</p>
 </div>
