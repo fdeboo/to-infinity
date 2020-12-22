@@ -171,6 +171,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Stripe
+
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+
 
 # if 'DEVELOPMENT' in os.environ:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

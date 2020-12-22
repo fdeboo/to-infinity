@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.views.generic import FormView, UpdateView
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -351,14 +352,20 @@ class CompleteBookingView(UpdateView):
     def get_context_data(self, **kwargs):
         """ Retrieves the booking so far """
 
+        stripe_public_key = settings.STRIPE_PUBLIC_KEY
+
         booking = self.get_object()
         order_items = BookingLineItem.objects.filter(booking=booking.pk)
         addon_items = order_items.filter(product__category=1)
         insurance_items = order_items.filter(product__category=2)
         trip_items = order_items.filter(product__category=3)
+
+        # Set the context data in the context dictionary
         data = super(CompleteBookingView, self).get_context_data(**kwargs)
         data["booking"] = booking
+        data["order_items"] = order_items
         data["trip_items"] = trip_items
         data["addon_items"] = addon_items
         data["insurance_items"] = insurance_items
+        data["stripe_public_key"] = stripe_public_key
         return data
