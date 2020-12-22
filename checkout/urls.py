@@ -9,7 +9,7 @@ urlpatterns = [
         'booking/<pk>/',
         views.CompleteBookingView.as_view(),
         name="complete_booking"),
-    
+
     path(
         'success/booking/<pk>/',
         views.CheckoutSuccessView.as_view(),

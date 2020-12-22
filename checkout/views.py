@@ -85,7 +85,7 @@ class CompleteBookingView(UpdateView):
     def get_success_url(self):
         booking = self.get_object()
         print(booking)
-        return reverse("complete_booking", args=(booking.id,))
+        return reverse("checkout_success", args=(booking.id,))
 
     def form_invalid(self, form):
         messages.add_message(
@@ -96,11 +96,11 @@ class CompleteBookingView(UpdateView):
 
 class CheckoutSuccessView(SingleObjectMixin, View):
     """ Handle successful checkouts """
-
-    def get(self, request):
+    model = Booking
+    def get(self, request, *args, **kwargs):
         save_info = self.request.session.get("save_info")
         booking = self.get_object()
-
+        booking.status = "COMPLETE"
         messages.success(
             self.request,
             f"Booking successfully processed! \
@@ -111,7 +111,7 @@ class CheckoutSuccessView(SingleObjectMixin, View):
         if "passengers" in self.request.session:
             del self.request.session["passengers"]
 
-        template = "checkout/checkout_success.html"
+        template = "checkout/checkout-success.html"
         context = {
             "booking": booking,
         }
