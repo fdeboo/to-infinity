@@ -1,4 +1,3 @@
-import json
 import stripe
 from django.views.generic import UpdateView, View
 from django.views.generic.detail import SingleObjectMixin
@@ -10,6 +9,7 @@ from django.contrib import messages
 from django.conf import settings
 from bookings.models import Booking, BookingLineItem, UserProfile
 from .forms import BookingPaymentForm
+from profiles.forms import UserProfileForm
 
 
 @require_POST
@@ -20,6 +20,7 @@ def cache_checkout_data(request):
         booking_id = request.POST.get('booking_id')
         booking_items = BookingLineItem.objects.filter(booking=booking_id)
         stripe.PaymentIntent.modify(pid, metadata={
+            'booking': booking_id,
             'items': booking_items,
             'save_info': request.POST.get('save_info'),
             'username': request.user,
@@ -69,10 +70,22 @@ class CompleteBookingView(UpdateView):
         stripe_secret_key = settings.STRIPE_SECRET_KEY
 
         booking = self.get_object()
-        order_items = BookingLineItem.objects.filter(booking=booking.pk)
-        addon_items = order_items.filter(product__category=1)
-        insurance_items = order_items.filter(product__category=2)
-        trip_items = order_items.filter(product__category=3)
+        order = self.request.session("order", {})
+        booking_total = 0
+        purchase = []
+        for product_id, quantity in order.items():
+            product = Products.objects.get(product_id=product_id)
+            booking_total += product.price * quantity
+            product_count += quantity
+            purchase.append({
+                'item_id': item_id,
+                'quantity': quantity,
+                'product': product,
+            })
+        booking_items = BookingLineItem.objects.filter(booking=booking.pk)
+        addon_items = booking_items.filter(product__category=1)
+        insurance_items = booking_items.filter(product__category=2)
+        trip_items = booking_items.filter(product__category=3)
         stripe_total = round(booking.booking_total * 100)
         stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
@@ -90,7 +103,7 @@ class CompleteBookingView(UpdateView):
         # Add data to the get_context_data dictionary
         data = super(CompleteBookingView, self).get_context_data(**kwargs)
         data["booking"] = booking
-        data["order_items"] = order_items
+        data["booking_items"] = booking_items
         data["trip_items"] = trip_items
         data["addon_items"] = addon_items
         data["insurance_items"] = insurance_items
@@ -99,13 +112,22 @@ class CompleteBookingView(UpdateView):
         return data
 
     def form_valid(self, form):
-        print(self.object)
         self.object = form.save()
+        pid = form.cleaned_data['client_secret'].split('_secret')[0]
+        booking = self.object
+        booking.stripe_pid = pid
+        for product_id, quantity in basket.items():
+                product = AddOn.objects.get(product_id=product_id)
+                lineitem = BookingLineItem(
+                    booking=self.object,
+                    product=product,
+                    quantity=quantity,
+                )
         return super(CompleteBookingView, self).form_valid(form)
+
 
     def get_success_url(self):
         booking = self.get_object()
-        print(booking)
         return reverse("checkout_success", args=(booking.id,))
 
     def form_invalid(self, form):
@@ -123,6 +145,26 @@ class CheckoutSuccessView(SingleObjectMixin, View):
         save_info = self.request.session.get("save_info")
         booking = self.get_object()
         booking.status = "COMPLETE"
+        profile = UserProfile.objects.get(user=request.user)
+
+        # Attach the user's profile to the order
+        booking.user_profile = profile
+        booking.save()
+
+        # Save the user's info
+        if save_info:
+            profile_data = {
+                "default_phone_number": booking.phone_number,
+                "default_country": booking.country,
+                "default_postcode": booking.postcode,
+                "default_town_or_city": booking.town_or_city,
+                "default_street_address1": booking.street_address1,
+                "default_street_address2": booking.street_address2,
+                "default_county": booking.county,
+            }
+            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
         messages.success(
             self.request,
             f"Booking successfully processed! \

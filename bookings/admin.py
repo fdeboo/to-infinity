@@ -38,7 +38,6 @@ class BookingAdmin(admin.ModelAdmin):
         "id",
         "booking_ref",
         "booking_total",
-        "stripe_pid",
         "trip",
         "status",
     )
