@@ -1,3 +1,5 @@
+import json
+import stripe
 from django.views.generic import UpdateView, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.decorators.http import require_POST
@@ -6,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
-import stripe
 from bookings.models import Booking, BookingLineItem, UserProfile
 from .forms import BookingPaymentForm
 
@@ -16,7 +17,10 @@ def cache_checkout_data(request):
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
+        booking_id = request.POST.get('booking_id')
+        booking_items = BookingLineItem.objects.filter(booking=booking_id)
         stripe.PaymentIntent.modify(pid, metadata={
+            'items': booking_items,
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })

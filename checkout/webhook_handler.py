@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from profiles.models import UserProfile
 
 
 class StripeWH_Handler:
@@ -24,9 +25,9 @@ class StripeWH_Handler:
 
         intent = event.data.object
         print(intent)
+
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}',
-            status=200)
+            content=f'Webhook received: {event["type"]}', status=200)
 
     def handle_payment_intent_failed(self, event):
         """

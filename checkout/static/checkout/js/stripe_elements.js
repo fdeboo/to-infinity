@@ -62,11 +62,13 @@ form.addEventListener("submit", function (ev) {
     // Create a few variables to capture the form data that can't be put in the payment intent
     // Instead, post it to the cache_checkout_data view
     // The view updates the payment intent and returns a response
-
+    const currenturl = window.location.pathname;
+    const bookingId = currenturl.slice(-3, -1);
     const saveInfo = Boolean($("#id-save-info").attr("checked"));
     // from using {% csrf_token %} in the form
     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
     const postData = {
+        booking_id: bookingId,
         csrfmiddlewaretoken: csrfToken,
         client_secret: clientSecret,
         save_info: saveInfo,
