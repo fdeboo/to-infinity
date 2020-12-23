@@ -2,6 +2,7 @@
 
 from django.urls import path
 from . import views
+from .webhooks import webhook
 
 
 urlpatterns = [
@@ -14,4 +15,6 @@ urlpatterns = [
         'success/booking/<pk>/',
         views.CheckoutSuccessView.as_view(),
         name="checkout_success"),
+
+    path('wh/', webhook, name='webhook'),
 ]
