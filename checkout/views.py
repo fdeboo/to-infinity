@@ -1,6 +1,7 @@
 from django.views.generic import UpdateView, View
 from django.views.generic.detail import SingleObjectMixin
-from django.shortcuts import reverse, render
+from django.views.decorators.http import require_POST
+from django.shortcuts import reverse, render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -8,6 +9,22 @@ from django.conf import settings
 import stripe
 from bookings.models import Booking, BookingLineItem, UserProfile
 from .forms import BookingPaymentForm
+
+
+@require_POST
+def cache_checkout_data(request):
+    try:
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, 'Sorry, your payment cannot be \
+            processed right now. Please try again later')
+        return HttpResponse(content=0, status=400)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -97,6 +114,7 @@ class CompleteBookingView(UpdateView):
 class CheckoutSuccessView(SingleObjectMixin, View):
     """ Handle successful checkouts """
     model = Booking
+
     def get(self, request, *args, **kwargs):
         save_info = self.request.session.get("save_info")
         booking = self.get_object()
