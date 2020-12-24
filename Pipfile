@@ -18,6 +18,8 @@ stripe = "*"
 django-countries = "*"
 dj-database-url = "*"
 gunicorn = "*"
+boto3 = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.8"
