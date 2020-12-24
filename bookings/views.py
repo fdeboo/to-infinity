@@ -264,9 +264,11 @@ class InputPassengersView(UpdateView):
                     "first_name": profile.user.first_name,
                     "last_name": profile.user.last_name,
                     "email": profile.user.email,
+                    "passport_no": profile.default_passport_no,
                 }],
                 instance=self.object
             )
+            data['profile'] = UserProfile.objects.get(user=self.request.user)
         return data
 
     def form_valid(self, form):
@@ -280,16 +282,16 @@ class InputPassengersView(UpdateView):
 
         if formset.is_valid():
             self.object = form.save()
-            basket = {}
+            booking_items = {}
             for form in formset:
                 addons = form.cleaned_data["trip_addons"]
                 for addon in addons:
                     product_id = addon.product_id
                     quantity = 1
-                    if product_id in basket:
-                        quantity += basket.get(product_id)
-                    basket[product_id] = quantity
-            for product_id, quantity in basket.items():
+                    if product_id in booking_items:
+                        quantity += booking_items.get(product_id)
+                    booking_items[product_id] = quantity
+            for product_id, quantity in booking_items.items():
                 product = AddOn.objects.get(product_id=product_id)
                 lineitem = BookingLineItem(
                     booking=self.object,

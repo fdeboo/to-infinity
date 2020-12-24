@@ -1,5 +1,5 @@
 """
-Provides logic and context for the all_trips trip_detail
+Provides logic and context for viewing the types of trip on offer
 """
 
 import json
@@ -13,7 +13,10 @@ from .models import Product, Destination
 
 
 class DestinationListView(ListView):
-    """ A view to handle the get request for template and show all trips """
+    """
+    A view to to showcase all types of trip available and handle the post
+    request for the SearchTripsForm.
+    """
 
     model = Destination
     template_name = "products/destination_list.html"

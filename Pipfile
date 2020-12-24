@@ -16,6 +16,8 @@ django-crispy-forms = "*"
 python-dotenv = "*"
 stripe = "*"
 django-countries = "*"
+dj-database-url = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"

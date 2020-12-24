@@ -1,3 +1,8 @@
+"""
+Methods handle the different webhook responses from stripe and return
+a HTTP response.
+"""
+
 import time
 from django.http import HttpResponse
 from bookings.models import Booking
@@ -21,11 +26,12 @@ class StripeWH_Handler:
 
     def handle_payment_intent_succeeded(self, event):
         """
-        Handle the payment_intent.succeeded webhook from Stripe
+        Handle the payment_intent.succeeded webhook from Stripe.
+        Check if the form submission updated the database and if not,
+        manually update the booking.
         """
 
         intent = event.data.object
-        pid = intent.id
         booking_id = intent.metadata.booking
         booking = Booking.objects.get(id=booking_id)
         attempt = 1
@@ -46,8 +52,9 @@ class StripeWH_Handler:
                 booking.status = "COMPLETE"
                 booking.save()
             except Exception as e:
-                return HttpResponse(content=f'Webhook received: \
-                    {event["type"]} | ERROR: {e}', status=500,
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                    status=500,
                 )
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created \

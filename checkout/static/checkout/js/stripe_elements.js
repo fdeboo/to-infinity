@@ -66,7 +66,7 @@ form.addEventListener('submit', function(ev) {
 
     const currentUrl = window.location.pathname;
     const bookingId = currentUrl.slice(-3, -1);
-    // const saveInfo = Boolean($('#id-save-info').attr('checked'));
+    const saveInfo = Boolean($('#id-save-info').attr('checked'));
     // from using {% csrf_token %} in the form
     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
     const postData = {

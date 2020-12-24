@@ -22,6 +22,12 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
+    default_passport_no = models.CharField(
+        max_length=12,
+        null=True,
+        blank=True,
+        unique=True
+    )
 
     def __str__(self):
         return self.user.username
