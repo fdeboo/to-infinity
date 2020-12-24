@@ -8,16 +8,41 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
 from bookings.models import Booking, BookingLineItem, UserProfile
-from .models import Order, OrderLineItem
+from .models import Billing
 from .forms import BookingPaymentForm
 from profiles.forms import UserProfileForm
 
 
+@require_POST
+def cache_checkout_data(request):
+    try:
+        print("check4")
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe_api_key = settings.STRIPE_SECRET_KEY
+        booking_id = request.POST.get('booking_id')
+        booking_items = BookingLineItem.objects.filter(booking=booking_id)
+        print(booking_items)
+        stripe.PaymentIntent.modify(pid, metadata={
+            'booking': booking_id,
+            'items': booking_items,
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(
+            request,
+            "Sorry, your payment cannot be \
+            processed right now. Please try again later.",
+        )
+        return HttpResponse(content=e, status=400)
+
+
 @method_decorator(login_required, name="dispatch")
-class CreateOrderView(CreateView):
+class CheckoutView(CreateView):
     """ A view to complete the booking with payment information """
 
-    model = Order
+    model = Billing
     form_class = BookingPaymentForm
     template_name = "checkout/checkout.html"
 
@@ -27,7 +52,7 @@ class CreateOrderView(CreateView):
 
     def get_initial(self):
         # Provide initial values for the form
-        initial = super(CreateOrderView, self).get_initial()
+        initial = super(CheckoutView, self).get_initial()
         if self.request.user.is_authenticated:
             try:
                 profile = UserProfile.objects.get(user=self.request.user)
@@ -74,7 +99,7 @@ class CreateOrderView(CreateView):
             )
 
         # Add data to the get_context_data dictionary
-        data = super(CreateOrderView, self).get_context_data(**kwargs)
+        data = super(CheckoutView, self).get_context_data(**kwargs)
         data["booking"] = booking
         data["booking_items"] = booking_items
         data["trip_items"] = trip_items
@@ -85,19 +110,11 @@ class CreateOrderView(CreateView):
         return data
 
     def form_valid(self, form):
-        order = form.save(commit=False)
+        billing = form.save(commit=False)
         booking = self.get_object(self.request)
-        order.booking = booking
-        order.save()
-        booking_items = BookingLineItem.objects.filter(booking=booking)
-        for item in booking_items:
-            line_item = OrderLineItem(
-                booking=order,
-                product=item.product,
-                quantity=item.quantity,
-            )
-            line_item.save()
-        return super(CreateOrderView, self).form_valid(form)
+        billing.booking = booking
+        billing.save()
+        return super(CheckoutView, self).form_valid(form)
 
     def get_success_url(self):
         booking = self.get_object(self.request)
@@ -107,7 +124,7 @@ class CreateOrderView(CreateView):
         messages.add_message(
                 self.request, messages.WARNING, "Check the form errors."
             )
-        return super(CreateOrderView, self).form_invalid(form)
+        return super(CheckoutView, self).form_invalid(form)
 
 
 class CheckoutSuccessView(SingleObjectMixin, View):
@@ -118,7 +135,7 @@ class CheckoutSuccessView(SingleObjectMixin, View):
 
         save_info = self.request.session.get("save_info")
         booking = Booking.objects.get(pk=self.kwargs['pk'])
-        order = Order.objects.get(booking=booking.pk)
+        order = Billing.objects.get(booking=booking.pk)
         profile = UserProfile.objects.get(user=request.user)
 
         # Attach the user's profile to the order

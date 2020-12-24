@@ -1,22 +1,9 @@
 from django.contrib import admin
-from .models import Order, OrderLineItem
+from .models import Billing
 
 
-class OrderLineItemAdminInline(admin.TabularInline):
-    model = OrderLineItem
-    readonly_fields = ("line_total", "product", "quantity")
+class BillingAdmin(admin.ModelAdmin):
 
-
-class OrderAdminInline(admin.TabularInline):
-    model = Order
-    readonly_fields = (
-        "Order_total",
-        "status",
-    )
-
-
-class OrderAdmin(admin.ModelAdmin):
-    inlines = (OrderLineItemAdminInline,)
 
     """ Can view but not edit the following """
     readonly_fields = (
@@ -41,7 +28,9 @@ class OrderAdmin(admin.ModelAdmin):
     """ Fields displayed in add or change """
     list_display = (
         "order_total",
+        "full_name",
+        "email",
     )
 
 
-admin.site.register(Order, OrderAdmin)
+admin.site.register(Billing,)

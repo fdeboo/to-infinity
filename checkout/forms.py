@@ -4,14 +4,14 @@ Includes a form to search available dates
 """
 
 from django import forms
-from .models import Order
+from .models import Billing
 
 
 class BookingPaymentForm(forms.ModelForm):
     """ Form to collect payment information to conclude the booking """
 
     class Meta:
-        model = Order
+        model = Billing
         fields = (
             "full_name",
             "email",
