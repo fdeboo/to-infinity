@@ -35,7 +35,7 @@ class Trip(models.Model):
         Override the original save method and update the number of
         seats available
         """
-        reservations = self.bookings.aggregate(
+        reservations = self.bookings.filter(status="COMPLETE").aggregate(
             num_passengers=Count("passengers")
         )["num_passengers"]
         self.save(reservations=reservations)
@@ -106,7 +106,7 @@ class Booking(models.Model):
         Update booking total each time a line item is added
         """
 
-        self.booking_total = self.lineitems.aggregate(Sum("line_total"))[
+        self.booking_total = self.bookingitems.aggregate(Sum("line_total"))[
             "line_total__sum"
         ]
         self.save()

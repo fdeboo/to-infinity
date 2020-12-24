@@ -312,7 +312,7 @@ class InputPassengersView(UpdateView):
 
     def get_success_url(self):
         booking = self.booking
-        return reverse("complete_booking", args=(booking.id,))
+        return reverse("create_order", args=(booking.id,))
 
     def form_invalid(self, form):
         print('form invalid:failed')

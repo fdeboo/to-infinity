@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['f2bdd1f6de62.ngrok.io', '127.0.0.1']
+ALLOWED_HOSTS = ['f0ddbd144895.ngrok.io', '127.0.0.1']
 
 
 # Application definition
@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'products',
-    'bookings.apps.BookingsConfig',
     'profiles',
     'checkout',
+    'bookings.apps.BookingsConfig',
+    'checkout.apps.BookingsConfig',
 
     # Other
     'crispy_forms',

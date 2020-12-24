@@ -46,13 +46,8 @@ class BookingAdmin(admin.ModelAdmin):
         "id",
         "booking_ref",
         "booking_total",
-        "stripe_pid",
         "trip",
         "status",
-        "full_name",
-        "email",
-        "street_address1",
-        "phone_number",
     )
 
     """ Fields displayed in add or change """
