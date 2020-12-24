@@ -15,9 +15,7 @@ class BookingAdminInline(admin.TabularInline):
     model = Booking
     readonly_fields = (
         "booking_ref",
-        "lead_user",
         "booking_total",
-        "status",
     )
 
 
@@ -39,7 +37,6 @@ class BookingAdmin(admin.ModelAdmin):
         "booking_ref",
         "booking_total",
         "trip",
-        "status",
     )
 
     fields = (

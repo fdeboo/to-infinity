@@ -1,5 +1,5 @@
 import stripe
-from django.views.generic import CreateView, View
+from django.views.generic import View, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.decorators.http import require_POST
 from django.shortcuts import reverse, render, HttpResponse
@@ -8,23 +8,19 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
 from bookings.models import Booking, BookingLineItem, UserProfile
-from .models import Billing
+#  from .models import Billing
 from .forms import BookingPaymentForm
-from profiles.forms import UserProfileForm
+#  from profiles.forms import UserProfileForm
 
 
 @require_POST
 def cache_checkout_data(request):
     try:
-        print("check4")
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe_api_key = settings.STRIPE_SECRET_KEY
         booking_id = request.POST.get('booking_id')
-        booking_items = BookingLineItem.objects.filter(booking=booking_id)
-        print(booking_items)
         stripe.PaymentIntent.modify(pid, metadata={
             'booking': booking_id,
-            'items': booking_items,
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
@@ -39,10 +35,10 @@ def cache_checkout_data(request):
 
 
 @method_decorator(login_required, name="dispatch")
-class CheckoutView(CreateView):
+class CheckoutView(FormView):
     """ A view to complete the booking with payment information """
 
-    model = Billing
+    # model = Billing
     form_class = BookingPaymentForm
     template_name = "checkout/checkout.html"
 
@@ -60,12 +56,6 @@ class CheckoutView(CreateView):
                     "full_name": profile.user.get_full_name(),
                     "email": profile.user.email,
                     "phone_number": profile.default_phone_number,
-                    "country": profile.default_country,
-                    "postcode": profile.default_postcode,
-                    "town_or_city": profile.default_town_or_city,
-                    "street_address1": profile.default_street_address1,
-                    "street_address2": profile.default_street_address2,
-                    "county": profile.default_county,
                 })
             except UserProfile.DoesNotExist:
                 pass
@@ -110,10 +100,15 @@ class CheckoutView(CreateView):
         return data
 
     def form_valid(self, form):
-        billing = form.save(commit=False)
+        pid = self.request.POST.get('client_secret').split('_secret')[0]
+        # billing = form.save(commit=False)
         booking = self.get_object(self.request)
-        billing.booking = booking
-        billing.save()
+        booking_items = BookingLineItem.objects.filter(booking=booking)
+        booking.stripe_pid = pid
+        original_bag = list(booking_items.values())
+        print(original_bag)
+        booking.original_bag = original_bag
+        booking.save()
         return super(CheckoutView, self).form_valid(form)
 
     def get_success_url(self):
@@ -133,18 +128,18 @@ class CheckoutSuccessView(SingleObjectMixin, View):
 
     def get(self, request, *args, **kwargs):
 
-        save_info = self.request.session.get("save_info")
+        # save_info = self.request.session.get("save_info")
         booking = Booking.objects.get(pk=self.kwargs['pk'])
-        order = Billing.objects.get(booking=booking.pk)
+        # order = Billing.objects.get(booking=booking.pk)
         profile = UserProfile.objects.get(user=request.user)
 
         # Attach the user's profile to the order
-        booking.user_profile = profile
+        # booking.user_profile = profile
         booking.status = "COMPLETE"
         booking.save()
 
         # Save the user's info
-        if save_info:
+        """ if save_info:
             profile_data = {
                 "default_phone_number": order.phone_number,
                 "default_country": order.country,
@@ -156,12 +151,12 @@ class CheckoutSuccessView(SingleObjectMixin, View):
             }
             user_profile_form = UserProfileForm(profile_data, instance=profile)
             if user_profile_form.is_valid():
-                user_profile_form.save()
+                user_profile_form.save() """
         messages.success(
             self.request,
             f"Booking successfully processed! \
             Your booking number is {booking.booking_ref}. A confirmation \
-            email will be sent to {order.email}.",
+            email will be sent to {profile.user.email}.",
         )
 
         if "passengers" in self.request.session:
@@ -169,8 +164,7 @@ class CheckoutSuccessView(SingleObjectMixin, View):
 
         template = "checkout/checkout-success.html"
         context = {
-            "booking": booking,
-            "order": order,
+            "booking": booking
         }
 
         return render(request, template, context)

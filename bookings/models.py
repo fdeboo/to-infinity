@@ -67,9 +67,9 @@ class Booking(models.Model):
     the booking is for, details of the passengers and the overall cost"""
 
     BOOKING_STATUS_CHOICES = [
-        ("INITIAL", "Initial"),
-        ("RESERVED", "Reserved"),
+        ("OPENED", "Open"),
         ("COMPLETE", "Complete"),
+        ("CANCELLED", "Cancelled"),
     ]
     booking_ref = models.CharField(max_length=32, null=False, editable=False)
     trip = models.ForeignKey(
@@ -79,7 +79,7 @@ class Booking(models.Model):
         blank=False,
         related_name="bookings",
     )
-    lead_user = models.ForeignKey(
+    lead_passenger = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
         null=True,
@@ -94,7 +94,13 @@ class Booking(models.Model):
         null=False,
         blank=False,
         choices=BOOKING_STATUS_CHOICES,
-        default="INITIAL",
+        default="OPENED",
+    )
+    contact_number = models.CharField(max_length=20, null=True, blank=True)
+    date_completed = models.DateTimeField(null=True, blank=True)
+    original_bag = models.TextField(null=False, blank=False, default="")
+    stripe_pid = models.CharField(
+        max_length=254, null=False, blank=False, default=""
     )
 
     def _generate_booking_ref(self):

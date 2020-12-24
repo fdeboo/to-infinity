@@ -4,25 +4,22 @@ Includes a form to search available dates
 """
 
 from django import forms
-from .models import Billing
+from django_countries.fields import CountryField
+# from .models import Billing
 
 
-class BookingPaymentForm(forms.ModelForm):
-    """ Form to collect payment information to conclude the booking """
+class BookingPaymentForm(forms.Form):
+    """ Form to collect payment information for billing """
 
-    class Meta:
-        model = Billing
-        fields = (
-            "full_name",
-            "email",
-            "phone_number",
-            "street_address1",
-            "street_address2",
-            "town_or_city",
-            "postcode",
-            "country",
-            "county",
-        )
+    full_name = forms.CharField(required=True, max_length=50)
+    email = forms.EmailField(required=True, max_length=100)
+    phone_number = forms.CharField(required=True, max_length=20)
+    postcode = forms.CharField(required=True, max_length=20)
+    town_or_city = forms.CharField(required=True, max_length=40)
+    street_address1 = forms.CharField(required=True, max_length=80)
+    street_address2 = forms.CharField(required=False, max_length=80)
+    county = forms.CharField(required=False, max_length=80)
+    country = CountryField(blank_label="Country *").formfield()
 
     def __init__(self, *args, **kwargs):
         """

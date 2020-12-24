@@ -220,7 +220,6 @@ class ConfirmTripView(FormView):
         """
 
         booking = form.save(commit=False)
-        booking.status = "RESERVED"
         booking.save()
         trip = form.cleaned_data["trip"]
         destination = trip.destination

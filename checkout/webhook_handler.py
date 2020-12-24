@@ -1,4 +1,6 @@
+import time
 from django.http import HttpResponse
+from bookings.models import Booking
 
 
 class StripeWH_Handler:
@@ -21,11 +23,36 @@ class StripeWH_Handler:
         """
         Handle the payment_intent.succeeded webhook from Stripe
         """
-        print("check5")
+
         intent = event.data.object
-        print(intent)
+        pid = intent.id
+        booking_id = intent.metadata.booking
+        booking = Booking.objects.get(id=booking_id)
+        attempt = 1
+        while attempt <= 5:
+            if booking.status == "COMPLETE":
+                break
+            else:
+                attempt += 1
+                time.sleep(1)
+        if booking.status == "COMPLETE":
+            return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | SUCCESS: \
+                    Verified booking status has already been updated',
+                    status=200,
+                )
+        else:
+            try:
+                booking.status = "COMPLETE"
+                booking.save()
+            except Exception as e:
+                return HttpResponse(content=f'Webhook received: \
+                    {event["type"]} | ERROR: {e}', status=500,
+                )
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}', status=200
+            content=f'Webhook received: {event["type"]} | SUCCESS: Created \
+                order in webhook',
+            status=200,
         )
 
     def handle_payment_intent_failed(self, event):
