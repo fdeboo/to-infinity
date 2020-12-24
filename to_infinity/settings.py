@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-import psycopg2
+import dj_database_url
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -22,7 +22,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['61ae012633a4.ngrok.io', '127.0.0.1']
+ALLOWED_HOSTS = ['toinfinity.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -106,19 +106,19 @@ LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = 'to_infinity.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+Database
+https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
-        'default': ''
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
     DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 # Password validation
