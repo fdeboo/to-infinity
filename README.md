@@ -323,7 +323,7 @@ You will need to set up a free account with Stripe and with AWS for a S3 bucket.
 
 2. Change the contents of the Procfile to: 
 
-        web: gunicorn 2infinity.wsgi:application
+        web: gunicorn to_infinity.wsgi:application
     
 3. Login to Heroku and click **New** from your Personal dashboard to **Create a New App**.
 
