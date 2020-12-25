@@ -130,7 +130,7 @@ class CheckoutView(FormView):
 class CheckoutSuccessView(SingleObjectMixin, View):
     """ Handle successful checkouts """
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """ Get the booking instance from the kwargs and update the
         the booking status to 'complete'. """
 
