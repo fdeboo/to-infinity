@@ -80,6 +80,7 @@ body {
   font-size: 1rem;
   border-radius: 0;
   font-family: 'Orbitron', sans-serif;
+  border: 1px solid #000;
 }
 
 .crispyform .errorlist {
@@ -93,6 +94,21 @@ body {
 
 .text-bold {
   font-weight: 700;
+}
+
+.message-container {
+  position: fixed;
+  top: 72px;
+  right: 15px;
+  z-index: 9999;
+}
+
+.custom-toast {
+  overflow: hidden;
+}
+
+.toast-capper {
+  height: 2px;
 }
 
 /* --------------- Landing Page --------------- */
