@@ -1,3 +1,27 @@
+fieldset > legend {
+  position: relative !important;
+  right: 0.5rem !important;
+  color: #000 !important;
+  padding: 0 .5rem !important;
+  font-size: 80% !important;
+  font-weight: 400 !important;
+}
+
+.custom-control.custom-checkbox {
+  padding-left: 0;
+}
+
+label.custom-control-label {
+  position: relative;
+  padding-right: 1.5rem;
+}
+
+label.custom-control-label::before, label.custom-control-label::after {
+  top: 0;
+  right: 0;
+  left: auto;
+}
+
 .StripeElement,
 .stripe-style-input {
   -webkit-box-sizing: border-box;
@@ -41,11 +65,6 @@
 
 .stripe-style-input::placeholder {
   color: #aab7c4;
-}
-
-.fieldset-label {
-  position: relative;
-  right: .5rem;
 }
 
 #payment-form .form-control,

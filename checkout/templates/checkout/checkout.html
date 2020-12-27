@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-12">
                         <hr>
-                        <h2 class="logo-font mb-4">Checkout</h2>
+                            <h2 class="logo-font mb-4">Checkout</h2>
                         <hr>
                     </div>
                 </div>
@@ -31,17 +31,18 @@
                     {% include 'checkout/includes/summary-headers.html' %}
                     <div class="row">
                         <div class="col-12">
-                            <p class="mb-1 mt-0 text-bold">Trip:</p>
+                            <p class="mb-1 mt-0">Trip:</p>
                         </div>
                         {% for item in trip_items  %}
                         {% include 'checkout/includes/line-item-summary.html' %}
                         {% endfor %}
                     </div>
                     <hr class="my-2">
+
                     {% if addon_items %}
                         <div class="row">
                             <div class="col-12">
-                                <p class="mb-1 mt-0 text-bold">Activities:</p>
+                                <p class="mb-1 mt-0">Activities:</p>
                             </div>
                             {% for item in addon_items  %}
                             {% include 'checkout/includes/line-item-summary.html' %}
@@ -49,16 +50,18 @@
                         </div>
                     {% endif %}
                     <hr class="my-2">
+
                     {% if insurance_items %}
                         <div class="row">
                             <div class="col-12">
-                                <p class="mb-1 mt-0 text-bold">Insurances:</p>
+                                <p class="mb-1 mt-0">Insurances:</p>
                             </div>
                             {% for item in insurance_items  %}
                             {% include 'checkout/includes/line-item-summary.html' %}
                             {% endfor %}
                         </div>
                     {% endif %}
+
                     <div class="row text-black text-right">
                         <div class="col-7 offset-2">
                             <p class="my-0">Booking Total:</p>
@@ -72,64 +75,15 @@
                     <p class="text-muted">Please fill out the form below to complete your booking</p>
 
                     <!-- Checkout Form -->
-                    <form action="" method="POST" id="payment-form">
-                        {% csrf_token %}
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Contact Details</legend>
-                            {{ form.full_name | as_crispy_field }}
-                            {{ form.email | as_crispy_field }}
-                            {{ form.phone_number | as_crispy_field }}
-                            <div class="form-check form-check-inline float-right mr-0">
-                                <label class="form-check-label" for="id-save-info">
-                                    Save this number to my profile
-                                </label>
-                                <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info"
-                                    name="save-info" checked />
-                            </div>
-                        </fieldset>
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Billing</legend>
-                            {{ form.street_address1 | as_crispy_field }}
-                            {{ form.street_address2 | as_crispy_field }}
-                            {{ form.town_or_city | as_crispy_field }}
-                            {{ form.county | as_crispy_field }}
-                            {{ form.postcode | as_crispy_field }}
-                            {{ form.country | as_crispy_field }}
-                        </fieldset>
-                        <fieldset class="px-3">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-                            <!-- A Stripe card element will go here -->
-                            <div class="mb-3" id="card-element"></div>
+                    {% crispy form %}
 
-                            <!-- Used to display form errors -->
-                            <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-                            <!-- Pass the client secret to the view so we can get the payment intent id -->
-                            <input type="hidden" value="{{ client_secret }}" name="client_secret">
-                        </fieldset>
-
-                        <div class="submit-button text-right mt-5 mb-2">
-                            <a href="#" class="btn btn-outline rounded-0">
-                                <span class="icon">
-                                    <i class="fas fa-chevron-left"></i>
-                                </span>
-                                <span class="font-weight-bold">Adjust Booking</span>
-                            </a>
-
-                            <button id="submit-button" class="btn btn-outline rounded-0">
-                                <span class="font-weight-bold">Complete Order</span>
-                                <span class="icon">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </button>
-                            <p class="small text-danger my-0">
-                                <span class="icon">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </span>
-                                <span>Your card will be charged
-                                    <strong>£{{ booking.booking_total|intcomma }}</strong></span>
-                            </p>
-                        </div>
-                    </form>
+                    <p class="small text-danger my-0">
+                        <span class="icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <span>Your card will be charged
+                        <strong>£{{ booking.booking_total|intcomma }}</strong></span>
+                    </p>
                 </div>
             </div>
         </div>

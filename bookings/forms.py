@@ -18,7 +18,7 @@ from crispy_forms.layout import (
     ButtonHolder,
 )
 from products.models import AddOn
-from .custom_layout_object import Formset
+from .crispy_custom_formset import Formset
 from .models import Destination, Booking, Passenger
 
 

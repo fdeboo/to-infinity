@@ -4,7 +4,7 @@
 body {
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
-  cursor: url("rocket45right.png") 0 0, pointer;
+  cursor: url("/static/icons/shuttleicon.png") 0 0, pointer;
 }
 
 ::-moz-selection {
