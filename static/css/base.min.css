@@ -77,10 +77,48 @@ body {
 }
 
 .all-form-input {
-  font-size: 1rem;
-  border-radius: 0;
   font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
   border: 1px solid #000;
+  border-radius: 0px;
+  background-color: white;
+  -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
+          box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  -webkit-transition: -webkit-box-shadow 150ms ease;
+  transition: -webkit-box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease, -webkit-box-shadow 150ms ease;
+}
+
+.all-form-input:focus {
+  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
+          box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.all-form-input:active {
+  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
+          box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.all-form-input::-webkit-input-placeholder {
+  color: #aab7c4;
+}
+
+.all-form-input:-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+.all-form-input::-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+.all-form-input::placeholder {
+  color: #aab7c4;
 }
 
 .crispyform .errorlist {
@@ -92,8 +130,23 @@ body {
   background-color: darkturquoise;
 }
 
-.text-bold {
-  font-weight: 700;
+.progress-bar {
+  height: 4px;
+  margin: 5rem 0;
+  width: 100%;
+  position: relative;
+  background-color: turquoise;
+}
+
+.progress-bar::before {
+  content: "";
+  height: 100%;
+  width: 15px;
+  display: block;
+  background-color: red;
+  position: absolute;
+  z-index: 5;
+  right: 0;
 }
 
 .message-container {

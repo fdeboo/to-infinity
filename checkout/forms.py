@@ -7,7 +7,6 @@ from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (
     Layout,
-    Button,
     Field,
     Fieldset,
     Div,
@@ -18,11 +17,8 @@ from crispy_forms.layout import (
 
 
 class CustomCheckbox(Field):
-    template = 'checkout/crispyform/checkbox.html'
-
-
-class CustomSubmit(Button):
-    template = 'checkout/crispyform/submit.html'
+    """ Provides template for custom Checkbox field used in crispy form """
+    template = 'checkout/crispyform/saveinfo-checkbox.html'
 
 
 class BookingPaymentForm(forms.Form):
@@ -31,13 +27,13 @@ class BookingPaymentForm(forms.Form):
     full_name = forms.CharField(required=True, max_length=50)
     email = forms.EmailField(required=True, max_length=100)
     phone_number = forms.CharField(required=True, max_length=20)
-    saveinfo = forms.BooleanField(required=False)
     postcode = forms.CharField(required=True, max_length=20)
     town_or_city = forms.CharField(required=True, max_length=40)
     street_address1 = forms.CharField(required=True, max_length=80)
     street_address2 = forms.CharField(required=False, max_length=80)
     county = forms.CharField(required=False, max_length=80)
     country = CountryField(blank_label="Country *").formfield()
+    saveinfo = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         """
@@ -45,33 +41,22 @@ class BookingPaymentForm(forms.Form):
         labels and set autofocus on first field
         """
         super().__init__(*args, **kwargs)
-        placeholders = {
-            "full_name": "Full Name",
-            "email": "Email Address",
-            "phone_number": "Phone Number",
-            "postcode": "Postal Code",
-            "town_or_city": "Town or City",
-            "street_address1": "Street Address 1",
-            "street_address2": "Street Address 2",
-            "county": "County, State or Locality",
-            "saveinfo": "Save this number to my profile",
-        }
         self.fields["full_name"].widget.attrs["autofocus"] = True
         for field in self.fields:
             if field != "saveinfo":
-                self.fields[field].widget.attrs["class"] = "stripe-style-input"
+                self.fields[field].widget.attrs["class"] = "all-form-input"
                 self.fields[field].label = False
             else:
                 self.fields[field].label = "Save this number to my profile"
 
-        # Defines the layout for the form
+        # Defines the layout for the form using crispy FormHelper
         self.helper = FormHelper()
         self.helper.form_method = "POST"
         self.helper.form_id = "payment-form"
         self.helper.layout = Layout(
             Fieldset(
                 "Contact Details",
-                Field("full_name", placeholder="Full Name"),
+                Field("full_name", placeholder="Full Name", autofocus=True),
                 Field("email", placeholder="Email Address"),
                 Field("phone_number", placeholder="Phone Number"),
                 CustomCheckbox('saveinfo'),
@@ -115,7 +100,8 @@ class BookingPaymentForm(forms.Form):
                 ),
                 HTML(
                     """
-                    <button id="submit-button" class="btn btn-outline rounded-0">
+                    <button id="submit-button" class="btn btn-outline \
+                        rounded-0">
                         <span class="font-weight-bold">Complete Order</span>
                         <span class="icon">
                             <i class="fas fa-lock"></i>

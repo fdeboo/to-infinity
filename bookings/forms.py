@@ -12,9 +12,7 @@ from crispy_forms.layout import (
     Layout,
     Submit,
     Field,
-    Fieldset,
     Div,
-    HTML,
     ButtonHolder,
 )
 from products.models import AddOn
@@ -30,6 +28,16 @@ class DateInput(forms.DateInput):
     """
 
     input_type = "date"
+
+
+class CustomCheckbox(forms.CheckboxSelectMultiple):
+    """
+    Creates a custom checkbox select widget that subclasses Django's
+    CheckboxSelectMultiple and customises it with a different template
+    """
+
+    template_name = 'bookings/forms/checkbox_select.html'
+    option_template_name = 'bookings/forms/checkbox_option.html'
 
 
 class SelectWithOptionAttributes(Select):
@@ -88,7 +96,7 @@ class DestinationChoiceField(forms.ModelChoiceField):
 class TripChoiceField(forms.ModelChoiceField):
     """
     Overrides the label_from_instance method from Django's ModelChoiceField:
-    Overwrites the display tezt
+    Overwrites the display text
     """
 
     def label_from_instance(self, obj):
@@ -226,7 +234,7 @@ def make_passenger_form(active_booking):
                 "trip_addons",
             )
             widgets = {
-                "trip_addons": forms.CheckboxSelectMultiple(),
+                "trip_addons": CustomCheckbox(),
                 "is_leaduser": forms.HiddenInput(),
             }
 
@@ -242,6 +250,12 @@ def make_passenger_form(active_booking):
             self.helper.form_tag = False
             self.helper.form_error_title = "Form Errors"
             self.helper.formset_error_title = "Formset Errors"
+            for field in self.fields:
+                if field != "trip_addons":
+                    self.fields[field].widget.attrs["class"] = "all-form-input"
+                    self.fields[field].label = False
+                else:
+                    self.fields[field].label = "Choose Activities:"
 
             # CSS classes added to form elements
             self.helper.layout = Layout(
@@ -249,26 +263,30 @@ def make_passenger_form(active_booking):
                     Field(
                         "first_name",
                         css_class="form-control-lg mb-3 all-form-input",
+                        placeholder="Full Name",
                     ),
                     Field(
                         "last_name",
                         css_class="form-control-lg mb-3 all-form-input",
+                        placeholder="Last Name",
                     ),
                     Field(
                         "email",
                         css_class="form-control-lg mb-3 all-form-input",
+                        placeholder="Email Address",
                     ),
                     Field(
                         "passport_no",
-                        css_class="form-control-lg mb-3 all-form-input",
+                        css_class="form-control-lg mb-0 all-form-input",
+                        placeholder="Passport Number",
                     ),
                     Field(
                         "trip_addons",
-                        css_class="form-control-lg mb-3 all-form-input",
+                        template="bookings/forms/add-checkbox-custom.html",
                     ),
+
                     css_class="formset_row-{}".format(formtag_prefix),
                 ),
-                HTML("<hr>"),
             )
 
         def clean(self):
@@ -328,7 +346,6 @@ class RequiredPassengerFormSet(forms.BaseInlineFormSet):
 
     def clean(self):
         if any(self.errors):
-            print('yes')
             return
         passengers = []
         for form in self.forms:
@@ -351,22 +368,14 @@ class InputPassengersForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.label_class = "col-md-3 create-label"
-        self.helper.field_class = "col-md-9"
+        self.helper.field_class = "col-md-12"
         self.helper.layout = Layout(
             Div(
                 Field("trip"),
-                Div(
-                    Fieldset(
-                        "Add passengers",
-                        Formset("passenger_formset"),
-                        css_class="border col-12",
-                    ),
-                    css_class="col-8",
-                ),
-                ButtonHolder(
-                    Submit("submit", "Save", css_class="btn btn-outline"),
-                    css_class="col-12",
-                ),
-                css_class="row border justify-items-center",
-            )
+                Formset("passenger_formset"),
+            ),
+            ButtonHolder(
+                Submit("submit", "Save", css_class="btn btn-outline"),
+                css_class="col-12",
+            ),
         )

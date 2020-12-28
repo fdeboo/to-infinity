@@ -12,7 +12,7 @@ class Formset(LayoutObject):
     Create a new fieldtype that renders a formset as though it were a field
     """
 
-    template = 'bookings/crispyform/formset.html'
+    template = 'bookings/forms/formset.html'
 
     def __init__(self, formset_name_in_context, template=None):
         self.formset_name_in_context = formset_name_in_context

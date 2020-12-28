@@ -22,8 +22,7 @@ label.custom-control-label::before, label.custom-control-label::after {
   left: auto;
 }
 
-.StripeElement,
-.stripe-style-input {
+.StripeElement {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   height: 40px;
@@ -40,9 +39,33 @@ label.custom-control-label::before, label.custom-control-label::after {
   transition: box-shadow 150ms ease, -webkit-box-shadow 150ms ease;
 }
 
-.StripeElement--focus,
-.stripe-style-input:focus,
-.stripe-style-input:active {
+.StripeElement:focus {
+  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
+          box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement:active {
+  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
+          box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement::-webkit-input-placeholder {
+  color: #aab7c4;
+}
+
+.StripeElement:-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+.StripeElement::-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+.StripeElement::placeholder {
+  color: #aab7c4;
+}
+
+.StripeElement--focus {
   -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
           box-shadow: 0 1px 3px 0 #cfd7df;
 }
@@ -51,26 +74,9 @@ label.custom-control-label::before, label.custom-control-label::after {
   background-color: #fefde5 !important;
 }
 
-.stripe-style-input::-webkit-input-placeholder {
-  color: #aab7c4;
-}
-
-.stripe-style-input:-ms-input-placeholder {
-  color: #aab7c4;
-}
-
-.stripe-style-input::-ms-input-placeholder {
-  color: #aab7c4;
-}
-
-.stripe-style-input::placeholder {
-  color: #aab7c4;
-}
-
 #payment-form .form-control,
 #card-element {
   color: #000;
-  border: 1px solid #000;
 }
 
 select,
