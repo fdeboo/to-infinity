@@ -36,7 +36,7 @@ class StripeWH_Handler:
         print(intent)
         booking_pk = intent.metadata.booking
         booking_items = intent.metadata.booking_items
-        booking = Booking.objects.get(id=booking_pk)
+        booking = Booking.objects.get(pk=booking_pk)
         attempt = 1
         while attempt <= 5:
             if booking.status == "COMPLETE":
