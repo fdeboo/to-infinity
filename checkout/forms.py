@@ -18,7 +18,7 @@ from crispy_forms.layout import (
 
 class CustomCheckbox(Field):
     """ Provides template for custom Checkbox field used in crispy form """
-    template = 'checkout/crispyform/saveinfo-checkbox.html'
+    template = 'checkout/forms/saveinfo-checkbox.html'
 
 
 class BookingPaymentForm(forms.Form):
@@ -74,7 +74,7 @@ class BookingPaymentForm(forms.Form):
             ),
             Fieldset(
                 "Payment",
-                Div(css_class="mb-3", id="card-element"),
+                Div(css_class="mb-3 all-form-input", id="card-element"),
                 Div(
                     css_class="text-danger mb-3",
                     id="card-errors",

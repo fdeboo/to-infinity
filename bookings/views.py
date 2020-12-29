@@ -255,11 +255,13 @@ class InputPassengersView(UpdateView):
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
         if self.request.POST:
+            data['profile'] = profile
             data['passenger_formset'] = formset(
                 self.request.POST,
                 instance=self.object
             )
         else:
+            data['profile'] = profile
             data['passenger_formset'] = formset(
                 initial=[{
                     "first_name": profile.user.first_name,
@@ -269,7 +271,6 @@ class InputPassengersView(UpdateView):
                 }],
                 instance=self.object
             )
-            data['profile'] = UserProfile.objects.get(user=self.request.user)
         return data
 
     def form_valid(self, form):
@@ -304,8 +305,6 @@ class InputPassengersView(UpdateView):
             messages.add_message(
                 self.request, messages.WARNING, "Check the form errors."
             )
-            if self.request.session["passenger_total"]:
-                del self.request.session["passenger_total"]
             return super(InputPassengersView, self).form_invalid(form)
 
     def get_success_url(self):

@@ -13,7 +13,13 @@
 {% block content %}
 <section class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-10">      
+        <div class="col-md-10">    
+            <div class="row">
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <h2 class="logo-font mb-4">Checkout {{ booking }}</h2>
@@ -73,12 +79,12 @@
                     <!-- Checkout Form -->
                     {% crispy form %}
 
-                    <p class="small text-danger my-0">
+                    <p class="small text-danger my-0 text-right px-3">
                         <span class="icon">
                             <i class="fas fa-exclamation-circle"></i>
                         </span>
                         <span>Your card will be charged
-                        <strong>£{{ booking.booking_total|intcomma }}</strong></span>
+                        <strong>£{{ booking_total|intcomma }}</strong></span>
                     </p>
                 </div>
             </div>

@@ -53,9 +53,12 @@ class BookingAdmin(admin.ModelAdmin):
 
     """ Fields displayed in add or change """
     list_display = (
-        "booking_total",
         "booking_ref",
+        "booking_total",
+        "status",
     )
+
+    ordering = ("date_created",)
 
 
 class TripAdmin(admin.ModelAdmin):

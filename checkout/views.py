@@ -51,7 +51,6 @@ def cache_checkout_data(request):
 class CheckoutView(FormView):
     """ A view to complete the booking with payment information """
 
-    # model = Billing
     form_class = BookingPaymentForm
     template_name = "checkout/checkout.html"
 
@@ -195,6 +194,8 @@ class CheckoutSuccessView(SingleObjectMixin, View):
             del self.request.session["destination_choice"]
         if "request_date" in self.request.session:
             del self.request.session["request_date"]
+        if self.request.session["passenger_total"]:
+            del self.request.session["passenger_total"]
 
         template = "checkout/checkout-success.html"
         context = {

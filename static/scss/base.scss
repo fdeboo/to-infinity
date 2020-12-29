@@ -80,7 +80,6 @@ body {
     border-radius: 0px;
     background-color: white;
     box-shadow: 0 1px 3px 0 #e6ebf1;
-    border: 1px solid #000;
     -webkit-transition: box-shadow 150ms ease;
     transition: box-shadow 150ms ease;
 
@@ -94,6 +93,13 @@ body {
     &::placeholder {
         color: #aab7c4;
     }
+}
+
+#payment-form .form-control,
+.form-control-lg,
+#card-element {
+    color: #000;
+    border: 1px solid #000;
 }
 
 .crispyform .errorlist {
@@ -137,10 +143,6 @@ body {
 .toast-capper {
     height: 2px;
 }
-
-
-
-
 
 /* --------------- Landing Page --------------- */
 

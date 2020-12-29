@@ -3,6 +3,7 @@ Models include Trip, Passenger and Booking Line Item
 """
 import uuid
 from django.db import models
+from django.utils import timezone
 from django.db.models import Count, Sum
 from products.models import Destination, Product, AddOn, Insurance
 from profiles.models import UserProfile
@@ -97,6 +98,7 @@ class Booking(models.Model):
         default="OPENED",
     )
     contact_number = models.CharField(max_length=20, null=True, blank=True)
+    date_created = models.DateTimeField(null=True, blank=True, editable=False)
     date_completed = models.DateTimeField(null=True, blank=True)
     original_bag = models.TextField(null=False, blank=False, default="")
     stripe_pid = models.CharField(
@@ -124,6 +126,7 @@ class Booking(models.Model):
         """
 
         if not self.booking_ref:
+            self.date_created = timezone.now()
             self.booking_ref = self._generate_booking_ref()
         super().save(*args, **kwargs)
 

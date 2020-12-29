@@ -40,7 +40,7 @@ class CustomCheckbox(forms.CheckboxSelectMultiple):
     option_template_name = 'bookings/forms/checkbox_option.html'
 
 
-class SelectWithOptionAttributes(Select):
+class SelectOptionsWithAttributes(Select):
     """
     Creates a custom widget that sublasses Django's select widget.
     Customises it's create_option method
@@ -66,7 +66,7 @@ class SelectWithOptionAttributes(Select):
             label = opt_attrs.pop("label")
         else:
             opt_attrs = {}
-        option_dict = super(SelectWithOptionAttributes, self).create_option(
+        option_dict = super(SelectOptionsWithAttributes, self).create_option(
             name, value, label, selected, index, subindex=subindex, attrs=attrs
         )
         for key, val in opt_attrs.items():
@@ -81,7 +81,7 @@ class DestinationChoiceField(forms.ModelChoiceField):
     data-attribute
     """
 
-    widget = SelectWithOptionAttributes
+    widget = SelectOptionsWithAttributes
 
     def label_from_instance(self, obj):
         # 'obj' will be a Destination
@@ -116,7 +116,7 @@ class SearchTripsForm(forms.Form):
         queryset=Destination.objects.all(),
         label="",
         empty_label="Destination",
-        widget=SelectWithOptionAttributes(),
+        widget=SelectOptionsWithAttributes(),
     )
     request_date = forms.DateField(required=True, label="", widget=DateInput())
     passengers = forms.IntegerField(label="", widget=forms.NumberInput())

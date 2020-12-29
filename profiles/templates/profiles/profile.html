@@ -40,11 +40,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for order in orders %}
+                        {% for booking in open_bookings %}
                         <tr>
                             <td>
-                                <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">
+                                <a href="{% url 'order_history' order.order_number %}" title="{{ bookingr.order_number }}">
                                     {{ order.order_number|truncatechars:6 }}
+                                </a>
+                            </td>
+                            <td>{{ order.date }}</td>
+                            <td>
+                                <ul class="list-unstyled">
+                                    {% for item in order.lineitems.all %}
+                                    <li class="small">
+                                        {{ item.product.name }} x{{ item.quantity }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>${{ order.booking_total }}</td>
+                        </tr>
+                        {% endfor %}
+
+
+                        {% for booking in complete_bookings %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'order_history' order.order_number %}" title="{{ booking.booking_ref }}">
+                                    {{ booking.booking_ref|truncatechars:6 }}
                                 </a>
                             </td>
                             <td>{{ order.date }}</td>
