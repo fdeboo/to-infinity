@@ -71,7 +71,9 @@ class Booking(models.Model):
         ("COMPLETE", "Complete"),
         ("CANCELLED", "Cancelled"),
     ]
-    booking_ref = models.CharField(max_length=32, null=False, editable=False)
+    booking_ref = models.CharField(
+        primary_key=True, max_length=32, null=False, editable=False
+        )
     trip = models.ForeignKey(
         Trip,
         on_delete=models.SET_NULL,

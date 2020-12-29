@@ -5,7 +5,8 @@ a HTTP response.
 
 import time
 from django.http import HttpResponse
-from bookings.models import Booking
+from products.models import Product
+from bookings.models import Booking, BookingLineItem
 
 
 class StripeWH_Handler:
@@ -32,8 +33,10 @@ class StripeWH_Handler:
         """
 
         intent = event.data.object
-        booking_id = intent.metadata.booking
-        booking = Booking.objects.get(id=booking_id)
+        print(intent)
+        booking_pk = intent.metadata.booking
+        booking_items = intent.metadata.booking_items
+        booking = Booking.objects.get(id=booking_pk)
         attempt = 1
         while attempt <= 5:
             if booking.status == "COMPLETE":
@@ -51,6 +54,14 @@ class StripeWH_Handler:
             try:
                 booking.status = "COMPLETE"
                 booking.save()
+                for product_id, quantity in booking_items.items():
+                    product = Product.objects.get(pk=product_id)
+                    booking_line_item = BookingLineItem(
+                        booking=booking,
+                        product=product,
+                        quantity=quantity,
+                    )
+                    booking_line_item.save()
             except Exception as e:
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',

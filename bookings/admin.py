@@ -33,14 +33,12 @@ class BookingAdmin(admin.ModelAdmin):
 
     """ Can view but not edit the following """
     readonly_fields = (
-        "id",
         "booking_ref",
         "booking_total",
         "trip",
     )
 
     fields = (
-        "id",
         "booking_ref",
         "booking_total",
         "trip",

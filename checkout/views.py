@@ -4,6 +4,7 @@ summary and form to collect payment details for Stripe. Updates booking status
 if checkout successful.
 """
 
+import json
 import stripe
 from django.views.generic import View, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -13,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
+from products.models import Product
 from bookings.models import Booking, BookingLineItem, UserProfile
 from .forms import BookingPaymentForm
 
@@ -24,11 +26,15 @@ def cache_checkout_data(request):
 
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
-        booking_id = request.POST.get('booking_id')
         stripe.PaymentIntent.modify(pid, metadata={
-            'booking': booking_id,
+            "booking_items": json.dumps(
+                request.session.get("booking_items", {})
+                ),
+            # "booking_items": request.session.get("booking_items", {}),
+            "booking": request.session.get("booking", ""),
             'save_info': request.POST.get('save_info'),
         })
+        del request.session["booking"]
         return HttpResponse(status=200)
     except Exception as e:
         messages.error(
@@ -74,11 +80,30 @@ class CheckoutView(FormView):
         stripe_secret_key = settings.STRIPE_SECRET_KEY
 
         booking = self.get_object(self.request)
-        booking_items = BookingLineItem.objects.filter(booking=booking.pk)
-        addon_items = booking_items.filter(product__category=1)
-        insurance_items = booking_items.filter(product__category=2)
-        trip_items = booking_items.filter(product__category=3)
-        stripe_total = round(booking.booking_total * 100)
+        items = self.request.session.get("booking_items")
+        booking_items = []
+        addon_items = []
+        trip_items = []
+        # insurance+items = []
+        booking_total = 0
+        for product_id, quantity in items.items():
+            product = Product.objects.get(pk=product_id)
+            item = {
+                'product': product,
+                'quantity': quantity,
+                'line_total': (product.price * quantity)
+            }
+            booking_total += item['line_total']
+            booking_items.append(item)
+            if product.category.pk == 1:
+                addon_items.append(item)
+                # elif product.category.pk == 2:
+                #    insurance_items.append(item)
+            elif product.category.pk == 3:
+                trip_items.append(item)
+            else:
+                pass
+        stripe_total = round(booking_total * 100)
         stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
@@ -91,14 +116,15 @@ class CheckoutView(FormView):
                 "Stripe public key is missing. \
                 Did you forget to set it in your environment?",
             )
+        self.request.session['booking'] = booking.pk
 
         # Add data to the get_context_data dictionary
         data = super(CheckoutView, self).get_context_data(**kwargs)
-        data["booking"] = booking
+        data["booking_total"] = booking_total
         data["booking_items"] = booking_items
         data["trip_items"] = trip_items
         data["addon_items"] = addon_items
-        data["insurance_items"] = insurance_items
+        # data["insurance_items"] = insurance_items
         data["stripe_public_key"] = stripe_public_key
         data["client_secret"] = intent.client_secret
         return data
@@ -106,10 +132,18 @@ class CheckoutView(FormView):
     def form_valid(self, form):
         pid = self.request.POST.get('client_secret').split('_secret')[0]
         booking = self.get_object(self.request)
-        booking_items = BookingLineItem.objects.filter(booking=booking)
+        booking_items = self.request.session.get('booking_items', {})
+        booking.original_bag = json.dumps(booking_items)
         booking.stripe_pid = pid
-        original_bag = list(booking_items.values())
-        booking.original_bag = original_bag
+        for product_id, quantity in booking_items.items():
+            product = Product.objects.get(pk=product_id)
+            booking_line_item = BookingLineItem(
+                booking=booking,
+                product=product,
+                quantity=quantity,
+            )
+            booking_line_item.save()
+        booking.status = "COMPLETE"
         booking.save()
 
         # save the save_info input to the session
@@ -118,7 +152,7 @@ class CheckoutView(FormView):
 
     def get_success_url(self):
         booking = self.get_object(self.request)
-        return reverse("checkout_success", args=(booking.id,))
+        return reverse("checkout_success", args=(booking.pk,))
 
     def form_invalid(self, form):
         messages.add_message(
@@ -136,9 +170,6 @@ class CheckoutSuccessView(SingleObjectMixin, View):
 
         save_info = self.request.session.get("save_info")
         booking = Booking.objects.get(pk=self.kwargs['pk'])
-        booking.status = "COMPLETE"
-        booking.save()
-
         profile = UserProfile.objects.get(user=request.user)
         if save_info:
             profile.default_phone_no = self.request.POST.get('phone_number')
@@ -151,8 +182,10 @@ class CheckoutSuccessView(SingleObjectMixin, View):
             email will be sent to {profile.user.email}.",
         )
 
-        if "passengers" in self.request.session:
-            del self.request.session["passengers"]
+        if "save_info" in self.request.session:
+            del self.request.session["save_info"]
+        if "booking_items" in self.request.session:
+            del self.request.session["booking_items"]
 
         template = "checkout/checkout-success.html"
         context = {

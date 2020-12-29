@@ -12,11 +12,11 @@ from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from products.models import AddOn
+# from products.models import AddOn
 from .models import (
     Trip,
     Booking,
-    BookingLineItem,
+    # BookingLineItem,
     Destination,
     UserProfile,
 )
@@ -145,11 +145,12 @@ class ConfirmTripView(FormView):
         """
 
         # Retrieve values from the session
-        date = self.request.session["request_date"]
+        date = self.request.session.get("request_date", "")
         self.searched_date = json.loads(date)
-        self.passengers = self.request.session["passenger_total"]
-        self.destination_pk = self.request.session["destination_choice"]
-
+        self.passengers = self.request.session.get("passenger_total", "")
+        self.destination_pk = self.request.session.get(
+            "destination_choice", ""
+        )
         # Return querysets for dates before/beyond searched_date respectively:
         self.gte_dates = self.get_trips_matched_or_post_date(
             self.searched_date, self.destination_pk, self.passengers
@@ -196,7 +197,7 @@ class ConfirmTripView(FormView):
         return initial
 
     def get_form_kwargs(self, **kwargs):
-        """ Provides keyword arguemnt """
+        """ Provides keyword arguemnts """
 
         kwargs = super(ConfirmTripView, self).get_form_kwargs()
 
@@ -223,13 +224,20 @@ class ConfirmTripView(FormView):
         booking.save()
         trip = form.cleaned_data["trip"]
         destination = trip.destination
-        booking_line_item = BookingLineItem(
-            booking=booking,
-            product=destination,
-            quantity=self.request.session["passenger_total"],
-        )
-        booking_line_item.save()
-        return redirect("create_passengers", booking.id)
+        booking_items = {}
+        product_id = destination.product_id
+        quantity = self.passengers
+        booking_items[product_id] = quantity
+        self.request.session['booking_items'] = {}
+        self.request.session['booking_items'] = booking_items
+
+        # Delete values from the session that are redundant
+        if self.request.session["destination_choice"]:
+            del self.request.session["destination_choice"]
+        if self.request.session["request_date"]:
+            del self.request.session["request_date"]
+
+        return redirect("create_passengers", booking.pk)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -282,7 +290,7 @@ class InputPassengersView(UpdateView):
 
         if formset.is_valid():
             self.object = form.save()
-            booking_items = {}
+            booking_items = self.request.session['booking_items']
             for form in formset:
                 addons = form.cleaned_data["trip_addons"]
                 for addon in addons:
@@ -291,15 +299,9 @@ class InputPassengersView(UpdateView):
                     if product_id in booking_items:
                         quantity += booking_items.get(product_id)
                     booking_items[product_id] = quantity
-            for product_id, quantity in booking_items.items():
-                product = AddOn.objects.get(product_id=product_id)
-                lineitem = BookingLineItem(
-                    booking=self.object,
-                    product=product,
-                    quantity=quantity,
-                )
-                lineitem.save()
             formset.instance = self.object
+
+            # Passengers are saved
             formset.save()
             messages.add_message(
                 self.request, messages.SUCCESS, "Changes were saved."
@@ -309,11 +311,13 @@ class InputPassengersView(UpdateView):
             messages.add_message(
                 self.request, messages.WARNING, "Check the form errors."
             )
+            if self.request.session["passenger_total"]:
+                del self.request.session["passenger_total"]
             return super(InputPassengersView, self).form_invalid(form)
 
     def get_success_url(self):
         booking = self.booking
-        return reverse("create_order", args=(booking.id,))
+        return reverse("create_order", args=(booking.pk,))
 
     def form_invalid(self, form):
         print('form invalid:failed')

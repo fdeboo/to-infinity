@@ -1,5 +1,5 @@
 {% with id=widget.attrs.id %}
-    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group outline-black">
+    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group border">
         <label class="" for="">Choose Activities:</label>
         <div class="custom-checkbox-group border-black">
             {% for group, options, index in widget.optgroups %}
