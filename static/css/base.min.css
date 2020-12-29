@@ -87,7 +87,7 @@ body {
   background-color: white;
   -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
           box-shadow: 0 1px 3px 0 #e6ebf1;
-  border: 1px solid red;
+  border: 1px solid #000;
   -webkit-transition: box-shadow 150ms ease;
   -webkit-transition: -webkit-box-shadow 150ms ease;
   transition: -webkit-box-shadow 150ms ease;
