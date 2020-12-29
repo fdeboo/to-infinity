@@ -174,8 +174,9 @@ class CheckoutSuccessView(SingleObjectMixin, View):
         save_info = self.request.session.get("save_info")
         booking = Booking.objects.get(pk=self.kwargs['pk'])
         profile = UserProfile.objects.get(user=request.user)
+        print(profile)
         if save_info == "true":
-            profile.default_phone_no = booking.contact_number
+            profile.default_phone_num = booking.contact_number
             profile.save()
 
         messages.success(
