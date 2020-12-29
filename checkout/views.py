@@ -5,6 +5,7 @@ if checkout successful.
 """
 
 import json
+import datetime
 import stripe
 from django.views.generic import View, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -26,14 +27,15 @@ def cache_checkout_data(request):
 
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
+        save_info = request.POST.get('save_info')
         stripe.PaymentIntent.modify(pid, metadata={
             "booking_items": json.dumps(
                 request.session.get("booking_items", {})
                 ),
-            # "booking_items": request.session.get("booking_items", {}),
             "booking": request.session.get("booking", ""),
-            'save_info': request.POST.get('save_info'),
+            "save_info": save_info,
         })
+        request.session['save_info'] = save_info
         del request.session["booking"]
         return HttpResponse(status=200)
     except Exception as e:
@@ -67,7 +69,7 @@ class CheckoutView(FormView):
             initial.update({
                 "full_name": profile.user.get_full_name(),
                 "email": profile.user.email,
-                "phone_number": profile.default_phone_number,
+                "phone_number": profile.default_phone_num,
             })
         except UserProfile.DoesNotExist:
             pass
@@ -132,9 +134,11 @@ class CheckoutView(FormView):
     def form_valid(self, form):
         pid = self.request.POST.get('client_secret').split('_secret')[0]
         booking = self.get_object(self.request)
+        booking.contact_number = form.cleaned_data['phone_number']
+        booking.date_completed = datetime.datetime.now()
+        booking.stripe_pid = pid
         booking_items = self.request.session.get('booking_items', {})
         booking.original_bag = json.dumps(booking_items)
-        booking.stripe_pid = pid
         for product_id, quantity in booking_items.items():
             product = Product.objects.get(pk=product_id)
             booking_line_item = BookingLineItem(
@@ -147,7 +151,6 @@ class CheckoutView(FormView):
         booking.save()
 
         # save the save_info input to the session
-        self.request.session["save_info"] = "save-info" in self.request.POST
         return super(CheckoutView, self).form_valid(form)
 
     def get_success_url(self):
@@ -171,8 +174,8 @@ class CheckoutSuccessView(SingleObjectMixin, View):
         save_info = self.request.session.get("save_info")
         booking = Booking.objects.get(pk=self.kwargs['pk'])
         profile = UserProfile.objects.get(user=request.user)
-        if save_info:
-            profile.default_phone_no = self.request.POST.get('phone_number')
+        if save_info == "true":
+            profile.default_phone_no = booking.contact_number
             profile.save()
 
         messages.success(
@@ -182,10 +185,15 @@ class CheckoutSuccessView(SingleObjectMixin, View):
             email will be sent to {profile.user.email}.",
         )
 
+        # Delete values from the session that are redundant
         if "save_info" in self.request.session:
             del self.request.session["save_info"]
         if "booking_items" in self.request.session:
             del self.request.session["booking_items"]
+        if "destination_choice" in self.request.session:
+            del self.request.session["destination_choice"]
+        if "request_date" in self.request.session:
+            del self.request.session["request_date"]
 
         template = "checkout/checkout-success.html"
         context = {

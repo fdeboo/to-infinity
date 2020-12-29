@@ -230,13 +230,6 @@ class ConfirmTripView(FormView):
         booking_items[product_id] = quantity
         self.request.session['booking_items'] = {}
         self.request.session['booking_items'] = booking_items
-
-        # Delete values from the session that are redundant
-        if self.request.session["destination_choice"]:
-            del self.request.session["destination_choice"]
-        if self.request.session["request_date"]:
-            del self.request.session["request_date"]
-
         return redirect("create_passengers", booking.pk)
 
 
@@ -272,7 +265,7 @@ class InputPassengersView(UpdateView):
                     "first_name": profile.user.first_name,
                     "last_name": profile.user.last_name,
                     "email": profile.user.email,
-                    "passport_no": profile.default_passport_no,
+                    "passport_no": profile.default_passport_num,
                 }],
                 instance=self.object
             )

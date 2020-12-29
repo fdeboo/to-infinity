@@ -17,12 +17,12 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=25, null=True, blank=True)
     last_name = models.CharField(max_length=25, null=True, blank=True)
-    default_phone_number = models.CharField(
+    default_phone_num = models.CharField(
         max_length=20,
         null=True,
         blank=True
     )
-    default_passport_no = models.CharField(
+    default_passport_num = models.CharField(
         max_length=12,
         null=True,
         blank=True,

@@ -33,7 +33,6 @@ class StripeWH_Handler:
         """
 
         intent = event.data.object
-        print(intent)
         booking_pk = intent.metadata.booking
         booking_items = intent.metadata.booking_items
         booking = Booking.objects.get(pk=booking_pk)

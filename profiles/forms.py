@@ -10,13 +10,8 @@ class UserProfileForm(forms.ModelForm):
             'user',
             'first_name',
             'last_name',
-            'default_phone_number',
-            'default_street_address1',
-            'default_street_address2',
-            'default_town_or_city',
-            'default_county',
-            'default_postcode',
-            'default_country',
+            'default_phone_num',
+            'default_passport_num',
         )
 
     def __init__(self, *args, **kwargs):
@@ -27,11 +22,7 @@ class UserProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         placeholders = {
             'default_phone_number': 'Phone Number',
-            'default_postcode': 'Postal Code',
-            'default_town_or_city': 'Town or City',
-            'default_street_address1': 'Street Address 1',
-            'default_street_address2': 'Street Address 2',
-            'default_county': 'County, State or Locality',
+            'default_passport_no': 'Postal Code',
         }
 
         self.fields['default_phone_number'].widget.attrs['autofocus'] = True

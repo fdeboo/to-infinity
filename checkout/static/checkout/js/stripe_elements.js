@@ -64,7 +64,7 @@ form.addEventListener('submit', function(ev) {
     // Instead, post it to the cache_checkout_data view
     // The view updates the payment intent and returns a response
 
-    const saveInfo = Boolean($('#id-save-info').attr('checked'));
+    const saveInfo = $("#id_saveinfo").is(":checked");
     // from using {% csrf_token %} in the form
     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
     const postData = {

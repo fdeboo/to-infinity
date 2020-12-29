@@ -34,6 +34,9 @@ class BookingAdmin(admin.ModelAdmin):
     """ Can view but not edit the following """
     readonly_fields = (
         "booking_ref",
+        "lead_passenger",
+        "contact_number",
+        "date_completed",
         "booking_total",
         "trip",
     )
@@ -41,14 +44,17 @@ class BookingAdmin(admin.ModelAdmin):
     fields = (
         "booking_ref",
         "booking_total",
+        "lead_passenger",
+        "contact_number",
+        "date_completed",
         "trip",
         "status",
     )
 
     """ Fields displayed in add or change """
     list_display = (
-        "booking_ref",
         "booking_total",
+        "booking_ref",
     )
 
 
