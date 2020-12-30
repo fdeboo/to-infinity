@@ -2,12 +2,22 @@
 {% load static %}
 
 {% block page_nav %}
-    {% include 'includes/light_nav.html' %}
+    <div class="row bg-black justify-content-center">
+        {% include 'includes/dark_nav.html' %}
+    </div>
 {% endblock page_nav %}
 
 {% block content %}
 <section>
     <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+                <div class="col-3 progress-bar"></div>
+            </div>
+        </div>    
         <div class="col-12 col-md-10 col-lg-6" id="focus-search">
             <h2>Start your booking:</h2>
             {% crispy form %}

@@ -106,10 +106,11 @@ body {
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
-    border-radius: 0.25rem;
     list-style-type: none;
+    border-radius: 0;
+    border-bottom: 2px solid turquoise;
     background-color: darkturquoise;
-}
+}   
 
 .progress-bar{
     height: 4px;
@@ -171,22 +172,21 @@ body {
 
 .bg-hero {
     z-index: -1;
-    background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
-    background-size: cover;
-    background-position: bottom -20vh right 50%;
-    position: fixed;
+    position: absolute;
     height: 100vh;
-    width: 100vw;
     bottom: 0;
     left: 0;
     right: 0;
+    background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
+    background-size: cover;
+    background-position: 50% 30vh;
+
 }
 
 /* --------------- Destination List Template --------------- */
 
 .image-container {
     height: 100vh;
-    width: 100vw;
     margin: 0 !important;
     padding: 0 !important;
     position: relative;
@@ -196,11 +196,16 @@ body {
         left: 50%;
         transform: translate(-50%, -50%);
         color: white;
+        font: {
+            size: 3em;
+            family: 'Orbitron', sans-serif;
+            weight: bold;
+        }
     }
     img {
         object-fit: cover;
-        max-height: 100%;
-        max-width: 100%;
+        height: 100%;
+        width: 100%;
     }
 }
 

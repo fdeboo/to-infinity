@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_nav %}
-{% include 'includes/light_nav.html' %}
+    <div class="row bg-black justify-content-center">
+        {% include 'includes/dark_nav.html' %}
+    </div>
 {% endblock page_nav %}
 
 {% block content %}
@@ -26,7 +28,7 @@
                     {% csrf_token %}
                     <div class="row justify-content-center">
                         {% for radio in form.trip %}
-                            <div class="radio-options mx-2 col-2">
+                            <div class="radio-options mx-2">
                                 {{ radio.tag }}
                                 <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
                             </div>

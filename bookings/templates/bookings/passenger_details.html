@@ -44,11 +44,8 @@
                             </p>
                             {% include 'checkout/includes/summary-headers.html' %}
                             <div class="row">
-                                <div class="col-12">
-                                    <p class="mb-1 mt-0">Trip:</p>
-                                </div>
                                 {% for item in trip_items  %}
-                                {% include 'checkout/includes/line-item-summary.html' %}
+                                    {% include 'checkout/includes/line-item-summary.html' %}
                                 {% endfor %}
                             </div>
                             <hr class="my-2">
@@ -58,7 +55,7 @@
                                     <p class="my-0">Booking Total:</p>
                                 </div>
                                 <div class="col-3">
-                                    <p class="my-0">£{{ booking.booking_total|intcomma }}</p>
+                                    <p class="my-0">£{{ booking_total|intcomma }}</p>
                                 </div>
                             </div>
                         </div>

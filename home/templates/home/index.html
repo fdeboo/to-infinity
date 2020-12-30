@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block bg %} <div class="row bg-hero"></div>{% endblock bg %}
 {% block page_nav %}
-    {% include 'includes/light_nav.html' %}
+<div class="row justify-content-center">
+    {% include 'includes/dark_nav.html' %}
+</div>
 {% endblock page_nav %}
 
 {% block content %}
 
     <section class="container-fluid">
-        <div class="row justify-content-center">
+        <div class="row mt-5 justify-content-center">
             <div class="col-12 d-flex flex-column align-items-center my-auto">
                 <p class="hero-text text-center">
                     Experiences that are out of this world.
@@ -18,7 +21,6 @@
                 </a>
             </div>
         </div>
-        <div class="row bg-hero"></div>
     </section>
 
 {% endblock content %}

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_nav %}
-    {% include 'includes/dark_nav.html' %}
+    <div class="row bg-black justify-content-center">
+        {% include 'includes/dark_nav.html' %}
+    </div>
 {% endblock page_nav %}
 
 {% block content %}
@@ -14,6 +16,7 @@
         <div class="col-md-6">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
+            <p>{{ product.price }}</p>
         </div>
     </div>
 {% endblock content %}

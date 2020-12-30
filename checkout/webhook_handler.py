@@ -5,6 +5,9 @@ a HTTP response.
 
 import time
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 from products.models import Product
 from bookings.models import Booking, BookingLineItem
 
@@ -16,6 +19,19 @@ class StripeWH_Handler:
 
     def __init__(self, request):
         self.request = request
+
+    def _send_confirmation_email(self, booking):
+        """Send the user a confirmation email"""
+        cust_email = booking.email
+        subject = render_to_string(
+            "checkout/confirmation_emails/confirmation_email_subject.txt",
+            {"booking": booking},
+        )
+        body = render_to_string(
+            "checkout/confirmation_emails/confirmation_email_body.txt",
+            {"order": booking, "contact_email": settings.DEFAULT_FROM_EMAIL},
+        )
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [cust_email])
 
     def handle_event(self, event):
         """
@@ -44,6 +60,7 @@ class StripeWH_Handler:
                 attempt += 1
                 time.sleep(1)
         if booking.status == "COMPLETE":
+            self._send_confirmation_email(booking)
             return HttpResponse(
                     content=f'Webhook received: {event["type"]} | SUCCESS: \
                     Verified booking status has already been updated',
@@ -66,6 +83,7 @@ class StripeWH_Handler:
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500,
                 )
+        self._send_confirmation_email(booking)
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created \
                 order in webhook',

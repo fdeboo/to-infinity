@@ -12,11 +12,10 @@ from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-# from products.models import AddOn
+from products.models import Product
 from .models import (
     Trip,
     Booking,
-    # BookingLineItem,
     Destination,
     UserProfile,
 )
@@ -220,8 +219,7 @@ class ConfirmTripView(FormView):
         Intitial Booking in the database
         """
 
-        booking = form.save(commit=False)
-        booking.save()
+        booking = form.save()
         trip = form.cleaned_data["trip"]
         destination = trip.destination
         booking_items = {}
@@ -254,14 +252,34 @@ class InputPassengersView(UpdateView):
         formset = make_passenger_formset(passenger_form, passenger_total)
         data = super(InputPassengersView, self).get_context_data(**kwargs)
         profile = UserProfile.objects.get(user=self.request.user)
+
+        # Provide the context for the booking summary
+        items = self.request.session.get("booking_items")
+        trip_items = []
+        booking_total = 0
+        for product_id, quantity in items.items():
+            product = Product.objects.get(pk=product_id)
+            item = {
+                'product': product,
+                'quantity': quantity,
+                'line_total': (product.price * quantity)
+            }
+            if product.category.pk == 3:
+                booking_total += item['line_total']
+                trip_items.append(item)
+
         if self.request.POST:
             data['profile'] = profile
+            data['booking_total'] = booking_total
+            data['trip_items'] = trip_items
             data['passenger_formset'] = formset(
                 self.request.POST,
                 instance=self.object
             )
         else:
             data['profile'] = profile
+            data['booking_total'] = booking_total
+            data['trip_items'] = trip_items
             data['passenger_formset'] = formset(
                 initial=[{
                     "first_name": profile.user.first_name,

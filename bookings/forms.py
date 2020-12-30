@@ -125,7 +125,6 @@ class SearchTripsForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "POST"
-        self.helper.form_action = "destinations"
         self.helper.form_class = "d-flex"
         self.helper.field_class = "col-12"
         self.helper.layout = Layout(
