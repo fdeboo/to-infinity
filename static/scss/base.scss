@@ -1,7 +1,7 @@
 @import 'config';
 @import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap');
 
-/* --------------- Universal Styles --------------- */
+/* Universal Styles ------------------------------ */
 
 body {
     font: {
@@ -22,6 +22,10 @@ body {
     span {
         font-family: 'Euphoria Script', cursive;
     }
+}
+
+.bg-white {
+    background-color: #fff;
 }
 
 .site-link {
@@ -145,7 +149,7 @@ body {
     height: 2px;
 }
 
-/* --------------- Landing Page --------------- */
+/* Landing Page ------------------------------ */
 
 .hero-btn {
     @extend .btn-outline;
@@ -183,7 +187,7 @@ body {
 
 }
 
-/* --------------- Destination List Template --------------- */
+/* Destination List Template ------------------------------ */
 
 .image-container {
     height: 100vh;
@@ -265,21 +269,21 @@ body {
 }
 
 
-/* --------------- Destination Details Template --------------- */
+/* Destination Details Template ------------------------------ */
 
-/* --------------- Add on List Template --------------- */
+/* Add on List Template ------------------------------ */
 
-/* --------------- Insurance List Template --------------- */
+/* Insurance List Template ------------------------------ */
 
-/* --------------- Add on List Template --------------- */
+/* Add on List Template ------------------------------ */
 
-/* --------------- Search Trips Template --------------- */
+/* Search Trips Template ------------------------------ */
 #focus-search > form {
     flex-direction: column !important;
 }
-/* --------------- Unavailalbe Template --------------- */
+/* Unavailable Template ------------------------------ */
 
-/* --------------- Confirim Trip Template --------------- */
+/* Confirim Trip Template ------------------------------ */
 
 //Styles the search results; Hides radio inputs and styles the input labels
 
@@ -338,7 +342,6 @@ body {
     background-color: transparent;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }
-
 
 .formatted-day {
     display: block;

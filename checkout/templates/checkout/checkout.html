@@ -32,9 +32,6 @@
                     </p>
                     {% include 'checkout/includes/summary-headers.html' %}
                     <div class="row">
-                        <div class="col-12">
-                            <p class="mb-1 mt-0">Trip:</p>
-                        </div>
                         {% for item in trip_items  %}
                         {% include 'checkout/includes/line-item-summary.html' %}
                         {% endfor %}
@@ -43,9 +40,6 @@
 
                     {% if addon_items %}
                         <div class="row">
-                            <div class="col-12">
-                                <p class="mb-1 mt-0">Activities:</p>
-                            </div>
                             {% for item in addon_items  %}
                             {% include 'checkout/includes/line-item-summary.html' %}
                             {% endfor %}
@@ -55,9 +49,6 @@
 
                     {% if insurance_items %}
                         <div class="row">
-                            <div class="col-12">
-                                <p class="mb-1 mt-0">Insurances:</p>
-                            </div>
                             {% for item in insurance_items  %}
                             {% include 'checkout/includes/line-item-summary.html' %}
                             {% endfor %}
