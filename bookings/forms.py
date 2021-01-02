@@ -261,22 +261,22 @@ def make_passenger_form(active_booking):
                 Div(
                     Field(
                         "first_name",
-                        css_class="form-control-lg mb-3 all-form-input",
+                        css_class="form-control-lg mb-0 all-form-input",
                         placeholder="Full Name",
                     ),
                     Field(
                         "last_name",
-                        css_class="form-control-lg mb-3 all-form-input",
+                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Last Name",
                     ),
                     Field(
                         "email",
-                        css_class="form-control-lg mb-3 all-form-input",
+                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Email Address",
                     ),
                     Field(
                         "passport_no",
-                        css_class="form-control-lg mb-0 all-form-input",
+                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Passport Number",
                     ),
                     Field(
