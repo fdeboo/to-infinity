@@ -13,6 +13,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from products.models import Product
+from .formset import make_passenger_formset
 from .models import (
     Trip,
     Booking,
@@ -24,7 +25,6 @@ from .forms import (
     DateChoiceForm,
     InputPassengersForm,
     make_passenger_form,
-    make_passenger_formset
 )
 
 

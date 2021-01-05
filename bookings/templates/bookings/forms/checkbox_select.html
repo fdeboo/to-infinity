@@ -1,16 +1,20 @@
 {% with id=widget.attrs.id %}
-    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group border">
-        <label class="" for="">Choose Activities:</label>
+    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group border all-form-shadow p-4">
+        <label class="small text-muted" for="">Choose Activities:</label>
         <div class="custom-checkbox-group">
             {% for group, options, index in widget.optgroups %}
-                <div class="addon">
-                    {% for option in options %}        
-                        {% include option.template_name with widget=option %}
-                    {% endfor %}
-                </div>
-                <label for="{{ id }}">
-                    <img src="" alt="test" width="60">
-                </label>
+                    {% for option in options %} 
+                        <div class="d-flex align-items-stretch addon-item">
+                            <div class="addon flex-grow-1">
+                                {% include option.template_name with widget=option %}
+                            </div>
+                            {% if option.object.image_thumb %}
+                                <label class="option-image" for="{{ id }}">
+                                    <img src="{{ option.object.image_thumb.url }}" alt="{{ option.name }}">
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}  
             {% endfor %}
         </div>
     </div>

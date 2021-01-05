@@ -6,7 +6,7 @@
         {{ formset.non_form_errors }}
         {% for form in formset.forms %}
             <fieldset class="mb-3">
-                <legend class="small text-muted">Passenger {{forloop.counter}}</legend>
+                <legend class="">Passenger {{forloop.counter}}</legend>
                 {% crispy form %}
             </fieldset>
         {% endfor %}

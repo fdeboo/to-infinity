@@ -1,16 +1,47 @@
+.addon-item {
+  border-bottom: 1px solid black;
+}
+
+.addon-item .option-image {
+  margin-bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
+  position: relative;
+  min-width: 60px !important;
+}
+
+.addon-item .option-image img {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .addon {
   display: block;
-  margin: 10px 0;
+  margin: 0;
   position: relative;
 }
 
 .addon label {
   font-family: 'Orbitron', sans-serif;
-  padding: 12px 30px;
+  padding: 12px 20px 12px 60px;
   width: 100%;
+  margin: 0;
   display: block;
   text-align: left;
-  border-bottom: 2px solid turquoise;
   color: #aab7c4;
   cursor: pointer;
   position: relative;
@@ -18,6 +49,16 @@
   -webkit-transition: color 200ms ease-in;
   transition: color 200ms ease-in;
   overflow: hidden;
+}
+
+.addon label .line-height-small {
+  margin-bottom: 0;
+  line-height: 0.8em;
+}
+
+.addon label span {
+  font-family: 'Montserrat';
+  font-size: 0.8em;
 }
 
 .addon label:before {
@@ -49,7 +90,7 @@
   border-radius: 50%;
   z-index: 2;
   position: absolute;
-  right: 30px;
+  left: 10px;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);

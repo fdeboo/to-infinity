@@ -3,6 +3,7 @@
 
 {% if widget.wrap_label %}
     <label{% if widget.attrs.id %} for="{{ widget.attrs.id }}" {% endif %}>
-        {{ widget.label }}
+        <p class="mb-0">{{ widget.label }} <span class="small">£{{widget.object.price}}</span></p>
+        <p class="line-height-small"><span class="font-italic text-muted">{{ widget.object.description }}</span></p>
     </label>
 {% endif %}

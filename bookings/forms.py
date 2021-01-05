@@ -4,7 +4,6 @@ Includes a form to search available dates
 """
 import re
 from datetime import date
-from django.core.exceptions import ValidationError
 from django import forms
 from django.forms.widgets import Select
 from crispy_forms.helper import FormHelper
@@ -16,8 +15,8 @@ from crispy_forms.layout import (
     ButtonHolder,
 )
 from products.models import AddOn
-from .crispy_custom_formset import Formset
 from .models import Destination, Booking, Passenger
+from .formset import Formset
 
 
 class DateInput(forms.DateInput):
@@ -28,16 +27,6 @@ class DateInput(forms.DateInput):
     """
 
     input_type = "date"
-
-
-class CustomCheckbox(forms.CheckboxSelectMultiple):
-    """
-    Creates a custom checkbox select widget that subclasses Django's
-    CheckboxSelectMultiple and customises it with a different template
-    """
-
-    template_name = 'bookings/forms/checkbox_select.html'
-    option_template_name = 'bookings/forms/checkbox_option.html'
 
 
 class SelectOptionsWithAttributes(Select):
@@ -210,6 +199,28 @@ class DateChoiceForm(forms.ModelForm):
         self.fields["trip"].queryset = trip_dates
 
 
+class CustomCheckbox(forms.CheckboxSelectMultiple):
+    """
+    Creates a custom checkbox select widget that subclasses Django's
+    CheckboxSelectMultiple and customises it with a different template
+    """
+
+    template_name = 'bookings/forms/checkbox_select.html'
+    option_template_name = 'bookings/forms/checkbox_option.html'
+
+    def create_option(
+        self, name, value, label, selected, index, subindex, attrs
+    ):
+        obj = AddOn.objects.get(pk=value)
+        option_dict = super(CustomCheckbox, self).create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        option_dict['template_name'] = self.option_template_name
+        option_dict['object'] = obj
+
+        return option_dict
+
+
 def make_passenger_form(active_booking):
     """
     Provides the PassengerForm with the booking instance received in params
@@ -251,32 +262,27 @@ def make_passenger_form(active_booking):
             self.helper.formset_error_title = "Formset Errors"
             for field in self.fields:
                 if field != "trip_addons":
-                    self.fields[field].widget.attrs["class"] = "all-form-input"
+                    self.fields[field].widget.attrs["class"] = "form-control-lg \
+                        mb-3 mt-0 all-form-input"
                     self.fields[field].label = False
-                else:
-                    self.fields[field].label = "Choose Activities:"
 
             # CSS classes added to form elements
             self.helper.layout = Layout(
                 Div(
                     Field(
                         "first_name",
-                        css_class="form-control-lg mb-0 all-form-input",
                         placeholder="Full Name",
                     ),
                     Field(
                         "last_name",
-                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Last Name",
                     ),
                     Field(
                         "email",
-                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Email Address",
                     ),
                     Field(
                         "passport_no",
-                        css_class="form-control-lg mb-0 mt-3 all-form-input",
                         placeholder="Passport Number",
                     ),
                     Field(
@@ -312,48 +318,6 @@ def make_passenger_form(active_booking):
     return PassengerForm
 
 
-def make_passenger_formset(form, passenger_total):
-    """Receives a dynamic value to be used in construction of inlineformset."""
-
-    PassengerFormSet = forms.inlineformset_factory(
-        Booking,
-        Passenger,
-        form=form,
-        formset=RequiredPassengerFormSet,
-        extra=passenger_total,
-        max_num=passenger_total,
-        min_num=passenger_total,
-        validate_max=True,
-        validate_min=True,
-        can_delete=False,
-    )
-
-    return PassengerFormSet
-
-
-class RequiredPassengerFormSet(forms.BaseInlineFormSet):
-    """
-    Validation for the formset as a whole.
-    Validates that all forms in the formset are completed and no passenger is
-    entered more than once.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super(RequiredPassengerFormSet, self).__init__(*args, **kwargs)
-        for form in self.forms:
-            form.empty_permitted = False
-
-    def clean(self):
-        if any(self.errors):
-            return
-        passengers = []
-        for form in self.forms:
-            passport_no = form.cleaned_data.get("passport_no")
-            if passport_no in passengers:
-                raise ValidationError("Duplicate passenger")
-            passengers.append(passport_no)
-
-
 class InputPassengersForm(forms.ModelForm):
     """Defines the overall form within which the PassengerFormset is nested."""
 
@@ -371,10 +335,10 @@ class InputPassengersForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field("trip"),
+                # Custom layout object defined externally
                 Formset("passenger_formset"),
             ),
             ButtonHolder(
-                Submit("submit", "Save", css_class="btn btn-outline"),
-                css_class="col-12",
+                Submit("submit", "Save", css_class="m-0 btn btn-outline"),
             ),
         )
