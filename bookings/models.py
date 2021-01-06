@@ -4,6 +4,7 @@ Models include Trip, Passenger and Booking Line Item
 import uuid
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinLengthValidator
 from django.db.models import Count, Sum
 from products.models import Destination, Product, AddOn, Insurance
 from profiles.models import UserProfile
@@ -141,7 +142,13 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=20, null=False, blank=False)
     last_name = models.CharField(max_length=20, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
-    passport_no = models.CharField(max_length=12, null=False, blank=False)
+    passport_no = models.CharField(
+        max_length=9,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(4, message="Does not meet the required \
+            length")]
+    )
     is_leaduser = models.BooleanField(
         null=False, blank=False, default=False, editable=False)
     trip_addons = models.ManyToManyField(AddOn, blank=True)

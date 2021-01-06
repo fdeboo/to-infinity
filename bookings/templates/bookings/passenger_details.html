@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load humanize %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
@@ -13,8 +12,7 @@
 
 
 {% block content %}
-
-    <section class="container-fluid">
+    <section class="container-fluid position-relative">
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="row">
@@ -26,7 +24,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="logo-font mb-4">Passengers</h2>
+                        <h2 class="logo-font mb-4">Passenger Details</h2>
                         <hr>
                     </div>
                 </div>
@@ -37,28 +35,11 @@
                             {% crispy form %}
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 mb-5t-end">
-                        <div class="row justify-content-end">
-                        <div class="col-10">
-                            <p class="text-muted">Booking Summary</p>
-                            </p>
-                            {% include 'checkout/includes/summary-headers.html' %}
-                            <div class="row">
-                                {% for item in trip_items  %}
-                                    {% include 'checkout/includes/line-item-summary.html' %}
-                                {% endfor %}
+                    <div class="col-12 col-lg-6 mb-5">
+                        <div class="row justify-content-end sticky">
+                            <div class="col-10">
+                                {% include 'checkout/includes/booking-summary.html' %}
                             </div>
-                            <hr class="my-2">
-
-                            <div class="row text-black text-right">
-                                <div class="col-7 offset-2">
-                                    <p class="my-0">Booking Total:</p>
-                                </div>
-                                <div class="col-3">
-                                    <p class="my-0">£{{ booking_total|intcomma }}</p>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>                

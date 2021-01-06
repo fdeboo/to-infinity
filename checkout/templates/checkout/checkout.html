@@ -28,41 +28,7 @@
             </div>
             <div class="row">
                 <div class="col-12 col-lg-6 order-lg-last mb-5">
-                    <p class="text-muted">Booking Summary ({{ booking_items|length }} items)</p>
-                    </p>
-                    {% include 'checkout/includes/summary-headers.html' %}
-                    <div class="row">
-                        {% for item in trip_items  %}
-                        {% include 'checkout/includes/line-item-summary.html' %}
-                        {% endfor %}
-                    </div>
-                    <hr class="my-2">
-
-                    {% if addon_items %}
-                        <div class="row">
-                            {% for item in addon_items  %}
-                            {% include 'checkout/includes/line-item-summary.html' %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <hr class="my-2">
-
-                    {% if insurance_items %}
-                        <div class="row">
-                            {% for item in insurance_items  %}
-                            {% include 'checkout/includes/line-item-summary.html' %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <div class="row text-black text-right">
-                        <div class="col-7 offset-2">
-                            <p class="my-0">Booking Total:</p>
-                        </div>
-                        <div class="col-3">
-                            <p class="my-0">£{{ booking_total|intcomma }}</p>
-                        </div>
-                    </div>
+                    {% include 'checkout/includes/booking-summary.html' %}
                 </div>
                 <div class="col-12 col-lg-6">
                     <p class="text-muted">Please fill out the form below to complete your booking</p>

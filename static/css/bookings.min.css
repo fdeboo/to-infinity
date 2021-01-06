@@ -1,45 +1,16 @@
-.addon-item {
-  border-bottom: 1px solid black;
-}
-
-.addon-item .option-image {
-  margin-bottom: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  overflow: hidden;
+.addon-set {
   position: relative;
-  min-width: 60px !important;
+  margin-bottom: 0.6rem;
 }
 
-.addon-item .option-image img {
-  min-width: 100%;
-  max-width: 100%;
-  min-height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-.addon {
-  display: block;
+.addon-set label {
   margin: 0;
   position: relative;
 }
 
-.addon label {
+.addon-set label .addon-details {
   font-family: 'Orbitron', sans-serif;
-  padding: 12px 20px 12px 60px;
+  padding: 12px 20px 12px 50px;
   width: 100%;
   margin: 0;
   display: block;
@@ -53,17 +24,17 @@
   overflow: hidden;
 }
 
-.addon label .line-height-small {
+.addon-set label .addon-details .line-height-small {
   margin-bottom: 0;
   line-height: 0.8em;
 }
 
-.addon label span {
+.addon-set label .addon-details span {
   font-family: 'Montserrat';
   font-size: 0.8em;
 }
 
-.addon label:before {
+.addon-set label .addon-details:before {
   width: 15px;
   height: 10px;
   border-radius: 50%;
@@ -80,7 +51,7 @@
   z-index: -1;
 }
 
-.addon label:after {
+.addon-set label .addon-details:after {
   width: 32px;
   height: 32px;
   content: '';
@@ -92,7 +63,7 @@
   border-radius: 50%;
   z-index: 2;
   position: absolute;
-  left: 10px;
+  left: 5px;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -101,22 +72,66 @@
   transition: all 200ms ease-in;
 }
 
-.addon input:checked ~ label {
+.addon-set label .addon-image {
+  margin-bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
+  width: 60px !important;
+  position: relative;
+}
+
+.addon-set label .addon-image img {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+  opacity: 0.5;
+  -webkit-transition: opacity 200ms ease-in;
+  transition: opacity 200ms ease-in;
+}
+
+.addon-set input:hover ~ label .addon-details {
   color: #000;
 }
 
-.addon input:checked ~ label:before {
+.addon-set input:hover ~ label .addon-image img {
+  opacity: 1;
+}
+
+.addon-set input:checked ~ label .addon-details {
+  color: #000;
+}
+
+.addon-set input:checked ~ label .addon-details:before {
   -webkit-transform: translate(-50%, -50%) scale3d(56, 56, 1);
           transform: translate(-50%, -50%) scale3d(56, 56, 1);
   opacity: 1;
 }
 
-.addon input:checked ~ label:after {
+.addon-set input:checked ~ label .addon-details:after {
   background-color: #000;
   border-color: #000;
 }
 
-.addon input {
+.addon-set input:checked ~ label .addon-image img {
+  opacity: 1;
+}
+
+.addon-set input {
   width: 32px;
   height: 32px;
   -webkit-box-ordinal-group: 2;
@@ -132,12 +147,12 @@
   visibility: hidden;
 }
 
-code {
-  background-color: #9AA3AC;
-  padding: 0 8px;
+hr {
+  margin: 0.6rem 0;
 }
 
-.outline-black {
-  border: 1px solid #000;
-  padding: 10px 24px;
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 4rem;
 }

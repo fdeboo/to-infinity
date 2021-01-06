@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block bg %} <div class="row bg-hero"></div>{% endblock bg %}
+
+{% block bg %}
+    <div class="container-fluid">
+        <div class="row bg-hero"></div>
+    </div>
+{% endblock bg %}
+
 {% block page_nav %}
-<div class="row justify-content-center">
-    {% include 'includes/dark_nav.html' %}
-</div>
+    <div class="row justify-content-center">
+        {% include 'includes/dark_nav.html' %}
+    </div>
 {% endblock page_nav %}
 
 {% block content %}

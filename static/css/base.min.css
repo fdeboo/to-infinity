@@ -83,6 +83,8 @@ body {
 .all-form-shadow {
   -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
           box-shadow: 0 1px 3px 0 #e6ebf1;
+  border: 1px solid #000;
+  background-color: #fff;
 }
 
 .all-form-input {

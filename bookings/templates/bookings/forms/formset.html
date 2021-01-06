@@ -5,7 +5,7 @@
         {{ formset.management_form | crispy }}
         {{ formset.non_form_errors }}
         {% for form in formset.forms %}
-            <fieldset class="mb-3">
+            <fieldset class="mt-3 p-3 border rounded">
                 <legend class="">Passenger {{forloop.counter}}</legend>
                 {% crispy form %}
             </fieldset>

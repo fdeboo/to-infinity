@@ -263,7 +263,7 @@ def make_passenger_form(active_booking):
             for field in self.fields:
                 if field != "trip_addons":
                     self.fields[field].widget.attrs["class"] = "form-control-lg \
-                        mb-3 mt-0 all-form-input"
+                        mt-0 all-form-input"
                     self.fields[field].label = False
 
             # CSS classes added to form elements
@@ -302,18 +302,23 @@ def make_passenger_form(active_booking):
 
             # Collect data from field
             passport_no = self.cleaned_data.get("passport_no")
-
-            # Validate if passenger already exists on any bookings
-            # from the same trip
-            existing_passengers = Passenger.objects.filter(
-                booking__trip=active_booking.trip
-            ).filter(
-                booking__trip__bookings__passengers__passport_no=passport_no
-            )
-            if existing_passengers:
+            if passport_no is None:
                 self._errors["passport_no"] = self.error_class(
-                    ["Error, please check passport number or contact us"]
+                    ["This field is required."]
                 )
+
+            else:
+                # Validate if passenger already exists on any bookings
+                # for the same trip
+                existing_passengers = Passenger.objects.filter(
+                    booking__trip=active_booking.trip
+                ).filter(
+                    booking__trip__bookings__passengers__passport_no=passport_no
+                )
+                if existing_passengers:
+                    self._errors["passport_no"] = self.error_class(
+                        ["Error, please check passport number or contact us"]
+                    )
 
     return PassengerForm
 
@@ -339,6 +344,6 @@ class InputPassengersForm(forms.ModelForm):
                 Formset("passenger_formset"),
             ),
             ButtonHolder(
-                Submit("submit", "Save", css_class="m-0 btn btn-outline"),
+                Submit("submit", "Proceed", css_class="m-0 btn btn-outline"),
             ),
         )

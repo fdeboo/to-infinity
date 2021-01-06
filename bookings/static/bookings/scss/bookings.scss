@@ -1,105 +1,121 @@
 // Credit: https://codepen.io/BuddyLReno/pen/boGRPO
-.addon-item {
-    border-bottom: 1px solid black;
-    .option-image {
-        margin-bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
-        min-width: 60px !important;
-        img {
-            min-width: 100%;
-            max-width: 100%;
-            min-height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            object-fit: cover;
-        }
-    }
-    
-}
-
-.addon {
-    display: block;
-    margin: 0;
+.addon-set {
     position: relative;
+    margin-bottom: 0.6rem;
 
     label {
-        font-family: 'Orbitron', sans-serif;
-        padding: 12px 20px 12px 60px;
-        width: 100%;
         margin: 0;
-        display: block;
-        text-align: left;
-        color:  #aab7c4;
-        cursor: pointer;
         position: relative;
-        z-index: 2;
-        transition: color 200ms ease-in;
-        overflow: hidden;
 
-        .line-height-small {
-            margin-bottom: 0;
-            line-height: 0.8em;
-        }
+        .addon-details {
+            font-family: 'Orbitron', sans-serif;
+            padding: 12px 20px 12px 50px;
+            width: 100%;
+            margin: 0;
+            display: block;
+            text-align: left;
+            color:  #aab7c4;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: color 200ms ease-in;
+            overflow: hidden;
 
-        span {
-            font: {
-                family: 'Montserrat';
-                size: 0.8em;
+            .line-height-small {
+                margin-bottom: 0;
+                line-height: 0.8em;
+            }
+
+            span {
+                font: {
+                    family: 'Montserrat';
+                    size: 0.8em;
+                }
+            }
+
+            &:before {
+                width: 15px;
+                height: 10px;
+                border-radius: 50%;
+                content: '';
+                background-color: whitesmoke;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale3d(1, 1, 1);
+                transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+                opacity: 0;
+                z-index: -1;
+            }
+
+            &:after {
+                width: 32px;
+                height: 32px;
+                content: '';
+                border: 1px solid #aab7c4;
+                background-color: #fff;
+                background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+                background-repeat: no-repeat;
+                background-position: 2px 3px;
+                border-radius: 50%;
+                z-index: 2;
+                position: absolute;
+                left: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                transition: all 200ms ease-in;
             }
         }
 
-        &:before {
-            width: 15px;
-            height: 10px;
-            border-radius: 50%;
-            content: '';
-            background-color: whitesmoke;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale3d(1, 1, 1);
-            transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-            opacity: 0;
-            z-index: -1;
-        }
-
-        &:after {
-            width: 32px;
-            height: 32px;
-            content: '';
-            border: 1px solid #aab7c4;
-            background-color: #fff;
-            background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
-            background-repeat: no-repeat;
-            background-position: 2px 3px;
-            border-radius: 50%;
-            z-index: 2;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            transition: all 200ms ease-in;
+        .addon-image {
+            margin-bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 60px !important;
+            position: relative;
+            img {
+                min-width: 100%;
+                max-width: 100%;
+                min-height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                object-fit: cover;
+                opacity: 0.5;
+                transition: opacity 200ms ease-in;
+            }
         }
     }
 
-    input:checked ~ label {
-        color: #000;
-        &:before {
-            transform: translate(-50%, -50%) scale3d(56, 56, 1);
+    input:hover ~ label {
+        .addon-details {
+            color: #000;
+        }
+        .addon-image img {
             opacity: 1;
         }
+    }
+    
+    input:checked ~ label {
+        .addon-details {
+            color: #000;
+            &:before {
+                transform: translate(-50%, -50%) scale3d(56, 56, 1);
+                opacity: 1;
+            }
 
-        &:after {
-            background-color: #000;
-            border-color: #000;
+            &:after {
+                background-color: #000;
+                border-color: #000;
+            }
+        }
+        .addon-image img {
+            opacity: 1;
         }
     }
 
@@ -117,12 +133,11 @@
     }
 }
 
-code {
-    background-color: #9AA3AC;
-    padding: 0 8px;
+hr {
+    margin: 0.6rem 0;
 }
 
-.outline-black {
-    border: 1px solid #000;
-    padding: 10px 24px;
+.sticky {
+    position: sticky;
+    top: 4rem;
 }

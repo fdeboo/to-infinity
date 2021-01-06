@@ -63,6 +63,15 @@ class RequiredPassengerFormSet(forms.BaseInlineFormSet):
         for form in self.forms:
             form.empty_permitted = False
 
+    def full_clean(self):
+        super(RequiredPassengerFormSet, self).full_clean()
+
+        for error in self._non_form_errors.as_data():
+            if error.code == 'too_few_forms':
+                error.message = "Please provide details for all %d \
+                    travellers." % self.min_num
+
+
     def clean(self):
         if any(self.errors):
             return

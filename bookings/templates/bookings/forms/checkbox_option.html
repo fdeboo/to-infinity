@@ -2,8 +2,17 @@
     value="{{ widget.value|stringformat:'s' }}" {% endif %}>
 
 {% if widget.wrap_label %}
-    <label{% if widget.attrs.id %} for="{{ widget.attrs.id }}" {% endif %}>
-        <p class="mb-0">{{ widget.label }} <span class="small">£{{widget.object.price}}</span></p>
-        <p class="line-height-small"><span class="font-italic text-muted">{{ widget.object.description }}</span></p>
+    <label{% if widget.attrs.id %} for="{{ widget.attrs.id }}" {% endif %} class="d-flex addon-item">
+        <div class="flex-grow-1 addon-details">
+            <p class="mb-0">{{ widget.label }} <span class="small">£{{widget.object.price}}</span></p>
+            <p class="line-height-small"><span class="text-muted">{{ widget.object.description }}</span></p>
+        </div>
+        {% if option.object.image_thumb %}
+            <div class="addon-image" for="{{ id }}">
+                <img src="{{ option.object.image_thumb.url }}" alt="{{ option.name }}">
+            </div>
+        {% endif %}
     </label>
 {% endif %}
+<div class="addon flex-grow-1">
+</div>
