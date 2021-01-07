@@ -71,7 +71,6 @@ class RequiredPassengerFormSet(forms.BaseInlineFormSet):
                 error.message = "Please provide details for all %d \
                     travellers." % self.min_num
 
-
     def clean(self):
         if any(self.errors):
             return

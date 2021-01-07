@@ -199,24 +199,24 @@ class DateChoiceForm(forms.ModelForm):
         self.fields["trip"].queryset = trip_dates
 
 
-class CustomCheckbox(forms.CheckboxSelectMultiple):
+class CustomCheckboxSet(forms.CheckboxSelectMultiple):
     """
     Creates a custom checkbox select widget that subclasses Django's
     CheckboxSelectMultiple and customises it with a different template
     """
 
-    template_name = 'bookings/forms/checkbox_select.html'
-    option_template_name = 'bookings/forms/checkbox_option.html'
+    template_name = "bookings/forms/checkbox_select.html"
+    option_template_name = "bookings/forms/checkbox_option.html"
 
     def create_option(
         self, name, value, label, selected, index, subindex, attrs
     ):
         obj = AddOn.objects.get(pk=value)
-        option_dict = super(CustomCheckbox, self).create_option(
+        option_dict = super(CustomCheckboxSet, self).create_option(
             name, value, label, selected, index, subindex=subindex, attrs=attrs
         )
-        option_dict['template_name'] = self.option_template_name
-        option_dict['object'] = obj
+        option_dict["template_name"] = self.option_template_name
+        option_dict["object"] = obj
 
         return option_dict
 
@@ -234,6 +234,8 @@ def make_passenger_form(active_booking):
         individually
         """
 
+        saveinfo = forms.BooleanField(required=False)
+
         class Meta:
             model = Passenger
             fields = (
@@ -244,7 +246,7 @@ def make_passenger_form(active_booking):
                 "trip_addons",
             )
             widgets = {
-                "trip_addons": CustomCheckbox(),
+                "trip_addons": CustomCheckboxSet(),
                 "is_leaduser": forms.HiddenInput(),
             }
 
@@ -262,9 +264,17 @@ def make_passenger_form(active_booking):
             self.helper.formset_error_title = "Formset Errors"
             for field in self.fields:
                 if field != "trip_addons":
-                    self.fields[field].widget.attrs["class"] = "form-control-lg \
-                        mt-0 all-form-input"
-                    self.fields[field].label = False
+                    if field == "saveinfo":
+                        self.fields[
+                            field
+                        ].label = "Save passport number to my \
+                            profile."
+                    else:
+                        self.fields[field].widget.attrs[
+                            "class"
+                        ] = "form-control-lg \
+                            mt-0 all-form-input"
+                        self.fields[field].label = False
 
             # CSS classes added to form elements
             self.helper.layout = Layout(
@@ -289,7 +299,6 @@ def make_passenger_form(active_booking):
                         "trip_addons",
                         template="bookings/forms/add-checkbox-custom.html",
                     ),
-
                     css_class="formset_row-{}".format(formtag_prefix),
                 ),
             )
