@@ -18,5 +18,10 @@ urlpatterns = [
     path(
         '<pk>/passengers/add/',
         views.InputPassengersView.as_view(),
-        name="create_passengers")
+        name="create_passengers"),
+
+    path(
+        '<pk>/cancel/',
+        views.CancelBookingView.as_view(),
+        name="cancel_booking")
 ]

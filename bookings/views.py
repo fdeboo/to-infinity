@@ -5,8 +5,9 @@ Views in this module provide logic for templates that guide the booking process
 import json
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
+from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
@@ -221,13 +222,13 @@ class ConfirmTripView(FormView):
 
         trip = form.cleaned_data["trip"]
         destination = trip.destination
-        # Create object to store data relevant to the product purchase
+        # Create object to store data relevant to the products for purchase
         booking_items = {}
         product_id = destination.product_id
         quantity = self.passengers
         booking_items[product_id] = quantity
 
-        # Save data to the session
+        # Save object to the session
         self.request.session['booking_items'] = booking_items
 
         # Create initial booking instance with user profile and booking items
@@ -342,3 +343,9 @@ class InputPassengersView(UpdateView):
         messages.add_message(
                 self.request, messages.error, "There was a problem."
             )
+
+
+class CancelBookingView(DeleteView):
+    """ Deletes the booking instance passed in the post request """
+    model = Booking
+    success_url = reverse_lazy('profile')
