@@ -34,7 +34,9 @@ class BookingAdmin(admin.ModelAdmin):
     """ Can view but not edit the following """
     readonly_fields = (
         "booking_ref",
+        "booking_total",
         "lead_passenger",
+        "original_bag",
         "contact_number",
         "date_completed",
         "booking_total",
@@ -45,6 +47,7 @@ class BookingAdmin(admin.ModelAdmin):
         "booking_ref",
         "booking_total",
         "lead_passenger",
+        "original_bag",
         "contact_number",
         "date_completed",
         "trip",

@@ -146,7 +146,7 @@ class Passenger(models.Model):
         max_length=9,
         null=False,
         blank=False,
-        validators=[MinLengthValidator(4, message="Does not meet the required \
+        validators=[MinLengthValidator(9, message="Does not meet the required \
             length")]
     )
     is_leaduser = models.BooleanField(

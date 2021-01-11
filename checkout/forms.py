@@ -21,7 +21,7 @@ class CustomCheckbox(Field):
     template = 'checkout/forms/saveinfo-checkbox.html'
 
 
-class BookingPaymentForm(forms.Form):
+class BookingCheckoutForm(forms.Form):
     """ Form to collect payment information for billing """
 
     full_name = forms.CharField(required=True, max_length=50)

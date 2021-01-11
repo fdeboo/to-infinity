@@ -80,55 +80,63 @@ body {
   color: #F9F9F9;
 }
 
-.all-form-shadow {
+.all-form-shadow, .all-form-input,
+.allauth-form-inner-content input {
   -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
           box-shadow: 0 1px 3px 0 #e6ebf1;
   border: 1px solid #000;
   background-color: #fff;
+  border-radius: 0px;
 }
 
-.all-form-input {
+.all-form-input,
+.allauth-form-inner-content input {
   font-family: 'Orbitron', sans-serif;
   font-size: 1rem;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   height: 40px;
   padding: 10px 12px;
-  border-radius: 0px;
-  background-color: white;
-  -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
-          box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
   -webkit-transition: -webkit-box-shadow 150ms ease;
   transition: -webkit-box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease, -webkit-box-shadow 150ms ease;
 }
 
-.all-form-input:focus {
+.all-form-input:focus,
+.allauth-form-inner-content input:focus {
   -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
           box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
-.all-form-input:active {
+.all-form-input:active,
+.allauth-form-inner-content input:active {
   -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
           box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
-.all-form-input::-webkit-input-placeholder {
+.all-form-input::-webkit-input-placeholder,
+.allauth-form-inner-content input::-webkit-input-placeholder {
   color: #aab7c4;
 }
 
-.all-form-input:-ms-input-placeholder {
+.all-form-input:-ms-input-placeholder,
+.allauth-form-inner-content input:-ms-input-placeholder {
   color: #aab7c4;
 }
 
-.all-form-input::-ms-input-placeholder {
+.all-form-input::-ms-input-placeholder,
+.allauth-form-inner-content input::-ms-input-placeholder {
   color: #aab7c4;
 }
 
-.all-form-input::placeholder {
+.all-form-input::placeholder,
+.allauth-form-inner-content input::placeholder {
   color: #aab7c4;
+}
+
+.allauth-form-inner-content label:not([for='id_remember']) {
+  display: none;
 }
 
 #payment-form .form-control,
@@ -144,8 +152,8 @@ body {
   border: 1px solid transparent;
   list-style-type: none;
   border-radius: 0;
-  border-bottom: 2px solid turquoise;
-  background-color: darkturquoise;
+  border-bottom: 2px solid red;
+  background-color: turquoise;
 }
 
 .progress-bar {
@@ -192,6 +200,10 @@ body {
 .hero-btn:hover {
   background-color: #F9F9F9;
   color: #000;
+}
+
+.vh-50 {
+  height: 50vh;
 }
 
 .hero-text {

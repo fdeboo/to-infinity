@@ -7,7 +7,6 @@ from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 from django.views.generic import FormView, UpdateView
-from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
@@ -28,6 +27,7 @@ from .forms import (
 )
 
 
+@method_decorator(login_required, name="dispatch")
 class SearchTripsView(FormView):
     """
     Renders an initial search form for users to search availabiltiy for
@@ -49,7 +49,7 @@ class SearchTripsView(FormView):
         return HttpResponseRedirect(reverse("confirm_trip"))
 
 
-@method_decorator(never_cache, name="dispatch")
+@method_decorator(login_required, name="dispatch")
 class ConfirmTripView(FormView):
     """
     Provides the user a set of choice options based on their search input in
@@ -219,15 +219,24 @@ class ConfirmTripView(FormView):
         Intitial Booking in the database
         """
 
-        booking = form.save()
         trip = form.cleaned_data["trip"]
         destination = trip.destination
+        # Create object to store data relevant to the product purchase
         booking_items = {}
         product_id = destination.product_id
         quantity = self.passengers
         booking_items[product_id] = quantity
-        self.request.session['booking_items'] = {}
+
+        # Save data to the session
         self.request.session['booking_items'] = booking_items
+
+        # Create initial booking instance with user profile and booking items
+        booking = form.save(commit=False)
+        user = UserProfile.objects.get(pk=self.request.user.pk)
+        booking.lead_passenger = user
+        booking.original_bag = booking_items
+        booking.save()
+
         return redirect("create_passengers", booking.pk)
 
 
@@ -330,4 +339,6 @@ class InputPassengersView(UpdateView):
         return reverse("create_order", args=(booking.pk,))
 
     def form_invalid(self, form):
-        print('form invalid:failed')
+        messages.add_message(
+                self.request, messages.error, "There was a problem."
+            )

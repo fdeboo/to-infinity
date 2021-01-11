@@ -3,90 +3,135 @@
 {% load humanize %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'profiles/css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/profiles.min.css' %}">
 {% endblock extra_css %}
 
 {% block page_nav %}
-{% include 'includes/light_nav.html' %}
+<div class="row bg-black justify-content-center">
+    {% include 'includes/dark_nav.html' %}
+</div>
 {% endblock page_nav %}
 
 {% block content %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <hr>
-            <h2 class="logo-font mb-4">My Profile</h2>
-            <hr>
-        </div>
-    </div>
-    {{ profile }}
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            <p class="text-muted">Profile Information</p>
+<section class="container-fluid">
+    <div class="row justify-content-center">
 
-        </div>
+        <div class="col-md-10">
 
-        <div class="col-12 col-lg-6">
-            <p class="text-muted">Bookings:</p>
-            <div class="table-responsive">
-                <table class="table table-sm table-borderless">
-                    <thead>
-                        <tr>
-                            <th>Booking Reference</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Order Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in open_bookings %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'order_history' order.order_number %}" title="{{ bookingr.order_number }}">
-                                    {{ order.order_number|truncatechars:6 }}
-                                </a>
-                            </td>
-                            <td>{{ order.date }}</td>
-                            <td>
-                                <ul class="list-unstyled">
-                                    {% for item in order.lineitems.all %}
-                                    <li class="small">
-                                        {{ item.product.name }} x{{ item.quantity }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>${{ order.booking_total }}</td>
-                        </tr>
-                        {% endfor %}
-
-
-                        {% for booking in complete_bookings %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'order_history' order.order_number %}" title="{{ booking.booking_ref }}">
-                                    {{ booking.booking_ref|truncatechars:6 }}
-                                </a>
-                            </td>
-                            <td>{{ order.date }}</td>
-                            <td>
-                                <ul class="list-unstyled">
-                                    {% for item in order.lineitems.all %}
-                                    <li class="small">
-                                        {{ item.product.name }} x{{ item.quantity }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>${{ order.booking_total }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="logo-font mb-4">Profile</h2>
+                    <hr>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-5 order-lg-last mb-5">
+                {% if open_bookings %}
+                    <p class="text-muted">Bookings in progress:</p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Booking Reference</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Order Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in open_bookings %}
+                                    <tr>
+                                        <td>
+                                            <a href="#"
+                                                title="{{ booking.booking_ref }}">
+                                                {{ booking.booking_ref|truncatechars:6 }}
+                                            </a>
+                                        </td>
+                                        <td>{{ booking.date }}</td>
+                                        <td>
+                                            <ul class="list-unstyled">
+                                                {% for item in booking.lineitems.all %}
+                                                    <li class="small">
+                                                        {{ item.product.name }} x{{ item.quantity }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td>${{ booking.booking_total }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                {% if complete_bookings %}
+                    <p class="text-muted">Completed Bookings:</p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Booking Reference</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Booking Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in complete_bookings %}
+                                    <tr>
+                                        <td>
+                                            <a href="#"
+                                                title="{{ booking.booking_ref }}">
+                                                {{ booking.booking_ref|truncatechars:6 }}
+                                            </a>
+                                        </td>
+                                        <td>{{ booking.date }}</td>
+                                        <td>
+                                            <ul class="list-unstyled">
+                                                {% for item in order.lineitems.all %}
+                                                <li class="small">
+                                                    {{ item.product.name }} x{{ item.quantity }}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td>£{{ booking.booking_total }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="mb-3">
+                        <p class="text-muted">Account Information</p>
+                        <div class="row my-3 align-items-center">
+                            <div class="col account-info">
+                                <i class="fas fa-user mr-2"></i>{{ user }}
+                            </div>
+                            <div class="col text-right">edit <i class="far fa-edit"></i></div>
+                        </div>
+                        <div class="row my-3 align-items-center">
+                            <div class="col-9 account-info">
+                                <i class="fas fa-at mr-2"></i>{{ user.email }}
+                            </div>
+                            <div class="col text-right"> 
+                                <a href="{% url 'account_email' %}">edit <i class="far fa-edit"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-muted">Profile Information</p>
+                        {% crispy form %}
+                    </div>
+                </div>
+            </div>
+            
         </div>
+
     </div>
-</div>
+</section>
 
 {% endblock content %}

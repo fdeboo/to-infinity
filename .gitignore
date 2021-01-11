@@ -5,4 +5,6 @@ __pycache__
 _config.scss
 base.scss
 checkout.scss
+profile.scss
+bookings.scss
 .vscode

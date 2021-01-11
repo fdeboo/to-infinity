@@ -37,7 +37,7 @@
   {% csrf_token %}
   {% if redirect_field_value %}
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    <h2>Please log in to complete your booking</h2>
+    <h2>Please log in to start a booking</h2>
   {% endif %}
   {{ form | crispy }}
 

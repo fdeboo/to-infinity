@@ -21,7 +21,8 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link site-link-light" id="account-links" data-toggle="dropdown"
+                    <a href="#" class="nav-link site-link-light" id="account-links"
+                        data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false">
                         <i class="fas fa-user-alt"></i> Account
@@ -31,7 +32,7 @@
                             {% if request.user.is_superuser %}
                                 <a href="#" class="dropdown-item site-link-light">Product Management</a>
                             {% endif %}
-                            <a href="#" class="dropdown-item site-link-light">My Profile</a>
+                            <a href="{% url 'profile' %}" class="dropdown-item site-link-light">My Profile</a>
                             <a href="{% url "account_logout" %}" class="dropdown-item site-link-light">Logout</a>
                         {% else %}
                             <a href="{% url "account_signup" %}" class="dropdown-item site-link-light">Register</a>

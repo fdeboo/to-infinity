@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.conf import settings
 from products.models import Product
 from bookings.models import Booking, BookingLineItem, UserProfile
-from .forms import BookingPaymentForm
+from .forms import BookingCheckoutForm
 
 
 @require_POST
@@ -51,7 +51,7 @@ def cache_checkout_data(request):
 class CheckoutView(FormView):
     """ A view to complete the booking with payment information """
 
-    form_class = BookingPaymentForm
+    form_class = BookingCheckoutForm
     template_name = "checkout/checkout.html"
 
     def get_object(self, request, **kwargs):
