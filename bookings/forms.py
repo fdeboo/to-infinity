@@ -180,6 +180,69 @@ class SearchTripsForm(forms.Form):
         return self.cleaned_data
 
 
+class UpdateSearchForm(SearchTripsForm):
+    """
+    Provides a list of deestination options and inputs for no. of passengers
+    and date preference.
+    All fields include an id attribute for referencing in Javascript
+    """
+    
+    def __init__(self, *args, **kwargs):
+        self.destination = kwargs.pop("destination", None)
+        super().__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Field(
+                "request_date",
+                min=date.today(),
+                max="2040-12-20",
+                wrapper_class="mb-0 d-flex align-items-center",
+                css_class="form-control-lg mb-3 all-form-input",
+            ),
+            Field(
+                "passengers",
+                min="1",
+                disabled="true",
+                id="passengers-max",
+                placeholder="No. of Passengers",
+                wrapper_class="mb-0 d-flex align-items-center",
+                css_class="form-control-lg mb-3 all-form-input",
+            ),
+            ButtonHolder(
+                Submit("submit", "Search", css_class="btn btn-outline"),
+                css_class="ml-lg-auto col-12 col-lg-auto text-right",
+            ),
+        )
+
+    def clean(self):
+        """ Form validation in case bad data passes validation in browser """
+
+        # Data from the form is fetched using super function
+        super(UpdateSearchForm, self).clean()
+
+        # Extract the individual fields from the data
+        destination = self.destination
+        request_date = self.cleaned_data.get("request_date")
+        passengers = self.cleaned_data.get("passengers")
+
+        if passengers > destination.max_passengers:
+            self._errors["passengers"] = self.error_class(
+                ["Sorry, this exceeds the maximum for selected trip"]
+            )
+
+        elif passengers < 0:
+            self._errors["passengers"] = self.error_class(
+                ["Please choose at least one passenger"]
+            )
+
+        if request_date < date.today():
+            self._errors["request_date"] = self.error_class(
+                ["Searched date should not be in the past"]
+            )
+
+        # return any errors if found
+        return self.cleaned_data
+
+
 class DateChoiceForm(forms.ModelForm):
     """
     Provides user a choice of available dates relative to their preference.

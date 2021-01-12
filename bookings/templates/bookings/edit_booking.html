@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_nav %}
+<div class="row bg-black justify-content-center">
+    {% include 'includes/dark_nav.html' %}
+</div>
+{% endblock page_nav %}
+
+{% block content %}
+<section>
+    <div class="row justify-content-center">
+        
+        <div class="col-12 col-md-10 col-lg-6" id="focus-search">
+            <p>Booking reference: {{ booking.booking_ref }}</p>
+            <p>{{ booking.trip.destination }}</p>
+            {% crispy form %}
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+
+{% block postloadjs %}
+<script src="{% static 'js/scripts.js' %}" crossorigin="anonymous"></script>
+{% endblock postloadjs %}

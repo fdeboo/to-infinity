@@ -8,44 +8,17 @@ body {
 }
 
 ::-moz-selection {
-  background-color: blue;
-  color: white;
+  background-color: turquoise;
+  color: darkgray;
 }
 
 ::selection {
-  background-color: blue;
-  color: white;
-}
-
-.logo-font {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
-}
-
-.logo-font span {
-  font-family: 'Euphoria Script', cursive;
+  background-color: turquoise;
+  color: darkgray;
 }
 
 .bg-white {
   background-color: #fff;
-}
-
-.site-link, .site-link-light {
-  text-decoration: none;
-  color: #000;
-}
-
-.site-link:hover, .site-link-light:hover {
-  text-decoration: none;
-  color: #000;
-}
-
-.site-link-light {
-  color: #F9F9F9;
-}
-
-.site-link-light:hover {
-  color: #F9F9F9;
 }
 
 .btn-outline, .btn-outline-reverse, .hero-btn {
@@ -80,6 +53,62 @@ body {
   color: #F9F9F9;
 }
 
+/* Navigation Menu ------------------------------ */
+.logo-font {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+}
+
+.logo-font span {
+  font-family: 'Euphoria Script', cursive;
+}
+
+.main-nav li:not(:last-of-type) {
+  margin-right: 2rem;
+}
+
+.main-nav li a {
+  position: relative;
+  text-decoration: none;
+}
+
+.main-nav li a:hover {
+  text-decoration: none;
+}
+
+.main-nav li a::before {
+  position: absolute;
+}
+
+.site-link-light {
+  color: #000;
+}
+
+.site-link-light i {
+  color: gray;
+}
+
+.site-link-light:hover {
+  color: #000;
+}
+
+.site-link-dark {
+  color: whitesmoke;
+}
+
+.site-link-dark i {
+  color: gray;
+}
+
+.site-link-dark:hover {
+  color: whitesmoke;
+}
+
+.site-link-dark:hover i {
+  color: gray;
+}
+
+/* Forms ------------------------------ */
 .all-form-shadow, .all-form-input,
 .allauth-form-inner-content input {
   -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;

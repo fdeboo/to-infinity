@@ -46,19 +46,19 @@
                                 {% for booking in open_bookings %}
                                     <tr>
                                         <td>
-                                            <a href="#"
+                                            <a href="{% url 'edit_booking' booking.booking_ref %}"
                                                 title="{{ booking.booking_ref }}">
                                                 {{ booking.booking_ref|truncatechars:6 }}
                                             </a>
                                         </td>
-                                        <td>{{ booking.trip }}</td>
-                                        <td>{{ booking.trip }}</td>
+                                        <td>{{ booking.trip.destination }}</td>
+                                        <td>{{ booking.trip.date | date:'d/m/Y' }}</td>
                                         <td>{{ booking.passengers }}</td>
                                         <td>£{{ booking.booking_total | intcomma }}</td>
-                                        <td><a href="#">edit <i class="far fa-edit"></i></a>
+                                        <td>
                                         </td>
                                         <td>
-                                        <button type="button" id="confirm-btn"
+                                        <button type="button" id="confirm-btn" class="bg-transparent"
                                             data-toggle="modal" data-target="#cancelModal">
                                             cancel <i class="fas fa-times"></i>
                                         </button>

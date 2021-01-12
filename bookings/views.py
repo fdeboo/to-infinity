@@ -3,11 +3,13 @@ Views in this module provide logic for templates that guide the booking process
 """
 
 import json
+import ast
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import FormView, UpdateView, DeleteView
+from django.views.generic.detail import SingleObjectMixin
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
@@ -25,6 +27,7 @@ from .forms import (
     DateChoiceForm,
     InputPassengersForm,
     make_passenger_form,
+    UpdateSearchForm,
 )
 
 
@@ -198,12 +201,9 @@ class ConfirmTripView(FormView):
 
     def get_form_kwargs(self, **kwargs):
         """ Provides keyword arguemnts """
-
         kwargs = super(ConfirmTripView, self).get_form_kwargs()
-
         trips = self.get_trips_queryset(self.gte_dates, self.lt_dates)
         kwargs.update({"trips": trips})
-
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -254,6 +254,7 @@ class InputPassengersView(UpdateView):
 
     def __init__(self):
         self.booking = None
+        self.object = None
 
     def get_context_data(self, **kwargs):
         passenger_total = self.request.session["passenger_total"]
@@ -349,3 +350,66 @@ class CancelBookingView(DeleteView):
     """ Deletes the booking instance passed in the post request """
     model = Booking
     success_url = reverse_lazy('profile')
+
+
+class EditBookingView(SingleObjectMixin, FormView):
+    """ Provides form to update the date or passengers  """
+
+    template_name = 'bookings/edit_booking.html'
+    model = Booking
+    form_class = UpdateSearchForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_initial(self):
+        """
+        Returns the initial data to use for forms on this view.
+        """
+
+        booking = self.get_object()
+        original_bag = booking.original_bag
+        items = ast.literal_eval(original_bag)
+        passengers = 0
+        for product_id, quantity in items.items():
+            if '-DES-' in product_id:
+                passengers = quantity
+        initial = super().get_initial()
+        initial.update({
+            "destination": booking.trip.destination,
+            "request_date": booking.trip.date,
+            "passengers": passengers
+        })
+        return initial
+
+    def get_form_kwargs(self):
+        """
+        Gets the destination from the booking object and passes it as
+        keyword argument to the form
+        """
+
+        booking = self.get_object()
+        kwargs = super(EditBookingView, self).get_form_kwargs()
+        kwargs.update({"destination": booking.trip.destination})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["booking"] = self.get_object()
+        return context
+
+    def form_valid(self, form):
+        date = form.cleaned_data["request_date"]
+        date = json.dumps(date, cls=DjangoJSONEncoder)
+        booking = self.get_object()
+        self.request.session['request_date'] = date
+        self.request.session["destination_choice"] = booking.trip.destination
+        self.request.session["passenger_total"] = form.cleaned_data[
+                "passengers"]
+
+        return HttpResponseRedirect(reverse("confirm_trip"))

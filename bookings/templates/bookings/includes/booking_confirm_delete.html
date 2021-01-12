@@ -2,7 +2,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="{% url 'cancel_booking' booking.booking_ref%}">
+            <form method="post" action="{% url 'cancel_booking' booking.booking_ref %}">
             {% csrf_token %}
                 <div class="modal-header">
                     <h5 class="modal-title" id="cancelModalLabel">Confirm Cancellation</h5>
