@@ -1,0 +1,53 @@
+<header class="sticky-top container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10">
+            <nav class="navbar navbar-expand-lg navbar-dark px-0 main-nav">
+                <a href="{% url 'home' %}" class="navbar-brand site-link-light pl-0 main-logo-link text-uppercase">
+                    <h1 class="logo-font my-0"><span>2</span>infinity</h1>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+                    aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="main-nav">
+                    <ul class="navbar-nav ml-auto text-uppercase text-center">
+                        <li>
+                            <a class="site-link-dark" href="{% url 'home' %}">
+                                <p class="my-0"><i class="fas fa-home pr-2"></i></i>Home</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="site-link-dark" href="{% url 'search_trip' %}">
+                                <p class="my-0"><i class="far fa-calendar-alt pr-2"></i>Book a trip</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="site-link-dark" href="{% url 'destinations' %}">
+                                <p class="my-0"><i class="fas fa-rocket pr-2"></i>View Trips</p>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="site-link-dark" id="account-links"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user-alt pr-2"></i>Account
+                            </a>
+                            <div class="dropdown-menu border-0 rounded-0 text-center" aria-labelledby="account-links">
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.is_superuser %}
+                                        <a href="#" class="dropdown-item site-link-dark">Product Management</a>
+                                    {% endif %}
+                                <a href="{% url 'profile' %}" class="dropdown-item site-link-dark">My Profile</a>
+                                <a href="{% url "account_logout" %}" class="dropdown-item site-link-dark">Logout</a>
+                                {% else %}
+                                    <a href="{% url "account_signup" %}" class="dropdown-item site-link-dark">Register</a>
+                                    <a href="{% url "account_login" %}" class="dropdown-item site-link-dark">Login</a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

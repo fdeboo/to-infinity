@@ -1,20 +1,62 @@
 /* define colours */
 @import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap");
 /* Universal Styles ------------------------------ */
+html {
+  height: 100%;
+}
+
 body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100%;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
+  color: #f5f5f5;
+  background-color: #141516;
   cursor: url("/static/icons/shuttleicon.png") 0 0, pointer;
 }
 
+.content {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 auto;
+          flex: 1 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  position: relative;
+}
+
+header {
+  background-color: #141516;
+}
+
+footer {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  background-color: #141516;
+  padding: 15px 20px 40px 20px;
+}
+
+a {
+  color: #99B821;
+}
+
 ::-moz-selection {
-  background-color: turquoise;
-  color: darkgray;
+  background-color: #2AB1B7;
+  color: #000;
 }
 
 ::selection {
-  background-color: turquoise;
-  color: darkgray;
+  background-color: #2AB1B7;
+  color: #000;
 }
 
 .bg-white {
@@ -25,19 +67,19 @@ body {
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
   border-radius: 0;
-  border: 1px solid #000;
-  background-color: #000;
+  border: 1px solid #2AB1B7;
+  background-color: #141516;
+  opacity: 0.8;
   text-transform: uppercase;
   letter-spacing: .3rem;
   padding: 1rem 1.5rem;
   -webkit-transition: background-color .75s, color .75s ease-out;
   transition: background-color .75s, color .75s ease-out;
-  color: #F9F9F9;
+  color: #f5f5f5;
 }
 
 .btn-outline:hover, .btn-outline-reverse:hover, .hero-btn:hover {
-  background-color: transparent;
-  color: #000;
+  background-color: #2AB1B7;
 }
 
 .btn-outline-reverse {
@@ -50,7 +92,7 @@ body {
 
 .btn-outline-reverse:hover {
   background-color: #000;
-  color: #F9F9F9;
+  color: #f5f5f5;
 }
 
 /* Navigation Menu ------------------------------ */
@@ -60,7 +102,7 @@ body {
 }
 
 .logo-font span {
-  font-family: 'Euphoria Script', cursive;
+  color: #2AB1B7;
 }
 
 .main-nav li:not(:last-of-type) {
@@ -72,60 +114,89 @@ body {
   text-decoration: none;
 }
 
+.main-nav li a i {
+  color: gray;
+  font-size: 0.8em;
+}
+
 .main-nav li a:hover {
   text-decoration: none;
+}
+
+.main-nav li a:hover i {
+  color: gray;
+  font-size: 0.8em;
 }
 
 .main-nav li a::before {
   position: absolute;
 }
 
-.site-link-light {
-  color: #000;
-}
-
-.site-link-light i {
-  color: gray;
-}
-
-.site-link-light:hover {
-  color: #000;
-}
-
 .site-link-dark {
-  color: whitesmoke;
-}
-
-.site-link-dark i {
-  color: gray;
+  color: #f5f5f5;
 }
 
 .site-link-dark:hover {
-  color: whitesmoke;
-}
-
-.site-link-dark:hover i {
-  color: gray;
+  color: #f5f5f5;
 }
 
 /* Forms ------------------------------ */
-.all-form-shadow, .all-form-input,
-.allauth-form-inner-content input {
-  -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
-          box-shadow: 0 1px 3px 0 #e6ebf1;
-  border: 1px solid #000;
-  background-color: #fff;
+.form-bg {
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 51, 51, 0.5)), to(rgba(0, 51, 51, 0.2))), url("/media/pexels-miriam-espacio-110854.jpg");
+  background-image: linear-gradient(to right, rgba(0, 51, 51, 0.5), rgba(0, 51, 51, 0.2)), url("/media/pexels-miriam-espacio-110854.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form-container {
+  text-align: center;
+  color: #f5f5f5;
+  padding: 3rem;
+  border: 1px solid #2AB1B7;
+}
+
+@media only screen and (max-width: 768px) {
+  .form-container {
+    border: none;
+  }
+}
+
+.form-container h1 {
+  font-family: 'Orbitron', cursive;
+  font-size: 1.8em;
+  font-weight: 200;
+  color: #2AB1B7;
+}
+
+.form-container h2 {
+  font-size: 1.3em;
+  font-weight: 200;
+}
+
+.all-form-bg, .all-form-input,
+.allauth-form-inner-content input:not([id="id_remember"]) {
+  border: 0;
+  border-bottom: 2px solid #2AB1B7;
+  background-color: #141516;
+  opacity: 0.8;
   border-radius: 0px;
+  color: #f5f5f5;
+}
+
+input:-webkit-autofill-selected {
+  background-color: #141516;
+  color: #f5f5f5;
 }
 
 .all-form-input,
-.allauth-form-inner-content input {
+.allauth-form-inner-content input:not([id="id_remember"]) {
   font-family: 'Orbitron', sans-serif;
   font-size: 1rem;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  height: 40px;
-  padding: 10px 12px;
+  height: 3rem;
+  padding: 0.5rem 1rem;
   -webkit-transition: -webkit-box-shadow 150ms ease;
   transition: -webkit-box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
@@ -133,46 +204,43 @@ body {
 }
 
 .all-form-input:focus,
-.allauth-form-inner-content input:focus {
-  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
-          box-shadow: 0 1px 3px 0 #cfd7df;
-}
-
-.all-form-input:active,
-.allauth-form-inner-content input:active {
-  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
-          box-shadow: 0 1px 3px 0 #cfd7df;
+.allauth-form-inner-content input:not([id="id_remember"]):focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+          box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+  color: #f5f5f5;
 }
 
 .all-form-input::-webkit-input-placeholder,
-.allauth-form-inner-content input::-webkit-input-placeholder {
-  color: #aab7c4;
+.allauth-form-inner-content input:not([id="id_remember"])::-webkit-input-placeholder {
+  color: #999999;
 }
 
 .all-form-input:-ms-input-placeholder,
-.allauth-form-inner-content input:-ms-input-placeholder {
-  color: #aab7c4;
+.allauth-form-inner-content input:not([id="id_remember"]):-ms-input-placeholder {
+  color: #999999;
 }
 
 .all-form-input::-ms-input-placeholder,
-.allauth-form-inner-content input::-ms-input-placeholder {
-  color: #aab7c4;
+.allauth-form-inner-content input:not([id="id_remember"])::-ms-input-placeholder {
+  color: #999999;
 }
 
 .all-form-input::placeholder,
-.allauth-form-inner-content input::placeholder {
-  color: #aab7c4;
+.allauth-form-inner-content input:not([id="id_remember"])::placeholder {
+  color: #999999;
 }
 
 .allauth-form-inner-content label:not([for='id_remember']) {
   display: none;
 }
 
-#payment-form .form-control,
-.form-control-lg,
-#card-element {
-  color: #000;
-  border: 1px solid #000;
+.alert {
+  border-radius: 0;
+}
+
+.alert ul {
+  list-style-type: none;
+  padding: 0;
 }
 
 .crispyform .errorlist {
@@ -182,7 +250,7 @@ body {
   list-style-type: none;
   border-radius: 0;
   border-bottom: 2px solid red;
-  background-color: turquoise;
+  background-color: #2AB1B7;
 }
 
 .progress-bar {
@@ -204,30 +272,15 @@ body {
   right: 0;
 }
 
-.message-container {
-  position: fixed;
-  top: 72px;
-  right: 15px;
-  z-index: 9999;
-}
-
-.custom-toast {
-  overflow: hidden;
-}
-
-.toast-capper {
-  height: 2px;
-}
-
 /* Landing Page ------------------------------ */
 .hero-btn {
-  border: 1px solid #F9F9F9;
+  border: 1px solid #f5f5f5;
   background-color: transparent;
-  color: #F9F9F9;
+  color: #f5f5f5;
 }
 
 .hero-btn:hover {
-  background-color: #F9F9F9;
+  background-color: #f5f5f5;
   color: #000;
 }
 
@@ -236,7 +289,7 @@ body {
 }
 
 .hero-text {
-  color: #F9F9F9;
+  color: #f5f5f5;
   font-family: 'Euphoria Script', cursive;
   font-size: 4rem;
 }
@@ -363,7 +416,6 @@ body {
 }
 
 /* Unavailable Template ------------------------------ */
-/* Confirim Trip Template ------------------------------ */
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
   position: absolute;
@@ -434,4 +486,32 @@ body {
 .formatted-price {
   font-weight: bold;
   display: block;
+}
+
+/* Toasts ------------------------------ */
+.message-container {
+  position: fixed;
+  top: 72px;
+  right: 15px;
+  z-index: 9999;
+}
+
+.message-container .toast.show {
+  opacity: 0.95;
+}
+
+.message-container .toast {
+  background-color: #141516;
+}
+
+.message-container .toast button {
+  border: 0;
+  opacity: 1;
+  color: #f5f5f5;
+}
+
+.message-container .toast .btn-x {
+  padding: 0 5px;
+  outline: none;
+  background: transparent;
 }

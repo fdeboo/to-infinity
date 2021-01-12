@@ -2,20 +2,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap');
 
 /* Universal Styles ------------------------------ */
+html {
+    height: 100%;
+}
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     font: {
         family: $font-stack;
         weight: 300;
     }
+    color: $off-white;
+    background-color: $near-black;
     cursor: url("/static/icons/shuttleicon.png") 0 0, pointer;
 }
 
-::selection {
-    background-color: turquoise;
-    color: darkgray;
+.content {
+    flex: 1 auto;
+    display: flex;
+    align-items: stretch;
+    position: relative;
 }
 
+header {
+    background-color: $near-black;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: $near-black; 
+    padding: 15px 20px 40px 20px;
+}
+
+a {
+    color:#99B821;
+}
+
+::selection {
+    background-color: $teal-primary;
+    color: #000;
+}
 
 .bg-white {
     background-color: #fff;
@@ -24,16 +52,16 @@ body {
 .btn-outline {
     box-sizing: content-box;
     border-radius: 0;
-    border: 1px solid #000;
-    background-color: #000;
+    border: 1px solid $teal-primary;
+    background-color: $near-black;
+    opacity:0.8;
     text-transform: uppercase;
     letter-spacing: .3rem;
     padding: 1rem 1.5rem;
     transition: background-color .75s, color .75s ease-out;
     color: $off-white;
     &:hover {
-        background-color: transparent;
-        color: #000;
+        background-color: $teal-primary;
     }
 }
 
@@ -55,7 +83,8 @@ body {
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     span {
-        font-family: 'Euphoria Script', cursive;
+
+        color: $teal-primary;
     }
 }
 
@@ -67,8 +96,16 @@ body {
         a {
             position: relative;
             text-decoration: none;
+            i {
+                color: gray;
+                font-size: 0.8em;
+            }
             &:hover {
                 text-decoration: none;
+                i {
+                    color: gray;
+                    font-size: 0.8em;
+                }
             }
             &::before {
                 position: absolute;
@@ -77,60 +114,81 @@ body {
     }
 }
 
-
-.site-link-light {
-    color: #000;
-    i {
-        color: gray;
-    }
-    &:hover {
-        color: #000;
-    }
-}
-
 .site-link-dark {
-    color: whitesmoke;
-    i {
-        color: gray;
-    }
+    color: $off-white;
     &:hover {
-        color: whitesmoke;
-        i {
-        color: gray;
-        }
+        color: $off-white;
     }
 }
 
 /* Forms ------------------------------ */
 
-.all-form-shadow {
-    box-shadow: 0 1px 3px 0 #e6ebf1;
-    border: 1px solid #000;
-    background-color: #fff;
+.form-bg {
+    background-image: linear-gradient(to right, rgba(0,51,51,0.5), rgba(0,51,51,0.2)), url("/media/pexels-miriam-espacio-110854.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-container {
+    text-align: center;
+    color: $off-white;
+    padding: 3rem;
+    border: 1px solid $teal-primary;
+    @media only screen and (max-width: 768px) {
+		border: none;
+	} 
+}
+
+.form-container h1 {
+    font: {
+        family: 'Orbitron', cursive;
+        size: 1.8em;
+        weight: 200;
+    }
+    color: $teal-primary;
+}
+
+.form-container h2 {
+    font: {
+        size: 1.3em;
+        weight: 200;
+    }
+}
+
+.all-form-bg {
+    border: 0;
+    border-bottom: 2px solid $teal-primary;
+    background-color: $near-black;
+    opacity: 0.8;
     border-radius: 0px;
-} 
+    color: $off-white;
+}
+
+input:-webkit-autofill-selected {
+        background-color: $near-black;
+        color: $off-white;
+    }
 
 .all-form-input,
-.allauth-form-inner-content input  {
-    @extend .all-form-shadow;
+.allauth-form-inner-content input:not([id="id_remember"])  {
+    @extend .all-form-bg;
     font: {
         family: 'Orbitron', sans-serif;
         size: 1rem;
     }
     box-sizing: border-box;
-    height: 40px;
-    padding: 10px 12px;
+    height: 3rem;
+    padding: 0.5rem 1rem;
     transition: box-shadow 150ms ease;
     
     &:focus {
-        box-shadow: 0 1px 3px 0 #cfd7df;
-    }
-    &:active {
-        box-shadow: 0 1px 3px 0 #cfd7df;
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+        color: $off-white;
     }
     
     &::placeholder {
-        color: #aab7c4;
+        color: $form-grey;
     }
 }
 
@@ -138,11 +196,12 @@ body {
     display:none;
 }
 
-#payment-form .form-control,
-.form-control-lg,
-#card-element {
-    color: #000;
-    border: 1px solid #000;
+.alert {
+    border-radius: 0;
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
 }
 
 .crispyform .errorlist {
@@ -152,7 +211,7 @@ body {
     list-style-type: none;
     border-radius: 0;
     border-bottom: 2px solid red;
-    background-color: turquoise;
+    background-color: $teal-primary;
 }   
 
 .progress-bar{
@@ -173,20 +232,6 @@ body {
     }
 }
 
-.message-container {
-    position: fixed;
-    top: 72px;
-    right: 15px;
-    z-index: 9999;
-}
-
-.custom-toast {
-    overflow: hidden;
-}
-
-.toast-capper {
-    height: 2px;
-}
 
 /* Landing Page ------------------------------ */
 
@@ -227,7 +272,7 @@ body {
     background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
     background-size: cover;
     background-position: 50% 30vh;
-
+    
 }
 
 /* Destination List Template ------------------------------ */
@@ -267,21 +312,21 @@ body {
     left: 0;
     right: 0;
     background-color: white;
-
+    
     #featured-search > form {
         flex-direction: column !important;
         @media only screen and (min-width: 992px) {
             flex-direction: row !important;
         }
     }
-
+    
     #featured-search .all-form-input {
         @media only screen and (min-width: 992px) {
             margin-bottom: 0 !important;
         }
     }
-
-
+    
+    
 	@media only screen and (max-width: 991px) {
         bottom: -316px;
         height: 316px;
@@ -292,7 +337,7 @@ body {
             bottom: 0px;
         }
 	}
-
+    
 	.toggle-form {
         visibility: hidden;
         background-color: blue;
@@ -304,7 +349,7 @@ body {
         right: 3em;
         color: white;
         z-index: 10;
-
+        
 		@media only screen and (max-width: 991px) {
             visibility: visible;
 		}
@@ -326,13 +371,12 @@ body {
 }
 /* Unavailable Template ------------------------------ */
 
-/* Confirim Trip Template ------------------------------ */
 
 //Styles the search results; Hides radio inputs and styles the input labels
 
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
-	position: absolute;
+    position: absolute;
 	left: -9999px;
 	width: 0;
 	height: 0;
@@ -374,7 +418,7 @@ body {
 
 [type="radio"]:not(:checked) + label {
     background-color: white;
-
+    
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
     &:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
@@ -397,6 +441,32 @@ body {
 .formatted-price {
     font-weight: bold;
     display: block;
-
 }
+
+/* Toasts ------------------------------ */
+
+.message-container {
+    position: fixed;
+    top: 72px;
+    right: 15px;
+    z-index: 9999;
+    .toast.show {
+        opacity: 0.95;
+    }
+    
+    .toast {
+        background-color: $near-black;
+        button {
+            border: 0;
+            opacity: 1;
+            color: $off-white;
+        }
+        .btn-x {
+            padding: 0 5px;
+            outline: none;
+            background: transparent;
+        }
+    }
+}
+
 

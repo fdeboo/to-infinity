@@ -19,20 +19,28 @@
 
 {% block content %}
     <section class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10">
         <!-- Listing of Destinations -->
-        <div class="row">
-            {%for destination in destinations %}
-            <div class="col-12 col-lg-6 image-container" id="trip{{ forloop.counter }}">
-                <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
-                <a href="{% url 'destination_detail' destination.pk %}">
-                    <p>{{ destination.name }}</p>
-                </a>
+        {% for destination in destinations %}
+            <div class="row">
+                <div class="col-12 col-lg-7 image-container py-3 {% if forloop.counter|divisibleby:2 %}order-last{% endif %}" id="trip{{ forloop.counter }}">
+                    <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
+                </div>
+                <div class="col-lg-5 d-flex flex-column justify-content-center align-items-center">
+                    <a href="{% url 'destination_detail' destination.pk %}">
+                        <p>{{ destination.name }}</p>
+                    </a>
+                    <p>{{ destination.description }}</p>
+                </div>
             </div>
-            {% endfor %}
+        {% endfor %}
         </div>
+    </div>
+
 
         <!-- Form to search for available trips -->
-        <div class="row search-trips-form justify-content-center">
+        <div class="row search-trips-form justify-content-center form-bg">
             <button type="button" class="toggle-form"><i class="far fa-calendar-alt fa-2x"></i></button>
             <div class="col-md-10 col-xl-9 py-4" id="featured-search">
                 {% crispy form %}

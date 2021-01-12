@@ -38,32 +38,35 @@
 
 <body>
     {% block bg %}{% endblock bg %}
-    <header class="sticky-top container-fluid">
-        {% block page_nav %}
-        {% endblock page_nav %}
-    </header>
+    {% include 'includes/navbar.html' %}
     {% if messages %}
-    <div class="message-container">
-        {% for message in messages %}
-            {% with  message.level as level %}
-                {% if level == 40 %}
-                    {% include 'includes/toasts/toast_error.html' %}
-                {% elif level == 30 %}
-                    {% include 'includes/toasts/toast_warning.html' %}
-                {% elif level == 25 %}
-                    {% include 'includes/toasts/toast_success.html' %}
-                {% else %}
-                    {% include 'includes/toasts/toast_info.html' %}
-                {% endif %}
-            {% endwith %}
-        {% endfor %}
+    <div class="message-container row">
+        <div class="col-12">
+            {% for message in messages %}
+                {% with  message.level as level %}
+                    {% if level == 40 %}
+                        {% include 'includes/toasts/toast_error.html' %}
+                    {% elif level == 30 %}
+                        {% include 'includes/toasts/toast_warning.html' %}
+                    {% elif level == 25 %}
+                        {% include 'includes/toasts/toast_success.html' %}
+                    {% else %}
+                        {% include 'includes/toasts/toast_info.html' %}
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 
+    <div class="content">
     {% block content %}
     {% endblock content %}
+    </div>
 
+    <footer></footer>
 
+    
     {% block postloadjs %}
     <script>
         $('.toast').toast('show');
