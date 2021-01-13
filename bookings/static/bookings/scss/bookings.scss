@@ -1,3 +1,53 @@
+@import 'config';
+
+.booking-steps {
+    margin: 3rem 0;
+}
+
+.progress-bar {
+    height: 0.3em;
+    background-color: $square-green;
+}
+
+.progress-bar-disabled {
+    @extend .progress-bar;
+    background-color: $form-disabled-grey;
+}
+
+.progress-link {
+    width: 3rem;
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 3rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: $off-white;
+        color: $square-green;
+    }
+    @media only screen and (max-width: 768px) {
+        width:2rem;
+        .icon {
+            height:2rem;
+        }
+    }
+}
+
+.progress-link-disabled {
+    @extend .progress-link;
+    .icon {
+        color: $form-disabled-grey;
+        background-color: transparent;
+        border: 2px solid $form-disabled-grey;
+    }
+
+}
+
+
+
+
 // Credit: https://codepen.io/BuddyLReno/pen/boGRPO
 .addon-set {
     position: relative;

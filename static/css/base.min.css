@@ -32,16 +32,7 @@ body {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  padding-bottom: 2rem;
   position: relative;
-}
-
-.dark-bg {
-  background-color: #141516;
-}
-
-.black-bg {
-  background-color: #000;
 }
 
 footer {
@@ -111,6 +102,14 @@ a:hover {
 ::selection {
   background-color: #2AB1B7;
   color: #000;
+}
+
+.dark-bg {
+  background-color: #141516;
+}
+
+.black-bg {
+  background-color: #000;
 }
 
 .btn-outline, .btn-outline-reverse, .hero-btn {
@@ -268,6 +267,26 @@ a:hover {
   color: #f5f5f5;
 }
 
+.all-form-bg:disabled, .all-form-input:disabled,
+.allauth-form-inner-content input:disabled:not([id="id_remember"]) {
+  background-color: #141516;
+  border-bottom: 2px solid #0D3638;
+}
+
+.all-form-bg:focus, .all-form-input:focus,
+.allauth-form-inner-content input:focus:not([id="id_remember"]) {
+  background-color: #141516;
+}
+
+.all-form-bg:visited .invalid, .all-form-input:visited .invalid, .allauth-form-inner-content input:visited:not([id="id_remember"]) .invalid {
+  outline: #B85718;
+}
+
+.all-form-bg.is-invalid, .is-invalid.all-form-input,
+.allauth-form-inner-content input.is-invalid:not([id="id_remember"]) {
+  border-bottom: 2px solid #B85718;
+}
+
 input:-webkit-autofill-selected {
   background-color: #141516;
   color: #f5f5f5;
@@ -285,7 +304,7 @@ input:-webkit-autofill-selected {
   transition: -webkit-box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease, -webkit-box-shadow 150ms ease;
-  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .all-form-input[type="date" i],
@@ -320,8 +339,32 @@ input:-webkit-autofill-selected {
   color: #999999;
 }
 
+.all-form-input:disabled::-webkit-input-placeholder,
+.allauth-form-inner-content input:not([id="id_remember"]):disabled::-webkit-input-placeholder {
+  color: #595959;
+}
+
+.all-form-input:disabled:-ms-input-placeholder,
+.allauth-form-inner-content input:not([id="id_remember"]):disabled:-ms-input-placeholder {
+  color: #595959;
+}
+
+.all-form-input:disabled::-ms-input-placeholder,
+.allauth-form-inner-content input:not([id="id_remember"]):disabled::-ms-input-placeholder {
+  color: #595959;
+}
+
+.all-form-input:disabled::placeholder,
+.allauth-form-inner-content input:not([id="id_remember"]):disabled::placeholder {
+  color: #595959;
+}
+
 .allauth-form-inner-content label:not([for='id_remember']) {
   display: none;
+}
+
+.invalid-feedback {
+  color: #B85718;
 }
 
 .alert {
@@ -341,25 +384,6 @@ input:-webkit-autofill-selected {
   border-radius: 0;
   border-bottom: 2px solid red;
   background-color: #2AB1B7;
-}
-
-.progress-bar {
-  height: 4px;
-  margin: 5rem 0;
-  width: 100%;
-  position: relative;
-  background-color: turquoise;
-}
-
-.progress-bar::before {
-  content: "";
-  height: 100%;
-  width: 15px;
-  display: block;
-  background-color: red;
-  position: absolute;
-  z-index: 5;
-  right: 0;
 }
 
 /* Landing Page ------------------------------ */
@@ -451,10 +475,19 @@ input:-webkit-autofill-selected {
   }
 }
 
+.search-trips-form #featured-search .all-form-input {
+  margin-top: 0;
+}
+
 @media only screen and (min-width: 992px) {
   .search-trips-form #featured-search .all-form-input {
     margin-bottom: 0 !important;
   }
+}
+
+.search-trips-form #featured-search .buttonHolder {
+  margin: 2rem auto;
+  text-align: right;
 }
 
 @media only screen and (max-width: 991px) {
@@ -473,6 +506,8 @@ input:-webkit-autofill-selected {
 .search-trips-form .toggle-form {
   visibility: hidden;
   background-color: blue;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   position: absolute;
   padding: 1rem;
@@ -499,6 +534,11 @@ input:-webkit-autofill-selected {
   -webkit-box-direction: normal !important;
       -ms-flex-direction: column !important;
           flex-direction: column !important;
+}
+
+#focus-search .buttonHolder {
+  margin: 2rem auto;
+  text-align: center;
 }
 
 /* Unavailable Template ------------------------------ */

@@ -23,17 +23,7 @@ body {
     flex: 1 auto;
     display: flex;
     align-items: stretch;
-    padding-bottom: 2rem;
     position: relative;
-}
-
-// headers
-.dark-bg {
-    background-color: $near-black;
-}
-
-.black-bg {
-    background-color: #000;
 }
 
 footer {
@@ -94,6 +84,16 @@ a {
     color: #000;
 }
 
+// headers
+.dark-bg {
+    background-color: $near-black;
+}
+
+.black-bg {
+    background-color: #000;
+}
+
+//buttons
 .btn-outline {
     box-sizing: content-box;
     border-radius: 0;
@@ -231,6 +231,19 @@ a {
     opacity: 0.8;
     border-radius: 0px;
     color: $off-white;
+    &:disabled {
+        background-color: $near-black;
+        border-bottom: 2px solid $form-disabled-teal;
+    }
+    &:focus {
+        background-color: $near-black;
+    }
+    &:visited .invalid {
+        outline: $square-orange;
+    }
+    &.is-invalid {
+        border-bottom: 2px solid $square-orange;
+    }
 }
 
 input:-webkit-autofill-selected {
@@ -249,7 +262,7 @@ input:-webkit-autofill-selected {
     height: 3rem;
     padding: 0.5rem 1rem;
     transition: box-shadow 150ms ease;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
 
     &[type="date" i] {
         color: $off-white;
@@ -263,10 +276,20 @@ input:-webkit-autofill-selected {
     &::placeholder {
         color: $form-grey;
     }
+
+    &:disabled::placeholder{
+        color: $form-disabled-grey;
+    }
+
 }
 
 .allauth-form-inner-content label:not([for='id_remember']) {
     display:none;
+}
+
+
+.invalid-feedback {
+    color: $square-orange;
 }
 
 .alert {
@@ -286,25 +309,6 @@ input:-webkit-autofill-selected {
     border-bottom: 2px solid red;
     background-color: $base-teal;
 }   
-
-.progress-bar{
-    height: 4px;
-    margin: 5rem 0;
-    width:100%;
-    position: relative;
-    background-color: turquoise;
-    &::before {
-        content: "";
-        height: 100%;
-        width: 15px;
-        display: block;
-        background-color: red;
-        position: absolute;
-        z-index: 5;
-        right:0;
-    }
-}
-
 
 /* Landing Page ------------------------------ */
 
@@ -388,14 +392,19 @@ input:-webkit-autofill-selected {
             flex-direction: row !important;
         }
     }
-    
+
     #featured-search .all-form-input {
+        margin-top:0;
         @media only screen and (min-width: 992px) {
             margin-bottom: 0 !important;
         }
     }
-    
-    
+
+    #featured-search .buttonHolder {
+        margin: 2rem auto;
+        text-align: right;
+    }
+
 	@media only screen and (max-width: 991px) {
         bottom: -316px;
         height: 316px;
@@ -410,6 +419,8 @@ input:-webkit-autofill-selected {
 	.toggle-form {
         visibility: hidden;
         background-color: blue;
+        width: 3rem;
+        height: 3rem;
         border-radius: 50%;
         position: absolute;
         padding: 1rem;
@@ -437,6 +448,11 @@ input:-webkit-autofill-selected {
 /* Search Trips Template ------------------------------ */
 #focus-search > form {
     flex-direction: column !important;
+}
+
+#focus-search .buttonHolder {
+    margin: 2rem auto;
+    text-align: center;
 }
 /* Unavailable Template ------------------------------ */
 
@@ -540,5 +556,3 @@ input:-webkit-autofill-selected {
         }
     }
 }
-
-

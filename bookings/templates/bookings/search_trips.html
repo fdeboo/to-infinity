@@ -1,30 +1,54 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
+{% endblock extra_css %}
+
+{% block header %}
+    {% include 'includes/navbar-dark.html' %}
+{% endblock header %}
+
 {% block content %}
-<section class="container-fluid">
+<main class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="row">
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
-            </div>
-        </div>
-        <div class="col-md-10">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-9 p-5">
-                    <div class="form-container" id="focus-search">
+        <!-- Search Form -->
+        <section class="col-12 order-md-last">
+            <div class="row justify-content-center form-bg">
+                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 my-5 form-container">
                         <h1>Search</h1>
                         <h2>Find available trips:</h2>
-                        {% crispy form %}
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-12 col-xl-10" id="focus-search">
+                                {% crispy form %}
+                            </div>
+                        </div>                       
+                    </div>
+            </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="col-md-10 order-md-first">
+            <div class="row booking-steps">
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        <div class="col-auto p-0">
+                            <div class="progress-link">
+                                <div class="icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col progress-bar p-0"></div>
+                        <div class="col progress-bar-disabled p-0"></div>
                     </div>
                 </div>
+                {% include 'bookings/includes/progressbar/steptwo-disabled.html' %}
             </div>
-        </div>
+        </section>
+
     </div>
-</section>
+</main>
 {% endblock content %}
 
 

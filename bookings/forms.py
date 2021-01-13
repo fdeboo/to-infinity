@@ -104,7 +104,7 @@ class SearchTripsForm(forms.Form):
     destination = DestinationChoiceField(
         queryset=Destination.objects.all(),
         label="",
-        empty_label="Destination",
+        empty_label="Destination*",
         widget=SelectOptionsWithAttributes(),
     )
     request_date = forms.DateField(required=True, label="", widget=DateInput())
@@ -120,7 +120,7 @@ class SearchTripsForm(forms.Form):
             Field(
                 "destination",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control-lg mb-3 all-form-input",
+                css_class="form-control-lg all-form-input",
                 id="selected-trip",
             ),
             Field(
@@ -128,20 +128,20 @@ class SearchTripsForm(forms.Form):
                 min=date.today(),
                 max="2040-12-20",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control-lg mb-3 all-form-input",
+                css_class="form-control-lg all-form-input",
             ),
             Field(
                 "passengers",
                 min="1",
                 disabled="true",
                 id="passengers-max",
-                placeholder="No. of Passengers",
+                placeholder="No. of Passengers*",
                 wrapper_class="mb-0 d-flex align-items-center",
-                css_class="form-control-lg mb-3 all-form-input",
+                css_class="form-control-lg all-form-input",
             ),
             ButtonHolder(
                 Submit("submit", "Search", css_class="btn btn-outline"),
-                css_class="ml-lg-auto col-12 col-lg-auto text-right",
+                css_class="ml-lg-auto col-12 col-lg-auto",
             ),
         )
 
@@ -163,7 +163,7 @@ class SearchTripsForm(forms.Form):
 
         elif passengers > destination.max_passengers:
             self._errors["passengers"] = self.error_class(
-                ["Sorry, this exceeds the maximum for selected trip"]
+                ["Sorry, this exceeds the maximum for the selected trip"]
             )
 
         elif passengers < 0:
