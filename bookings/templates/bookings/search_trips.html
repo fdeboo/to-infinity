@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<section>
+<section class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="row">
@@ -11,10 +11,17 @@
                 <div class="col-3 progress-bar"></div>
                 <div class="col-3 progress-bar"></div>
             </div>
-        </div>    
-        <div class="col-12 col-md-10 col-lg-6" id="focus-search">
-            <h2>Start your booking:</h2>
-            {% crispy form %}
+        </div>
+        <div class="col-md-10">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-9 p-5">
+                    <div class="form-container" id="focus-search">
+                        <h1>Search</h1>
+                        <h2>Find available trips:</h2>
+                        {% crispy form %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

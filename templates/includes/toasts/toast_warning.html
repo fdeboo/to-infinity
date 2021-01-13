@@ -1,13 +1,12 @@
-<div class="toast custom-toast rounded-0 border-top-0" data-autohide="false">
-    <div class="arrow-up arrow-warning"></div>
-    <div class="w-100 toast-capper bg-warning"></div>
-    <div class="toast-header bg-white text-dark">
-        <strong class="mr-auto">Warning!</strong>
-        <button type="button" class="ml-2 mb-1 close text-dark" data-dismiss="toast" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+<div class="toast p-3 pb-4 bg-custom text-white" data-autohide="false">
+    <div class="row">
+        <div class="col-10">
+            <h2>Warning!</h2>
+        </div>
+        <button class="col-2 text-center btn-x" type="button" data-dismiss="toast" aria-label="Close">
+            <i class="fas fa-times fa-2x" aria-hidden="true"></i>
         </button>
     </div>
-    <div class="toast-body bg-white">
-        {{ message }}
-    </div>
+    <p>{{ message }}</p>
+    <button class="btn w-100 rounded-0 btn-accept" type="button" data-dismiss="toast" aria-label="Close">Ok</button>
 </div>

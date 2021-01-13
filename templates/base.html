@@ -38,7 +38,9 @@
 
 <body>
     {% block bg %}{% endblock bg %}
-    {% include 'includes/navbar.html' %}
+
+    {% block header %}{% endblock header %}
+
     {% if messages %}
     <div class="message-container row">
         <div class="col-12">
@@ -60,11 +62,13 @@
     {% endif %}
 
     <div class="content">
-    {% block content %}
-    {% endblock content %}
+        {% block content %}
+        {% endblock content %}
     </div>
 
-    <footer></footer>
+    <footer>
+        {% include 'includes/footer.html' %}
+    </footer>
 
     
     {% block postloadjs %}

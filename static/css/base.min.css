@@ -1,4 +1,5 @@
 /* define colours */
+/* harmonious colours credit: Adobe Color */
 @import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap");
 /* Universal Styles ------------------------------ */
 html {
@@ -31,22 +32,75 @@ body {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
+  padding-bottom: 2rem;
   position: relative;
 }
 
-header {
+.dark-bg {
   background-color: #141516;
+}
+
+.black-bg {
+  background-color: #000;
 }
 
 footer {
   -ms-flex-negative: 0;
       flex-shrink: 0;
-  background-color: #141516;
-  padding: 15px 20px 40px 20px;
+  background-color: #2AB1B7;
+  padding: 1rem 20px;
+  color: #0E666B;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+footer h2 {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+footer a {
+  color: #0E666B;
+}
+
+footer a:hover {
+  font-weight: 600;
+  color: #0E666B;
+  text-decoration: underline;
+}
+
+footer .anchor-set :first-child {
+  margin-top: 1rem;
+}
+
+footer .anchor-set .footer-col-link {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+footer .anchor-set .footer-col-link::before {
+  content: '';
+  width: 100%;
+  height: 2px;
+  background-color: #0E666B;
+  position: absolute;
+  top: -4px;
+  left: 0;
+}
+
+footer .contact-icon {
+  width: 2rem;
+  padding: 0 1rem;
 }
 
 a {
   color: #99B821;
+}
+
+a:hover {
+  color: #99B821;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 ::-moz-selection {
@@ -57,10 +111,6 @@ a {
 ::selection {
   background-color: #2AB1B7;
   color: #000;
-}
-
-.bg-white {
-  background-color: #fff;
 }
 
 .btn-outline, .btn-outline-reverse, .hero-btn {
@@ -105,45 +155,79 @@ a {
   color: #2AB1B7;
 }
 
-.main-nav li:not(:last-of-type) {
-  margin-right: 2rem;
+.main-nav li {
+  position: relative;
 }
 
 .main-nav li a {
+  font-weight: 400;
+  color: #f5f5f5;
   position: relative;
   text-decoration: none;
+  z-index: 1;
 }
 
 .main-nav li a i {
   color: gray;
-  font-size: 0.8em;
-}
-
-.main-nav li a:hover {
-  text-decoration: none;
-}
-
-.main-nav li a:hover i {
-  color: gray;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .main-nav li a::before {
   position: absolute;
+  content: "";
+  width: calc(100% - 1px);
+  height: 1px;
+  background-color: #2AB1B7;
+  bottom: -6px;
+  left: 0;
+  -webkit-transform: scale(0, 1);
+          transform: scale(0, 1);
+  -webkit-transform-origin: right center;
+          transform-origin: right center;
+  z-index: -1;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
 }
 
-.site-link-dark {
+.main-nav li a:hover {
   color: #f5f5f5;
+  text-decoration: none;
+  font-weight: 400;
 }
 
-.site-link-dark:hover {
-  color: #f5f5f5;
+.main-nav li a:hover i {
+  color: gray;
+  font-size: 0.8rem;
+}
+
+.main-nav li a:hover::before {
+  -webkit-transform: scale(1, 1);
+          transform: scale(1, 1);
+  -webkit-transform-origin: left center;
+          transform-origin: left center;
+}
+
+.main-nav li a:active::before {
+  -webkit-transform: scale(1, 1);
+          transform: scale(1, 1);
+  -webkit-transform-origin: left center;
+          transform-origin: left center;
+}
+
+.main-nav li a.dropdown-item {
+  color: #141516;
+}
+
+.main-nav li:not(:last-of-type) {
+  margin-right: 2rem;
 }
 
 /* Forms ------------------------------ */
 .form-bg {
-  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 51, 51, 0.5)), to(rgba(0, 51, 51, 0.2))), url("/media/pexels-miriam-espacio-110854.jpg");
-  background-image: linear-gradient(to right, rgba(0, 51, 51, 0.5), rgba(0, 51, 51, 0.2)), url("/media/pexels-miriam-espacio-110854.jpg");
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url("/media/pexels-miriam-espacio-110854.jpg");
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/media/pexels-miriam-espacio-110854.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -164,13 +248,13 @@ a {
 
 .form-container h1 {
   font-family: 'Orbitron', cursive;
-  font-size: 1.8em;
+  font-size: 1.8rem;
   font-weight: 200;
   color: #2AB1B7;
 }
 
 .form-container h2 {
-  font-size: 1.3em;
+  font-size: 1.3rem;
   font-weight: 200;
 }
 
@@ -201,6 +285,12 @@ input:-webkit-autofill-selected {
   transition: -webkit-box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease, -webkit-box-shadow 150ms ease;
+  margin-bottom: 1.5rem;
+}
+
+.all-form-input[type="date" i],
+.allauth-form-inner-content input:not([id="id_remember"])[type="date" i] {
+  color: #f5f5f5;
 }
 
 .all-form-input:focus,
@@ -274,7 +364,7 @@ input:-webkit-autofill-selected {
 
 /* Landing Page ------------------------------ */
 .hero-btn {
-  border: 1px solid #f5f5f5;
+  border: 1px solid #2AB1B7;
   background-color: transparent;
   color: #f5f5f5;
 }
@@ -294,20 +384,16 @@ input:-webkit-autofill-selected {
   font-size: 4rem;
 }
 
-.bg-black {
-  background-color: black;
-}
-
 .bg-hero {
   z-index: -1;
   position: absolute;
-  height: 100vh;
+  height: 100%;
   bottom: 0;
   left: 0;
   right: 0;
   background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
   background-size: cover;
-  background-position: 50% 30vh;
+  background-position: 50% -10%;
 }
 
 /* Destination List Template ------------------------------ */
@@ -325,7 +411,7 @@ input:-webkit-autofill-selected {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   color: white;
-  font-size: 3em;
+  font-size: 3rem;
   font-family: 'Orbitron', sans-serif;
   font-weight: bold;
 }
@@ -342,7 +428,7 @@ input:-webkit-autofill-selected {
 }
 
 .search-trips-form {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
@@ -389,10 +475,10 @@ input:-webkit-autofill-selected {
   background-color: blue;
   border-radius: 50%;
   position: absolute;
-  padding: 1em;
-  margin: 1.5em;
-  top: -6em;
-  right: 3em;
+  padding: 1rem;
+  margin: 1.5rem;
+  top: -6rem;
+  right: 3rem;
   color: white;
   z-index: 10;
 }
@@ -431,7 +517,7 @@ input:-webkit-autofill-selected {
   display: inline-block;
   padding: 20px;
   width: 100%;
-  font-size: 1em;
+  font-size: 1rem;
   line-height: 20px;
   letter-spacing: 1px;
   margin-top: 0;
@@ -480,7 +566,7 @@ input:-webkit-autofill-selected {
 .formatted-day {
   display: block;
   font-weight: 700;
-  font-size: 1.5em;
+  font-size: 1.5rem;
 }
 
 .formatted-price {
@@ -514,4 +600,8 @@ input:-webkit-autofill-selected {
   padding: 0 5px;
   outline: none;
   background: transparent;
+}
+
+.message-container .toast .btn-accept {
+  background-color: #99B821;
 }

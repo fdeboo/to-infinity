@@ -23,36 +23,81 @@ body {
     flex: 1 auto;
     display: flex;
     align-items: stretch;
+    padding-bottom: 2rem;
     position: relative;
 }
 
-header {
+// headers
+.dark-bg {
     background-color: $near-black;
+}
+
+.black-bg {
+    background-color: #000;
 }
 
 footer {
     flex-shrink: 0;
-    background-color: $near-black; 
-    padding: 15px 20px 40px 20px;
+    background-color: $base-teal; 
+    padding: 1rem 20px;
+    color: $triad-dark-teal;
+    font-weight: 400;
+    font-size:0.9rem;
+    h2 {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+    }
+    a {
+        
+        color: $triad-dark-teal;
+        &:hover {
+            font-weight: 600;
+            color: $triad-dark-teal;
+            text-decoration: underline;
+        }
+    }
+    .anchor-set {
+        :first-child {
+            margin-top: 1rem;
+        }
+        .footer-col-link {
+            position: relative;
+            margin-bottom: 1rem;
+            &::before {
+                content: '';
+                width: 100%;
+                height: 2px;
+                background-color: $triad-dark-teal;
+                position: absolute;
+                top: -4px;
+                left:0;
+            }
+        }
+    }
+    .contact-icon {
+        width: 2rem;
+        padding: 0 1rem;
+    }
 }
 
 a {
-    color:#99B821;
+    color:$square-green;
+    &:hover {
+        color: $square-green;
+        font-weight: 600;
+        text-decoration: none;
+    }
 }
 
 ::selection {
-    background-color: $teal-primary;
+    background-color: $base-teal;
     color: #000;
-}
-
-.bg-white {
-    background-color: #fff;
 }
 
 .btn-outline {
     box-sizing: content-box;
     border-radius: 0;
-    border: 1px solid $teal-primary;
+    border: 1px solid $base-teal;
     background-color: $near-black;
     opacity:0.8;
     text-transform: uppercase;
@@ -61,7 +106,7 @@ a {
     transition: background-color .75s, color .75s ease-out;
     color: $off-white;
     &:hover {
-        background-color: $teal-primary;
+        background-color: $base-teal;
     }
 }
 
@@ -83,48 +128,70 @@ a {
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     span {
-
-        color: $teal-primary;
+        color: $base-teal;
     }
 }
 
 .main-nav {
     li {
-        &:not(:last-of-type) {
-            margin-right: 2rem;
-        }
+        position: relative;
         a {
+            font-weight: 400;
+            color: $off-white;
             position: relative;
             text-decoration: none;
+            z-index: 1;
             i {
                 color: gray;
-                font-size: 0.8em;
-            }
-            &:hover {
-                text-decoration: none;
-                i {
-                    color: gray;
-                    font-size: 0.8em;
-                }
+                font-size: 0.8rem;
             }
             &::before {
                 position: absolute;
+                content: "";
+                width: calc(100% - 1px);
+                height: 1px;
+                background-color: $base-teal;
+                bottom: -6px;
+                left: 0;
+                transform: scale(0, 1);
+                transform-origin: right center;
+                z-index: -1;
+                transition: transform 0.5s ease;
             }
+            &:hover {
+                color: $off-white;
+                text-decoration: none;
+                font-weight: 400;
+                i {
+                    color: gray;
+                    font-size: 0.8rem;
+                }
+                &::before {
+                    transform: scale(1, 1);
+                    transform-origin: left center;
+                }
+            }
+            &:active {
+                &::before {
+                    transform: scale(1, 1);
+                    transform-origin: left center;
+                }
+            }
+            &.dropdown-item {
+                color: $near-black;
+            }
+            
         }
-    }
-}
-
-.site-link-dark {
-    color: $off-white;
-    &:hover {
-        color: $off-white;
+        &:not(:last-of-type) {
+            margin-right: 2rem;
+        }
     }
 }
 
 /* Forms ------------------------------ */
 
 .form-bg {
-    background-image: linear-gradient(to right, rgba(0,51,51,0.5), rgba(0,51,51,0.2)), url("/media/pexels-miriam-espacio-110854.jpg");
+    background-image: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/media/pexels-miriam-espacio-110854.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -134,7 +201,8 @@ a {
     text-align: center;
     color: $off-white;
     padding: 3rem;
-    border: 1px solid $teal-primary;
+    border: 1px solid $base-teal;
+
     @media only screen and (max-width: 768px) {
 		border: none;
 	} 
@@ -143,22 +211,22 @@ a {
 .form-container h1 {
     font: {
         family: 'Orbitron', cursive;
-        size: 1.8em;
+        size: 1.8rem;
         weight: 200;
     }
-    color: $teal-primary;
+    color: $base-teal;
 }
 
 .form-container h2 {
     font: {
-        size: 1.3em;
+        size: 1.3rem;
         weight: 200;
     }
 }
 
 .all-form-bg {
     border: 0;
-    border-bottom: 2px solid $teal-primary;
+    border-bottom: 2px solid $base-teal;
     background-color: $near-black;
     opacity: 0.8;
     border-radius: 0px;
@@ -168,7 +236,7 @@ a {
 input:-webkit-autofill-selected {
         background-color: $near-black;
         color: $off-white;
-    }
+}
 
 .all-form-input,
 .allauth-form-inner-content input:not([id="id_remember"])  {
@@ -181,6 +249,11 @@ input:-webkit-autofill-selected {
     height: 3rem;
     padding: 0.5rem 1rem;
     transition: box-shadow 150ms ease;
+    margin-bottom: 1.5rem;
+
+    &[type="date" i] {
+        color: $off-white;
+    }
     
     &:focus {
         box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
@@ -211,7 +284,7 @@ input:-webkit-autofill-selected {
     list-style-type: none;
     border-radius: 0;
     border-bottom: 2px solid red;
-    background-color: $teal-primary;
+    background-color: $base-teal;
 }   
 
 .progress-bar{
@@ -237,7 +310,7 @@ input:-webkit-autofill-selected {
 
 .hero-btn {
     @extend .btn-outline;
-    border: 1px solid $off-white;
+    border: 1px solid $base-teal;
     background-color: transparent;
     color: $off-white;
     &:hover {
@@ -258,20 +331,16 @@ input:-webkit-autofill-selected {
     }
 }
 
-.bg-black {
-    background-color: black;
-}
-
 .bg-hero {
     z-index: -1;
     position: absolute;
-    height: 100vh;
+    height: 100%;
     bottom: 0;
     left: 0;
     right: 0;
     background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
     background-size: cover;
-    background-position: 50% 30vh;
+    background-position: 50% -10%;
     
 }
 
@@ -289,7 +358,7 @@ input:-webkit-autofill-selected {
         transform: translate(-50%, -50%);
         color: white;
         font: {
-            size: 3em;
+            size: 3rem;
             family: 'Orbitron', sans-serif;
             weight: bold;
         }
@@ -307,7 +376,7 @@ input:-webkit-autofill-selected {
 
 // Styles instance of 'trips' search form
 .search-trips-form {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
@@ -343,10 +412,10 @@ input:-webkit-autofill-selected {
         background-color: blue;
         border-radius: 50%;
         position: absolute;
-        padding: 1em;
-        margin: 1.5em;
-        top: -6em;
-        right: 3em;
+        padding: 1rem;
+        margin: 1.5rem;
+        top: -6rem;
+        right: 3rem;
         color: white;
         z-index: 10;
         
@@ -389,7 +458,7 @@ input:-webkit-autofill-selected {
 	display: inline-block;
 	padding: 20px;
 	width: 100%;
-	font-size: 1em;
+	font-size: 1rem;
 	line-height: 20px;
 	letter-spacing: 1px;
 	margin-top: 0;
@@ -434,7 +503,7 @@ input:-webkit-autofill-selected {
     display: block;
     font: {
         weight: 700;
-        size: 1.5em;
+        size: 1.5rem;
     }
 }
 
@@ -465,6 +534,9 @@ input:-webkit-autofill-selected {
             padding: 0 5px;
             outline: none;
             background: transparent;
+        }
+        .btn-accept {
+            background-color: $square-green;
         }
     }
 }

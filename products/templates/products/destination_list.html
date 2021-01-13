@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block page_nav %}
-    <div class="row bg-black justify-content-center">
-        {% include 'includes/dark_nav.html' %}
-    </div>
+{% block header %}
+    {% include 'includes/navbar-dark.html' %}
 
     <!-- Navigation within the page  -->
     <div class="row justify-content-center py-3 icon-menu-bar">
@@ -15,7 +13,7 @@
             <a href="#trip4"><img src="{% static 'icons/iss.png' %}" alt="International Space Station link"></a>
         </div>
     </div>
-{% endblock page_nav %}
+{% endblock header %}
 
 {% block content %}
     <section class="container-fluid">

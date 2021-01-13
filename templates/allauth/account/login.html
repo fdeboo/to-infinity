@@ -35,11 +35,18 @@
 
   <form class="login" method="POST" action="{% url 'account_login' %}">
     {% csrf_token %}
+
     {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       <h2>Please log in to start a booking</h2>
     {% endif %}
-    {{ form | crispy }}
+
+    <div class="row justify-content-center mt-3">
+      <div class="col-12 col-xl-10">
+        {{ form | crispy }}
+      </div>
+    </div>
+
     <button class="primaryAction btn btn-outline d-block mx-auto mb-3" type="submit">{% trans "Sign In" %}</button>
     <a class="button secondaryAction my-3" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
   </form>
