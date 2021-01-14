@@ -16,6 +16,14 @@
 
 .progress-link {
     width: 3rem;
+    a {
+        &:hover, &:active {
+            border: 2px solid $square-green;
+            .icon {
+                border: 2px solid $square-green;
+            }
+        }
+    }
     .icon {
         display: flex;
         align-items: center;
@@ -26,11 +34,16 @@
         overflow: hidden;
         background-color: $off-white;
         color: $square-green;
+        border: 2px solid $off-white;
     }
     @media only screen and (max-width: 768px) {
         width:2rem;
         .icon {
             height:2rem;
+            border: 1px solid $off-white;
+            &:active {
+                border: 1px solid $square-green;
+            }
         }
     }
 }

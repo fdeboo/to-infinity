@@ -314,9 +314,9 @@ input:-webkit-autofill-selected {
 
 .hero-btn {
     @extend .btn-outline;
-    border: 1px solid $base-teal;
-    background-color: transparent;
+    background-color: $base-teal;
     color: $off-white;
+    opacity: 1;
     &:hover {
         background-color: $off-white;
         color: #000;

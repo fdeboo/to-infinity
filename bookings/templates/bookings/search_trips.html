@@ -10,8 +10,8 @@
 {% endblock header %}
 
 {% block content %}
-<main class="container-fluid">
-    <div class="row justify-content-center">
+<main class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="row w-100 justify-content-center">
         <!-- Search Form -->
         <section class="col-12 order-md-last">
             <div class="row justify-content-center form-bg">
@@ -32,14 +32,7 @@
             <div class="row booking-steps">
                 <div class="col p-0">
                     <div class="row align-items-center m-0">
-                        <div class="col-auto p-0">
-                            <div class="progress-link">
-                                <div class="icon">
-                                    <i class="fas fa-search"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col progress-bar p-0"></div>
+                        {% include 'bookings/includes/progressbar/stepone-active.html' %}
                         <div class="col progress-bar-disabled p-0"></div>
                     </div>
                 </div>
