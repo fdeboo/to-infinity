@@ -2,20 +2,34 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
 {% endblock extra_css %}
 
-{% block content %}
-    <section class="container-fluid position-relative">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-3 progress-bar"></div>
-                    <div class="col-3 progress-bar"></div>
-                    <div class="col-3 progress-bar"></div>
-                    <div class="col-3 progress-bar"></div>
-                </div>
+{% block header %}
+    {% include 'includes/navbar-dark.html' %}
+{% endblock header %}
 
+{% block content %}
+    <main class="container-fluid">
+        <!-- Progress Bar -->
+        <section class="row justify-content-center booking-steps-container">
+            <div class="col-md-10">
+                <div class="row booking-steps">
+                    {% include 'bookings/includes/progressbar/steptwo-enabled.html' %}
+                    <div class="col p-0">
+                        <div class="row align-items-center m-0">
+                            {% include 'bookings/includes/progressbar/stepthree-active.html' %}
+                            <div class="col progress-bar-disabled p-0"></div>
+                        </div>
+                    </div>
+                    {% include 'bookings/includes/progressbar/stepfour-disabled.html' %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Passenger Details Form -->
+        <section class="row justify-content-center">
+            <div class="col-md-10">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="logo-font mb-4">Passenger Details</h2>
@@ -38,8 +52,8 @@
                     </div>
                 </div>                
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 {% endblock content %}
 
 

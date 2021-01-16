@@ -10,72 +10,70 @@
 {% endblock header %}
 
 {% block content %}
-<main class="container-fluid d-flex justify-content-center align-items-center">
-    <div class="row w-100 justify-content-center">
+<main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+    <!-- Confirm Trip Form -->
+    <section class="row w-100 flex-grow-1 order-md-last">
+        <div class="col-12 d-flex align-items-center justify-content-center my-5">
+            <form action="{% url 'confirm_trip' %}" method="POST">
+                {% csrf_token %}
+                <div class="row justify-content-center">
 
-        <!-- Confirm Choice Form -->
-        <section class="col-12 order-md-last">
-            <div class="row justify-content-center form-bg">
-                <form action="{% url 'confirm_trip' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="row justify-content-center">
-                        {% for radio in form.trip %}
-                        <div class="radio-options mx-2">
-                            {{ radio.tag }}
-                            <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
-                        </div>
-                        {% endfor %}
+                    <!-- Input Choices -->
+                    {% for radio in form.trip %}
+                    <div class="col radio-options mx-2">
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+                    </div>
+                    {% endfor %}
 
-                        <div class="col-12 text-center">
-                            <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal"
-                                data-target="#confirmModal">
-                                Confirm
-                            </button>
-
-                            <!-- Confirm Choice model -->
-                            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmModalLabel">Confirm Selection</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-group">
-                                                    {% for destination in  destination_obj %}
-                                                    <p>{{ destination.name }}</p>
-                                                    <p id="date-choice"></p>
-                                                    <p id="booking-details">
-                                                        <span id="quantity">{{ passengers }}</span>
-                                                        x £
-                                                        <span id="cost">{{ destination.price }}</span>
-                                                    </p>
-                                                    <p id="total">Total:</p>
-                                                    {% endfor %}
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-reverse"
-                                                data-dismiss="modal">Close</button>
-                                            <input type="submit" class="btn btn-outline" value="Proceed" />
-                                        </div>
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal"
+                            data-target="#confirmModal">
+                            Confirm
+                        </button>
+                        <!-- Confirm Choice model -->
+                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                            aria-labelledby="confirmModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmModalLabel">Confirm Selection</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                {% for destination in  destination_obj %}
+                                                <p>{{ destination.name }}</p>
+                                                <p id="date-choice"></p>
+                                                <p id="booking-details">
+                                                    <span id="quantity">{{ passengers }}</span>
+                                                    x £
+                                                    <span id="cost">{{ destination.price }}</span>
+                                                </p>
+                                                <p id="total">Total:</p>
+                                                {% endfor %}
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-reverse"
+                                            data-dismiss="modal">Close</button>
+                                        <input type="submit" class="btn btn-outline" value="Proceed" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- End of modal-->
-
                     </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Progress Bar -->
-        <section class="col-md-10 order-md-first">
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Progress Bar -->
+    <section class="row w-100 justify-content-center booking-steps-container order-md-first">
+        <div class="col-md-10">
             <div class="row booking-steps">
                 {% include 'bookings/includes/progressbar/stepone-enabled.html' %}
                 <div class="col p-0">
@@ -86,9 +84,8 @@
                 </div>
                 {% include 'bookings/includes/progressbar/stepthree-disabled.html' %}
             </div>
-        </section>
-
-    </div>
+        </div>
+    </section>
 </main>
 {% endblock content %}
 

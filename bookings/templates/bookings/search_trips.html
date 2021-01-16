@@ -10,11 +10,12 @@
 {% endblock header %}
 
 {% block content %}
-<main class="container-fluid d-flex justify-content-center align-items-center">
-    <div class="row w-100 justify-content-center">
-        <!-- Search Form -->
-        <section class="col-12 order-md-last">
-            <div class="row justify-content-center form-bg">
+<main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+    
+    <!-- Search Form -->
+    <section class="row w-100 justify-content-center flex-grow-1 order-md-last align-items-center">
+        <div class="col-12">
+            <div class="row justify-content-center">
                     <div class="col-12 col-sm-10 col-md-8 col-lg-6 my-5 form-container">
                         <h1>Search</h1>
                         <h2>Find available trips:</h2>
@@ -25,10 +26,12 @@
                         </div>                       
                     </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Progress Bar -->
-        <section class="col-md-10 order-md-first">
+    <!-- Progress Bar -->
+    <section class="row w-100 justify-content-center booking-steps-container order-md-first">
+        <div class="col-md-10">
             <div class="row booking-steps">
                 <div class="col p-0">
                     <div class="row align-items-center m-0">
@@ -38,9 +41,8 @@
                 </div>
                 {% include 'bookings/includes/progressbar/steptwo-disabled.html' %}
             </div>
-        </section>
-
-    </div>
+        </div>
+    </section>
 </main>
 {% endblock content %}
 

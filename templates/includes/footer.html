@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="row justify-content-center m-2">
-        <div class="col-12">
-            <div class="row align-items-start align-items-lg-end">
-                <div class="d-none d-sm-block col-5 col-md-4 col-lg-3">
+        <div class="col-12 pl-0">
+            <div class="row align-items-start">
+                <div class="d-none d-md-block col-5 col-md-4 col-lg-3">
                     <div class="d-flex flex-column">
                         <h1 class="logo-font text-uppercase">2infinity</h1>
                         <p class="small bold">Experiences that are out of this world</p>
@@ -10,9 +10,9 @@
                             quidem aspernatur blanditiis.</p>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col pr-0">
                     <div class="row">
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-4 col-lg-2 col-xl-3">
                             <h2>Explore</h2>
                             <div class="anchor-set d-flex flex-column">
                                 <a href="{% url 'home' %}" class="footer-col-link">Home</a>
@@ -20,28 +20,17 @@
                                 <a href="{% url 'search_trip' %}" class="footer-col-link">Book A Trip</a>
                             </div>
                         </div>
-                        <div class="col-6 col-sm-auto d-flex flex-column">
-                            <h2>Contact</h2>
-                            <div class="row mb-2">
-                                <div class="contact-icon"><i class="fas fa-at"></i></div>
-                                <div class="col-10">toinfinity@example.com</div>
-                            </div>
-                            <div class="row">
-                                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                                <div class="col-10">65 Gifford Road, London, NW10 9ED</div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-4 col-lg-auto col-xl-3 order-lg-3">
                             <h2>Legal</h2>
                             <div class="anchor-set d-flex flex-column">
                                 <a href="{% url 'home' %}" class="footer-col-link">Terms and Conditions</a>
                                 <a href="{% url 'destinations' %}" class="footer-col-link">Privacy Policy</a>
                             </div>
                         </div>
-                        <div class="col-md-4 col-lg-auto d-flex flex-column">
+                        <div class="col-4 d-flex col-md-4 col-lg-auto flex-column order-lg-4">
                             <h2 class="footer-col-title">Subscribe</h2>
-                            <h2 class="footer-col-title">Connect</h2>
-                            <div class="social">
+                            <div class="social d-none d-lg-block">
+                                <h2 class="footer-col-title">Connect</h2>
                                 <a href="https://github.com/fdeboo" target="blank"><i
                                         class="fab fa-github-square social fa-2x"></i></a>
                                 <a href="https://linkedin.com/in/frandeboo" target="blank"><i
@@ -49,6 +38,38 @@
                                 <a href="https://www.facebook.com/fdeboo" target="blank"><i
                                         class="fab fa-facebook-square social fa-2x"></i></a>
                             </div>
+                            <div class="d-none">
+                                <h2>Contact</h2>
+                                <div class="row mb-2">
+                                    <div class="col-auto contact-icon"><i class="fas fa-at"></i></div>
+                                    <div class="text-break pl-0 mr-3">toinfinity@example.com</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-auto contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div class="col pl-0 mr-3">65 Gifford Road, London, NW10 9ED</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-lg-4 col-xl-auto contact-info order-lg-2">
+                            <h2>Contact</h2>
+                            <div class="row mb-2">
+                                <div class="col-auto contact-icon"><i class="fas fa-at pr-2"></i></div>
+                                <div class="col-auto text-break pl-0 mr-3 mr-lg-0">toinfinity@example.com</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto contact-icon"><i
+                                        class="fas fa-map-marker-alt pr-2"></i></div>
+                                <div class="col pl-0 mr-3 mr-lg-0">65 Gifford Road, London, NW10 9ED</div>
+                            </div>
+                        </div>
+                        <div class="col-4 social align-self-end d-lg-none">
+                            <h2 class="footer-col-title">Connect</h2>
+                            <a href="https://github.com/fdeboo" target="blank"><i
+                                    class="fab fa-github-square social fa-2x"></i></a>
+                            <a href="https://linkedin.com/in/frandeboo" target="blank"><i
+                                    class="fab fa-linkedin social fa-2x"></i></a>
+                            <a href="https://www.facebook.com/fdeboo" target="blank"><i
+                                    class="fab fa-facebook-square social fa-2x"></i></a>
                         </div>
 
                     </div>

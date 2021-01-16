@@ -37,9 +37,11 @@
 </head>
 
 <body>
-    {% block bg %}{% endblock bg %}
+    {% block bg %}
+    {% endblock bg %}
 
-    {% block header %}{% endblock header %}
+    {% block header %}
+    {% endblock header %}
 
     {% if messages %}
     <div class="message-container row">
@@ -66,7 +68,7 @@
         {% endblock content %}
     </div>
 
-    <footer>
+    <footer class="px-0 px-sm-2">
         {% include 'includes/footer.html' %}
     </footer>
 

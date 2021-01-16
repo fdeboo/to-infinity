@@ -81,7 +81,7 @@ footer .anchor-set .footer-col-link::before {
 
 footer .contact-icon {
   width: 2rem;
-  padding: 0 1rem;
+  padding: 0 1.2rem;
 }
 
 a {
@@ -388,14 +388,15 @@ input:-webkit-autofill-selected {
 
 /* Landing Page ------------------------------ */
 .hero-btn {
+  border: 1px solid #2AB1B7;
   background-color: #2AB1B7;
-  color: #f5f5f5;
+  color: #141516;
   opacity: 1;
 }
 
 .hero-btn:hover {
-  background-color: #f5f5f5;
-  color: #000;
+  background-color: #141516;
+  color: #f5f5f5;
 }
 
 .vh-50 {
@@ -409,7 +410,6 @@ input:-webkit-autofill-selected {
 }
 
 .bg-hero {
-  z-index: -1;
   position: absolute;
   height: 100%;
   bottom: 0;
@@ -417,7 +417,7 @@ input:-webkit-autofill-selected {
   right: 0;
   background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
   background-size: cover;
-  background-position: 50% -10%;
+  background-position: 50% -50%;
 }
 
 /* Destination List Template ------------------------------ */
@@ -587,7 +587,7 @@ input:-webkit-autofill-selected {
 }
 
 [type="radio"]:not(:checked) + label {
-  background-color: white;
+  background-color: #99B821;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
 }
@@ -598,7 +598,7 @@ input:-webkit-autofill-selected {
 }
 
 [type="radio"]:checked + label {
-  background-color: transparent;
+  background-color: #99B821;
   -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
           box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }

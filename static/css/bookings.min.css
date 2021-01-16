@@ -1,5 +1,9 @@
 /* define colours */
 /* harmonious colours credit: Adobe Color */
+.booking-steps-container {
+  background-color: #141516;
+}
+
 .booking-steps {
   margin: 3rem 0;
 }
