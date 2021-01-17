@@ -17,21 +17,45 @@ $(document).ready(function () {
             priceFloat.substr(-3);
         }
     };
-        
+
+    const selected = $("input[type='radio']:checked");
+    $(selected).siblings(".block").css("background-color", "#99B821");
+    $(selected).siblings().children(".block").css("background-color", "#99B821");
+
     $('.date-option').each(function (index) {
         // Applies html markup and css to data passed in the input labels
         const text = $(this).text();
         const text_array = text.split(" ");
-        const dayHtml = '<span class="day">' + text_array[0] + '</span>';
+        const dayHtml =
+          '<h2 class="day"><i class="fas fa-check fa-lg mb-2 d-block"></i>' +
+          text_array[0] + "</h2>";
         const date = text_array[1] + " " + text_array[2] + " " + text_array[3];
         const price = text_array[4]
-        const priceHtml = '<span class="price">' + price.insert() + '</span>';
+        const priceHtml = '<p class="price mt-2">' + 
+        '<i class="fas fa-user pr-2 text-right"></i>' + price.insert() + '</p>';
         const htmlString = dayHtml + " " + date + " " + priceHtml;
         $(this).html(htmlString);
     });
     $('.date-option').addClass('formatted-label');
     $('.day').addClass('formatted-day');
     $('.price').addClass('formatted-price');
+});
+
+$("input[type='radio']").change(function() {
+    const selected = $("input[type='radio']:checked");
+    const unselected = $("input[type='radio']:not(':checked')");
+
+    $(selected).siblings(".block").css("background-color", "#99B821");
+    $(selected).siblings().children(".block").css("background-color", "#99B821");
+    $(unselected).siblings(".block").css("background-color", "#0D3638");
+    $(unselected).siblings().children(".block").css("background-color", "#0D3638");
+});
+
+$("input[type='radio']").mouseover(function() {
+    console.log('hovered');
+    $(this).siblings(".block").css("background-color", "#2AB1B7");
+    $(this).siblings().children(".block").css("background-color", "#2AB1B7");
+    $(this).css("border", "1px solid #2AB1B7");  
 });
 
 $('#confirm-btn').click(function() {
@@ -61,4 +85,5 @@ $('#confirm-btn').click(function() {
         $('#date-choice').text(day + "/" + month + "/" + year);
         
     })
+
 })

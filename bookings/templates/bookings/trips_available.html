@@ -11,20 +11,51 @@
 
 {% block content %}
 <main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+
+    <!-- Progress Bar -->
+    <section class="row w-100 justify-content-center booking-steps-container order-md-first">
+        <div class="col-md-10">
+            <div class="row booking-steps">
+                {% include 'bookings/includes/progressbar/stepone-enabled.html' %}
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        {% include 'bookings/includes/progressbar/steptwo-active.html' %}
+                        <div class="col progress-bar-disabled p-0"></div>
+                    </div>
+                </div>
+                {% include 'bookings/includes/progressbar/stepthree-disabled.html' %}
+            </div>
+        </div>
+    </section>
+
     <!-- Confirm Trip Form -->
-    <section class="row w-100 flex-grow-1 order-md-last">
-        <div class="col-12 d-flex align-items-center justify-content-center my-5">
+    <section class="row w-100 flex-grow-1 justify-content-center">
+        <div class="col-12 col-md-10 d-flex align-items-center justify-content-center my-5">
+
             <form action="{% url 'confirm_trip' %}" method="POST">
                 {% csrf_token %}
-                <div class="row justify-content-center">
-
+                <div class="text-center p-3">
+                    <h2 class="col-12 text-center">Please choose from the following available dates closest to your search:</h2>
+                    {% for destination in destination_obj %}
+                        <p>Destination: "{{ destination.name }}",
+                    {% endfor %}
+                    Date: "{{ date }}",
+                    Travellers: "{{ passengers }}"</p>
+                </div>
+                <div class="row justify-content-center p-3 my-3 align-items-stretch">
                     <!-- Input Choices -->
                     {% for radio in form.trip %}
-                    <div class="col radio-options mx-2">
-                        {{ radio.tag }}
-                        <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
-                    </div>
+                        <div class="col-6 col-md-4 col-lg-3 radio-options">
+                        <div class="d-flex justify-content-around">
+                            <div class="block"></div>
+                            <div class="block"></div>
+                        </div>
+                        <div class="block w-100"></div>
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+                        </div>
                     {% endfor %}
+                </div>
 
                     <div class="col-12 text-center">
                         <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal"
@@ -71,21 +102,7 @@
             </form>
         </div>
     </section>
-    <!-- Progress Bar -->
-    <section class="row w-100 justify-content-center booking-steps-container order-md-first">
-        <div class="col-md-10">
-            <div class="row booking-steps">
-                {% include 'bookings/includes/progressbar/stepone-enabled.html' %}
-                <div class="col p-0">
-                    <div class="row align-items-center m-0">
-                        {% include 'bookings/includes/progressbar/steptwo-active.html' %}
-                        <div class="col progress-bar-disabled p-0"></div>
-                    </div>
-                </div>
-                {% include 'bookings/includes/progressbar/stepthree-disabled.html' %}
-            </div>
-        </div>
-    </section>
+    
 </main>
 {% endblock content %}
 

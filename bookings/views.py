@@ -41,6 +41,31 @@ class SearchTripsView(FormView):
     template_name = "bookings/search_trips.html"
     form_class = SearchTripsForm
 
+    def get_initial(self):
+        """
+        Checks to see if data is already in session and if so, sets the initial
+        values for the form.
+        """
+        initial = super(SearchTripsView, self).get_initial()
+        if 'request_date' in self.request.session:
+            date = self.request.session['request_date']
+            form_date = json.loads(date)
+            initial['request_date'] = form_date
+        else:
+            pass
+
+        if 'destination_choice' in self.request.session:
+            form_destination = self.request.session['destination_choice']
+            initial['destination'] = form_destination
+        else:
+            pass
+        if 'passenger_total' in self.request.session:
+            form_passengers = self.request.session['passenger_total']
+            initial['passengers'] = form_passengers
+        else:
+            pass
+        return initial
+
     def form_valid(self, form):
         date = form.cleaned_data["request_date"]
         date = json.dumps(date, cls=DjangoJSONEncoder)
@@ -210,8 +235,11 @@ class ConfirmTripView(FormView):
 
         context = super(ConfirmTripView, self).get_context_data(**kwargs)
         destination = Destination.objects.filter(pk=self.destination_pk)
-        context["passengers"] = self.passengers
-        context["destination_obj"] = destination
+        context.update({
+            "passengers": self.passengers,
+            "destination_obj": destination,
+            "date": self.searched_date,
+        })
         return context
 
     def form_valid(self, form):

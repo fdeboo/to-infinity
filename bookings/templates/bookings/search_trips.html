@@ -11,9 +11,23 @@
 
 {% block content %}
 <main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+    <!-- Progress Bar -->
+    <section class="row w-100 justify-content-center booking-steps-container">
+        <div class="col-md-10">
+            <div class="row booking-steps">
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        {% include 'bookings/includes/progressbar/stepone-active.html' %}
+                        <div class="col progress-bar-disabled p-0"></div>
+                    </div>
+                </div>
+                {% include 'bookings/includes/progressbar/steptwo-disabled.html' %}
+            </div>
+        </div>
+    </section>
     
     <!-- Search Form -->
-    <section class="row w-100 justify-content-center flex-grow-1 order-md-last align-items-center">
+    <section class="row w-100 justify-content-center flex-grow-1 align-items-center">
         <div class="col-12">
             <div class="row justify-content-center">
                     <div class="col-12 col-sm-10 col-md-8 col-lg-6 my-5 form-container">
@@ -25,21 +39,6 @@
                             </div>
                         </div>                       
                     </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Progress Bar -->
-    <section class="row w-100 justify-content-center booking-steps-container order-md-first">
-        <div class="col-md-10">
-            <div class="row booking-steps">
-                <div class="col p-0">
-                    <div class="row align-items-center m-0">
-                        {% include 'bookings/includes/progressbar/stepone-active.html' %}
-                        <div class="col progress-bar-disabled p-0"></div>
-                    </div>
-                </div>
-                {% include 'bookings/includes/progressbar/steptwo-disabled.html' %}
             </div>
         </div>
     </section>
