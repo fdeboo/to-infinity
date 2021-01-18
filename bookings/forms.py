@@ -12,6 +12,7 @@ from crispy_forms.layout import (
     Submit,
     Field,
     Div,
+    Button,
     ButtonHolder,
 )
 from products.models import AddOn
@@ -333,10 +334,8 @@ def make_passenger_form(active_booking):
                         ].label = "Save passport number to my \
                             profile."
                     else:
-                        self.fields[field].widget.attrs[
-                            "class"
-                        ] = "form-control-lg \
-                            mt-0 all-form-input"
+                        self.fields[field].widget.attrs["class"] = \
+                            "form-control-lg mt-0 all-form-input formset-width"
                         self.fields[field].label = False
 
             # CSS classes added to form elements
@@ -414,8 +413,10 @@ class InputPassengersForm(forms.ModelForm):
                 Field("trip"),
                 # Custom layout object defined externally
                 Formset("passenger_formset"),
+                css_class="mb-3"
             ),
             ButtonHolder(
                 Submit("submit", "Proceed", css_class="m-0 btn btn-outline"),
+                Button("submit", "Cancel", css_class="m-0 btn btn-outline"),
             ),
         )

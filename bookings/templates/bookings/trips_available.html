@@ -37,10 +37,10 @@
                 <div class="text-center p-3">
                     <h2 class="col-12 text-center">Please choose from the following available dates closest to your search:</h2>
                     {% for destination in destination_obj %}
-                        <p>Destination: "{{ destination.name }}",
+                        <p>Destination: {{ destination.name }},
                     {% endfor %}
-                    Date: "{{ date }}",
-                    Travellers: "{{ passengers }}"</p>
+                    Date: {{ date }},
+                    Travellers: {{ passengers }}</p>
                 </div>
                 <div class="row justify-content-center p-3 my-3 align-items-stretch">
                     <!-- Input Choices -->
@@ -63,17 +63,20 @@
                             Confirm
                         </button>
                         <!-- Confirm Choice model -->
-                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                        <div class="modal fade p-3 pb-4" id="confirmModal" tabindex="-1" role="dialog"
                             aria-labelledby="confirmModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmModalLabel">Confirm Selection</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                    <div class="row modal-header">
+                                        <div class="col-10">
+                                            <h2 class="text-left">Confirm Selection</h2>
+                                        </div>
+                                        <button class="col-2 btn text-center btn-x" type="button" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="fas fa-times fa-2x" aria-hidden="true"></i>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div>
                                         <form>
                                             <div class="form-group">
                                                 {% for destination in  destination_obj %}
@@ -89,9 +92,10 @@
                                             </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-reverse"
-                                            data-dismiss="modal">Close</button>
-                                        <input type="submit" class="btn btn-outline" value="Proceed" />
+                                        <button class="w-100 btn cancel-btn rounded-0" type="button" data-dismiss="modal"
+                                            aria-label="Close">Cancel
+                                        </button>
+                                        <input type="submit" class="btn btn-outline w-100" value="Proceed" />
                                     </div>
                                 </div>
                             </div>

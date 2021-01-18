@@ -32,7 +32,7 @@ $(document).ready(function () {
         const date = text_array[1] + " " + text_array[2] + " " + text_array[3];
         const price = text_array[4]
         const priceHtml = '<p class="price mt-2">' + 
-        '<i class="fas fa-user pr-2 text-right"></i>' + price.insert() + '</p>';
+        '<i class="fas fa-user pr-1 text-right"></i> x ' + price.insert() + '</p>';
         const htmlString = dayHtml + " " + date + " " + priceHtml;
         $(this).html(htmlString);
     });

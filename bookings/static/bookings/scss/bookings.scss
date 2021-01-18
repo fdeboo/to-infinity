@@ -1,6 +1,6 @@
 @import 'config';
 
-// Progress Bar
+/* Progress Bar ------------------------------ */
 .booking-steps-container {
     position: sticky;
     top: 4rem;
@@ -125,9 +125,6 @@
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
 }
 
-.formatted-day {
-}
-
 .formatted-price {
     font-weight: bold;
 }
@@ -139,8 +136,58 @@
     transition: all 300ms linear; 
 }
 
+.modal {
+    color: $near-black;
+    .btn-x {
+        padding: 0 5px;
+        outline: none;
+        background: transparent;
+        box-shadow: none;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    .modal-header {
+        border: none;
+    }
+    .modal-footer {
+        border: none;
+    }
+    .btn-outline {
+        background-color: $base-teal;
+        color: $near-black;
+    }
+    .cancel-btn {
+        text-transform: uppercase;
+        letter-spacing: .3rem;
+        padding: 1rem 1.5rem;
+        background-color: $form-grey;
+        color: $near-black;
+    }
+
+}
+
 /* Passenger Details ------------------------------ */
 // Credit: https://codepen.io/BuddyLReno/pen/boGRPO
+
+.passenger-formset-border {
+    border: 1px solid $base-teal;
+    @media only screen and (max-width: 768px) {
+        border: none;
+    }
+}
+
+.formset-width {
+    width: 90%;
+    margin: auto;
+}
+
+legend {
+    font-size: 1.1rem;
+    //text-transform:uppercase;
+    letter-spacing: 0.2rem;;
+}
+
 .addon-set {
     position: relative;
     margin-bottom: 0.6rem;
@@ -180,7 +227,7 @@
                 height: 10px;
                 border-radius: 50%;
                 content: '';
-                background-color: whitesmoke;
+                background-color: $off-white;
                 position: absolute;
                 left: 50%;
                 top: 50%;
@@ -236,7 +283,7 @@
 
     input:hover ~ label {
         .addon-details {
-            color: #000;
+            color: $off-white;
         }
         .addon-image img {
             opacity: 1;
@@ -252,8 +299,8 @@
             }
 
             &:after {
-                background-color: #000;
-                border-color: #000;
+                background-color: $base-teal;
+                border-color: $base-teal;
             }
         }
         .addon-image img {
@@ -277,9 +324,35 @@
 
 hr {
     margin: 0.6rem 0;
+    border-top: 1px solid $triad-dark-teal;
+    &.hr-muted {
+        opacity: 0.4;
+    }
 }
 
 .sticky {
     position: sticky;
     top: 13rem;
+}
+
+.booking-summary {
+    background-color: $near-black;
+    color: $off-white;
+    padding: 3rem;
+}
+
+.booking-header {
+    font: {
+        family: 'Orbitron', cursive;
+        size: 1.8rem;
+        weight: 200;
+    }
+    color: $base-teal;
+}
+
+.booking-subheader {
+    font: {
+        size: 1.3rem;
+        weight: 200;
+    }
 }

@@ -559,7 +559,8 @@ input:-webkit-autofill-selected {
 }
 
 .message-container .toast {
-  background-color: #141516;
+  background-color: #f5f5f5;
+  color: #141516;
 }
 
 .message-container .toast button {
@@ -572,6 +573,7 @@ input:-webkit-autofill-selected {
   padding: 0 5px;
   outline: none;
   background: transparent;
+  color: #141516;
 }
 
 .message-container .toast .btn-accept {

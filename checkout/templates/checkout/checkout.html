@@ -4,22 +4,30 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/checkout.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
 {% endblock extra_css %}
 
-{% block page_nav %}
-    {% include 'includes/light_nav.html' %}
-{% endblock page_nav %}
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
+{% endblock header %}
 
 {% block content %}
-<section class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-10">    
-            <div class="row">
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
-                <div class="col-3 progress-bar"></div>
+<main class="container-fluid black-bg">
+    <!-- Progress Bar -->
+    <section class="row justify-content-center booking-steps-container">
+        <div class="col-md-10">
+            <div class="row booking-steps">
+                {% include 'bookings/includes/progressbar/stepthree-enabled.html' %}
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        {% include 'bookings/includes/progressbar/stepfour-active.html' %}
+                        <div class="col progress-bar-disabled p-0"></div>
+                    </div>
+                </div>
+                {% include 'bookings/includes/progressbar/stepfive-disabled.html' %}
             </div>
+        </div>
+    </section>
             <div class="row">
                 <div class="col-12">
                     <h2 class="logo-font mb-4">Checkout {{ booking }}</h2>

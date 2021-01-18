@@ -471,7 +471,8 @@ input:-webkit-autofill-selected {
     }
     
     .toast {
-        background-color: $near-black;
+        background-color: $off-white;
+        color: $near-black;
         button {
             border: 0;
             opacity: 1;
@@ -481,6 +482,7 @@ input:-webkit-autofill-selected {
             padding: 0 5px;
             outline: none;
             background: transparent;
+            color: $near-black;
         }
         .btn-accept {
             background-color: $square-green;
