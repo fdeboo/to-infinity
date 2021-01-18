@@ -61,6 +61,6 @@ class UserProfileForm(forms.ModelForm):
                 ),
             ),
             ButtonHolder(
-                Submit("submit", "Update", css_class="m-0 btn btn-outline"),
+                Submit("submit", "Save", css_class="m-0 btn btn-outline"),
             ),
         )

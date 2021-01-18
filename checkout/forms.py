@@ -90,16 +90,6 @@ class BookingCheckoutForm(forms.Form):
             ButtonHolder(
                 HTML(
                     """
-                    <a href="#" class="btn btn-outline rounded-0">
-                        <span class="icon">
-                            <i class="fas fa-chevron-left"></i>
-                        </span>
-                        <span class="font-weight-bold">Adjust Booking</span>
-                    </a>
-                    """
-                ),
-                HTML(
-                    """
                     <button id="submit-button" class="btn btn-outline \
                         rounded-0">
                         <span class="font-weight-bold">Complete Order</span>

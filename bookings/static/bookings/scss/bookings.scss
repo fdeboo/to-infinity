@@ -175,11 +175,23 @@
 /* Passenger Details ------------------------------ */
 // Credit: https://codepen.io/BuddyLReno/pen/boGRPO
 
-.passenger-formset-border {
+.passenger-formset {
     border: 1px solid $base-teal;
     @media only screen and (max-width: 768px) {
         border: none;
     }
+}
+
+.formset-legend {
+    font-size: 1.1rem;
+    //text-transform:uppercase;
+    font-family: 'Orbitron', cursive;
+    color: $base-teal;
+    font-size: 1.1rem;
+}
+
+.formset_row-passengers {
+    margin: 2rem 0;
 }
 
 .formset-width, .formset-width ~ span {
@@ -189,12 +201,6 @@
 
 .formset-width ~ span {
     margin-top: 0.3rem;
-}
-
-legend {
-    font-size: 1.1rem;
-    //text-transform:uppercase;
-    letter-spacing: 0.2rem;;
 }
 
 .addon-set {
@@ -301,15 +307,15 @@ legend {
     
     input:checked ~ label {
         .addon-details {
-            color: #000;
+            color: $square-green;
             &:before {
                 transform: translate(-50%, -50%) scale3d(56, 56, 1);
-                opacity: 1;
+
             }
 
             &:after {
-                background-color: $base-teal;
-                border-color: $base-teal;
+                background-color: $square-green;
+                border-color: $square-green;
             }
         }
         .addon-image img {

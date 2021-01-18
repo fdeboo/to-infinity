@@ -1,10 +1,12 @@
-from decimal import Decimal
-from django.conf import settings
+"""
+Logic that enables the booking summary to updated from the template.
+"""
 from django.shortcuts import get_object_or_404
 from products.models import Product
 
 
-def bag_contents(request):
+def booking_summary(request):
+    """ Retrieves items from the session and updates accordingly """
 
     booking_items = []
     addon_items = []
@@ -15,20 +17,20 @@ def bag_contents(request):
 
     for product_id, quantity in items.items():
         product = get_object_or_404(Product, pk=product_id)
-            item = {
-                'product': product,
-                'quantity': quantity,
-                'line_total': (product.price * quantity)
-            }
-            total += item['line_total']
-            product_count += quantity
-            booking_items.append(item)
-            if product.category.pk == 1:
-                addon_items.append(item)
-            elif product.category.pk == 3:
-                trip_items.append(item)
-            else:
-                pass
+        item = {
+            'product': product,
+            'quantity': quantity,
+            'line_total': (product.price * quantity)
+        }
+        total += item['line_total']
+        product_count += quantity
+        booking_items.append(item)
+        if product.category.pk == 1:
+            addon_items.append(item)
+        elif product.category.pk == 3:
+            trip_items.append(item)
+        else:
+            pass
 
     context = {
         'booking_items': booking_items,

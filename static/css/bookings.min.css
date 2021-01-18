@@ -193,14 +193,25 @@
 }
 
 /* Passenger Details ------------------------------ */
-.passenger-formset-border {
+.passenger-formset {
   border: 1px solid #2AB1B7;
 }
 
 @media only screen and (max-width: 768px) {
-  .passenger-formset-border {
+  .passenger-formset {
     border: none;
   }
+}
+
+.formset-legend {
+  font-size: 1.1rem;
+  font-family: 'Orbitron', cursive;
+  color: #2AB1B7;
+  font-size: 1.1rem;
+}
+
+.formset_row-passengers {
+  margin: 2rem 0;
 }
 
 .formset-width, .formset-width ~ span {
@@ -210,11 +221,6 @@
 
 .formset-width ~ span {
   margin-top: 0.3rem;
-}
-
-legend {
-  font-size: 1.1rem;
-  letter-spacing: 0.2rem;
 }
 
 .addon-set {
@@ -332,18 +338,17 @@ legend {
 }
 
 .addon-set input:checked ~ label .addon-details {
-  color: #000;
+  color: #99B821;
 }
 
 .addon-set input:checked ~ label .addon-details:before {
   -webkit-transform: translate(-50%, -50%) scale3d(56, 56, 1);
           transform: translate(-50%, -50%) scale3d(56, 56, 1);
-  opacity: 1;
 }
 
 .addon-set input:checked ~ label .addon-details:after {
-  background-color: #2AB1B7;
-  border-color: #2AB1B7;
+  background-color: #99B821;
+  border-color: #99B821;
 }
 
 .addon-set input:checked ~ label .addon-image img {

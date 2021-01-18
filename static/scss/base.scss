@@ -240,6 +240,17 @@ form h2 {
     }
 }
 
+legend {
+    position: relative;
+    right: 0.5rem;
+    color: #999999;
+    padding: 0 .5rem;
+    font: {
+        size: 80%;
+        weight: 400;
+    }
+}
+
 .all-form-bg {
     border: 0;
     border-bottom: 2px solid $base-teal;

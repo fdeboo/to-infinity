@@ -275,6 +275,15 @@ form h2 {
   font-weight: 200;
 }
 
+legend {
+  position: relative;
+  right: 0.5rem;
+  color: #999999;
+  padding: 0 .5rem;
+  font-size: 80%;
+  font-weight: 400;
+}
+
 .all-form-bg, .all-form-input,
 .allauth-form-inner-content input:not([id="id_remember"]) {
   border: 0;
@@ -297,12 +306,12 @@ form h2 {
 }
 
 .all-form-bg:visited .invalid, .all-form-input:visited .invalid, .allauth-form-inner-content input:visited:not([id="id_remember"]) .invalid {
-  outline: 1px solid #f5c6cb;
+  outline: 1px solid #B88421;
 }
 
 .all-form-bg.is-invalid, .is-invalid.all-form-input,
 .allauth-form-inner-content input.is-invalid:not([id="id_remember"]) {
-  border-bottom: 2px solid #f5c6cb;
+  border-bottom: 2px solid #B88421;
 }
 
 .all-form-input,
@@ -384,11 +393,11 @@ input:-webkit-autofill-selected {
 input.invalid {
   -webkit-box-shadow: none;
           box-shadow: none;
-  outline: 2px solid #f5c6cb;
+  outline: 2px solid #B88421;
 }
 
 .invalid-feedback {
-  color: #f5c6cb;
+  color: #B88421;
 }
 
 .alert {

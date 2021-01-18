@@ -4,27 +4,39 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/checkout.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
 {% endblock extra_css %}
 
-{% block page_nav %}
-{% include 'includes/light_nav.html' %}
-{% endblock page_nav %}
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
+{% endblock header %}
 
 {% block content %}
-<section class="container-fluid">
-    <div class="row justify-content-center">
+<main class="container-fluid black-bg">
+    <!-- Progress Bar -->
+    <section class="row justify-content-center booking-steps-container">
         <div class="col-md-10">
+            <div class="row booking-steps">
+                {% include 'bookings/includes/progressbar/stepfour-enabled.html' %}
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        {% include 'bookings/includes/progressbar/stepfive-active.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Thank you summary-->
+    <section class="row justify-content-center my-5">
+        <div class="col-md-10">
             <div class="row">
                 <div class="col-12">
-                    <hr>
-                    <h2 class="logo-font mb-4">Thankyou</h2>
+                    <h2 class="logo-font mb-4">Thank you</h2>
                     <hr>
                     <p>Your booking information is below. A confirmation email will be sent to {{ booking.email }}</p>
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-12 col-lg-7 order-lg-last mb-5">
                     <div class="booking-confirmation-wrapper p-2 border">
@@ -100,24 +112,21 @@
             <div class="row">
                 <div class="col-12 col-lg-7 text-right">
                     {% if from_profile %}
-                        <a href="#" class="btn btn-black rounded-) my-2">
-                            <span class="icon">
-                                <i class="fas fa-angle-left"></i>
-                            </span>
-                            <span class="text-uppercase">Back to Profile</span>
-                        </a>
+                    <a href="#" class="btn btn-black rounded-) my-2">
+                        <span class="icon">
+                            <i class="fas fa-angle-left"></i>
+                        </span>
+                        <span class="text-uppercase">Back to Profile</span>
+                    </a>
                     {% else %}
-                        <a href="{% url 'home' %}"
-                            class="btn btn-outline rounded-0 my-2">
-                            <span class="icon">
-                                <i class="fas fa-gifts"></i>
-                            </span>
-                            <span class="text-uppercase">Now check out the latest deals!</span>
-                        </a>
+                    <a href="{% url 'profile' %}" class="btn btn-outline rounded-0 my-2">
+                        <span class="text-uppercase">View profile</span>
+                    </a>
                     {% endif %}
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        </div>
+    </section>
+</main>
 {% endblock content %}
