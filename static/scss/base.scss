@@ -182,8 +182,21 @@ a {
             }
             
         }
-        &:not(:last-of-type) {
-            margin-right: 2rem;
+        @media only screen and (max-width: 991px) {
+            margin-top: 0.5rem;
+            .dropdown-menu {
+                background-color: transparent;
+            }
+            a {
+                &.dropdown-item {
+                    color: $form-grey;
+                }   
+            }
+        }
+        @media only screen and (min-width: 992px) {
+            &:not(:last-of-type) {
+                margin-right: 2rem;
+            }
         }
     }
 }
@@ -242,16 +255,11 @@ form h2 {
         background-color: $near-black;
     }
     &:visited .invalid {
-        outline: $square-orange;
+        outline: 1px solid $form-alert;
     }
     &.is-invalid {
-        border-bottom: 2px solid $square-orange;
+        border-bottom: 2px solid $form-alert;
     }
-}
-
-input:-webkit-autofill-selected {
-        background-color: $near-black;
-        color: $off-white;
 }
 
 .all-form-input,
@@ -266,7 +274,7 @@ input:-webkit-autofill-selected {
     padding: 0.5rem 1rem;
     transition: box-shadow 150ms ease;
     margin-top: 1.5rem;
-
+    
     &[type="date" i] {
         color: $off-white;
     }
@@ -279,20 +287,30 @@ input:-webkit-autofill-selected {
     &::placeholder {
         color: $form-grey;
     }
-
+    
     &:disabled::placeholder{
         color: $form-disabled-grey;
     }
-
+    
 }
 
 .allauth-form-inner-content label:not([for='id_remember']) {
     display:none;
 }
 
+input:-webkit-autofill-selected {
+        background-color: $near-black;
+        color: $off-white;
+}
+
+input.invalid {
+    -moz-box-shadow: none;
+    box-shadow: none;
+    outline: 2px solid $form-alert;
+}
 
 .invalid-feedback {
-    color: $square-orange;
+    color: $form-alert;
 }
 
 .alert {
@@ -309,8 +327,9 @@ input:-webkit-autofill-selected {
     border: 1px solid transparent;
     list-style-type: none;
     border-radius: 0;
-    border-bottom: 2px solid red;
-    background-color: $base-teal;
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+    color: #721c24;
 }   
 
 /* Landing Page ------------------------------ */
@@ -464,7 +483,7 @@ input:-webkit-autofill-selected {
 .message-container {
     position: fixed;
     top: 72px;
-    right: 15px;
+    right: 20px;
     z-index: 9999;
     .toast.show {
         opacity: 0.95;

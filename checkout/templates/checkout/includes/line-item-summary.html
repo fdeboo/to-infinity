@@ -8,13 +8,13 @@
         {% endif %}
     </a>
 </div>
-<div class="col-8">
+<div class="col-6">
     <p class="my-0"><strong>{{ item.product.name }}</strong></p>
     {% if item.product.category.pk == 3 %}
         <p class="my-0 small text-muted"> {{ booking.trip.date | date }}</p>
     {% endif %}
     <p class="my-0 small text-muted">Travellers: {{ item.quantity }}</p>
 </div>
-<div class="col-2 mb-1 text-right">
+<div class="col-4 mb-1 text-right">
     <p class="my-0 small text-muted">{{ item.line_total|intcomma }}</p>
 </div>

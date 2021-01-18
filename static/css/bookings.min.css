@@ -73,6 +73,11 @@
 }
 
 /* Confirm Trip Form ------------------------------ */
+.searched-content {
+  font-size: 1.2rem;
+  color: #999999;
+}
+
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
   position: absolute;
@@ -198,9 +203,13 @@
   }
 }
 
-.formset-width {
+.formset-width, .formset-width ~ span {
   width: 90%;
   margin: auto;
+}
+
+.formset-width ~ span {
+  margin-top: 0.3rem;
 }
 
 legend {

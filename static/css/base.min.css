@@ -219,8 +219,22 @@ a:hover {
   color: #141516;
 }
 
-.main-nav li:not(:last-of-type) {
-  margin-right: 2rem;
+@media only screen and (max-width: 991px) {
+  .main-nav li {
+    margin-top: 0.5rem;
+  }
+  .main-nav li .dropdown-menu {
+    background-color: transparent;
+  }
+  .main-nav li a.dropdown-item {
+    color: #999999;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .main-nav li:not(:last-of-type) {
+    margin-right: 2rem;
+  }
 }
 
 /* Forms ------------------------------ */
@@ -283,17 +297,12 @@ form h2 {
 }
 
 .all-form-bg:visited .invalid, .all-form-input:visited .invalid, .allauth-form-inner-content input:visited:not([id="id_remember"]) .invalid {
-  outline: #B85718;
+  outline: 1px solid #f5c6cb;
 }
 
 .all-form-bg.is-invalid, .is-invalid.all-form-input,
 .allauth-form-inner-content input.is-invalid:not([id="id_remember"]) {
-  border-bottom: 2px solid #B85718;
-}
-
-input:-webkit-autofill-selected {
-  background-color: #141516;
-  color: #f5f5f5;
+  border-bottom: 2px solid #f5c6cb;
 }
 
 .all-form-input,
@@ -367,8 +376,19 @@ input:-webkit-autofill-selected {
   display: none;
 }
 
+input:-webkit-autofill-selected {
+  background-color: #141516;
+  color: #f5f5f5;
+}
+
+input.invalid {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: 2px solid #f5c6cb;
+}
+
 .invalid-feedback {
-  color: #B85718;
+  color: #f5c6cb;
 }
 
 .alert {
@@ -386,8 +406,9 @@ input:-webkit-autofill-selected {
   border: 1px solid transparent;
   list-style-type: none;
   border-radius: 0;
-  border-bottom: 2px solid red;
-  background-color: #2AB1B7;
+  border: 1px solid #f5c6cb;
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 /* Landing Page ------------------------------ */
@@ -550,7 +571,7 @@ input:-webkit-autofill-selected {
 .message-container {
   position: fixed;
   top: 72px;
-  right: 15px;
+  right: 20px;
   z-index: 9999;
 }
 

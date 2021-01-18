@@ -1,6 +1,6 @@
 {% load humanize %}
 
-<p class="text-muted">Booking Summary {% if booking_items %}({{ booking_items|length }} items) {% endif %}</p>
+<p class="">Booking Summary {% if booking_items %}({{ booking_items|length }} items) {% endif %}</p>
 
 {% include 'checkout/includes/summary-headers.html' %}
 <div class="row">
@@ -28,10 +28,7 @@
 {% endif %}
 
 <div class="row text-black text-right">
-    <div class="col-7 offset-2">
-        <p class="my-0">Booking Total:</p>
-    </div>
-    <div class="col-3">
-        <p class="my-0">£{{ booking_total|intcomma }}</p>
+    <div class="col-12 text-right">
+        <p class="my-0"><span class="mx-3">Booking Total:</span>£{{ booking_total|intcomma }}</p>
     </div>
 </div>

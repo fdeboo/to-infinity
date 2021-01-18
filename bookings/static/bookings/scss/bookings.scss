@@ -68,6 +68,11 @@
 
 /* Confirm Trip Form ------------------------------ */
 //Styles the search results; Hides radio inputs and styles the input labels
+.searched-content {
+    font-size: 1.2rem;
+    color: $form-grey;
+}
+
 
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
@@ -177,9 +182,13 @@
     }
 }
 
-.formset-width {
+.formset-width, .formset-width ~ span {
     width: 90%;
     margin: auto;
+}
+
+.formset-width ~ span {
+    margin-top: 0.3rem;
 }
 
 legend {
