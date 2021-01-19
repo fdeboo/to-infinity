@@ -42,7 +42,6 @@ footer {
         margin-top: 1rem;
     }
     a {
-        
         color: $triad-dark-teal;
         &:hover {
             font-weight: 600;
@@ -133,7 +132,6 @@ a {
 }
 
 /* Navigation Menu ------------------------------ */
-
 .logo-font {
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
@@ -244,13 +242,22 @@ form h2 {
 	} 
 }
 
-.form-container h1, .form-heading {
+.form-container h1 {
     font: {
         family: 'Orbitron', cursive;
         size: 1.8rem;
         weight: 200;
     }
     color: $base-teal;
+}
+
+.form-heading {
+    font: {
+        family: 'Orbitron', cursive;
+        size: 1.8rem;
+        weight: 200;
+    }
+    color: $off-white;
 }
 
 .form-container h2, .form-subheading {
@@ -365,8 +372,73 @@ input.invalid {
     color: #721c24;
 }   
 
-/* Landing Page ------------------------------ */
+/* Modals ------------------------------ */
+.modal {
+    color: $form-disabled-grey;
+    .btn-x {
+        padding: 0 5px;
+        outline: none;
+        background: transparent;
+        box-shadow: none;
+        color: $form-disabled-grey;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    .modal-header {
+        border: none;
+        color: $form-disabled-grey;
+    }
+    .modal-body {
+        font-size: 1.1rem;;
+    }
+    .modal-footer {
+        border: none;
+    }
+    .btn-outline {
+        background-color: $base-teal;
+        color: $near-black;
+    }
+    .cancel-btn {
+        text-transform: uppercase;
+        letter-spacing: .3rem;
+        padding: 1rem 1.5rem;
+        background-color: $form-grey;
+        color: $near-black;
+    }
+}
 
+/* Toasts ------------------------------ */
+.message-container {
+    position: fixed;
+    top: 72px;
+    right: 20px;
+    z-index: 9999;
+    .toast.show {
+        opacity: 0.95;
+    }
+    
+    .toast {
+        background-color: $off-white;
+        color: $form-disabled-grey;
+        button {
+            border: 0;
+            opacity: 1;
+            color: $off-white;
+        }
+        .btn-x {
+            padding: 0 5px;
+            outline: none;
+            background: transparent;
+            color: $form-disabled-grey;
+        }
+        .btn-accept {
+            background-color: $square-green;
+        }
+    }
+}
+
+/* Landing Page ------------------------------ */
 .hero-btn {
     @extend .btn-outline;
     border: 1px solid $base-teal;
@@ -415,7 +487,6 @@ input.invalid {
 }
 
 /* Destination List Template ------------------------------ */
-
 .image-container {
     height: 100vh;
     margin: 0 !important;
@@ -502,15 +573,6 @@ input.invalid {
 	}
 }
 
-
-/* Destination Details Template ------------------------------ */
-
-/* Add on List Template ------------------------------ */
-
-/* Insurance List Template ------------------------------ */
-
-/* Add on List Template ------------------------------ */
-
 /* Search Trips Template ------------------------------ */
 #focus-search > form {
     flex-direction: column !important;
@@ -521,34 +583,3 @@ input.invalid {
     text-align: center;
 }
 /* Unavailable Template ------------------------------ */
-
-/* Toasts ------------------------------ */
-
-.message-container {
-    position: fixed;
-    top: 72px;
-    right: 20px;
-    z-index: 9999;
-    .toast.show {
-        opacity: 0.95;
-    }
-    
-    .toast {
-        background-color: $off-white;
-        color: $form-disabled-grey;
-        button {
-            border: 0;
-            opacity: 1;
-            color: $off-white;
-        }
-        .btn-x {
-            padding: 0 5px;
-            outline: none;
-            background: transparent;
-            color: $form-disabled-grey;
-        }
-        .btn-accept {
-            background-color: $square-green;
-        }
-    }
-}

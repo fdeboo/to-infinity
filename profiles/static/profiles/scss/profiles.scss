@@ -1,5 +1,8 @@
 .account-info {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    & ~ div {
+        padding-left: 0;
+    }
 }
 
 .table {
@@ -8,6 +11,12 @@
 
 .cancel-btn-icon {
     color: #0E666B;
-    width: 4rem;
-
+    width: auto;
+    &:focus {
+        box-shadow: none;
+    }
+    &:hover {
+        color: #0E666B;
+        font-weight: 600;
+    }
 }

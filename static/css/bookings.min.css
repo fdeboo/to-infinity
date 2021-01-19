@@ -55,10 +55,10 @@
 
 @media only screen and (max-width: 767px) {
   .progress-link, .progress-link-disabled {
-    width: 2rem;
+    width: 2.5rem;
   }
   .progress-link .icon, .progress-link-disabled .icon {
-    height: 2rem;
+    height: 2.5rem;
     border: 1px solid #f5f5f5;
   }
   .progress-link .icon:active, .progress-link-disabled .icon:active {
@@ -164,43 +164,6 @@
   background-color: #0E666B;
   -webkit-transition: all 300ms linear;
   transition: all 300ms linear;
-}
-
-.modal {
-  color: #141516;
-}
-
-.modal .btn-x {
-  padding: 0 5px;
-  outline: none;
-  background: transparent;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.modal h2 {
-  font-size: 2rem;
-}
-
-.modal .modal-header {
-  border: none;
-}
-
-.modal .modal-footer {
-  border: none;
-}
-
-.modal .btn-outline {
-  background-color: #2AB1B7;
-  color: #141516;
-}
-
-.modal .cancel-btn {
-  text-transform: uppercase;
-  letter-spacing: .3rem;
-  padding: 1rem 1.5rem;
-  background-color: #999999;
-  color: #141516;
 }
 
 /* Passenger Details ------------------------------ */
@@ -398,7 +361,7 @@ hr.hr-muted {
 .sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 13rem;
+  top: 14rem;
 }
 
 .booking-summary {

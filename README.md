@@ -35,7 +35,7 @@
 "As a user, I would like to ___________"
 + As a user, I would like to view the different types of trips available
 + As a user, I would like to view individual trips in more detail
-+ As a user, I would like to view book my place on a trip
++ As a user, I would like to book my place on a trip
 + As a user, I would like to provide details of the number of passengers and passenger information
 + As a user, I would like to review my booking before placing it
 + As a user, I would like to easily Enter Payment information

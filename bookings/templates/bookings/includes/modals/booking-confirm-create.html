@@ -1,0 +1,33 @@
+<div class="modal fade p-3 pb-4" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="row modal-header">
+                <div class="col-10">
+                    <h2 class="text-left">Confirm Selection</h2>
+                </div>
+                <button class="col-2 btn text-center btn-x" type="button" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-2x" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                {% for destination in  destination_obj %}
+                    <p>{{ destination.name }}</p>
+                    <p id="date-choice"></p>
+                    <p id="booking-details">
+                        <span id="quantity">{{ passengers }}</span>
+                        x £
+                        <span id="cost">{{ destination.price }}</span>
+                    </p>
+                    <p id="total">Total:</p>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button class="w-100 btn cancel-btn rounded-0" type="button" data-dismiss="modal"
+                    aria-label="Close">Cancel
+                </button>
+                <input type="submit" class="btn btn-outline w-100" value="Proceed" />
+            </div>
+        </div>
+    </div>
+</div>

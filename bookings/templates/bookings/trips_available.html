@@ -30,88 +30,50 @@
 
     <!-- Confirm Trip Form -->
     <section class="row w-100 flex-grow-1 justify-content-center">
-        <div class="col-12 col-md-10 d-flex align-items-center justify-content-center my-5">
-
+        <div class="col-12 col-md-10 d-flex flex-column align-items-center justify-content-center my-5">
+            <div class="text-center p-3">
+                <h1 class="form-heading">Choose a date</h1>
+                <h2 class="form-subheading col-12 text-center my-3">Please choose from the available dates closest to
+                    your search:</h2>
+                {% for destination in destination_obj %}
+                <p class="searched-content small">
+                    <span><i class="fas fa-search mr-2"></i>
+                        Destination:</span> {{ destination.name }}
+                    {% endfor %}
+                    <span>| Date:</span> {{ date }} |
+                    <span>| Travellers:</span> {{ passengers }}
+                </p>
+            </div>
             <form action="{% url 'confirm_trip' %}" method="POST">
                 {% csrf_token %}
-                <div class="text-center p-3">
-                    <h1 class="form-heading">Choose a date</h1>
-                    <h2 class="form-subheading col-12 text-center my-3">Please choose from the available dates closest to
-                        your search:</h2>
-                    {% for destination in destination_obj %}
-                        <p class="searched-content small">
-                        <span><i class="fas fa-search mr-2"></i>
-                            Destination:</span> {{ destination.name }}
-                    {% endfor %}
-                        <span>| Date:</span> {{ date }} |
-                        <span>| Travellers:</span> {{ passengers }}
-                    </p>
-                </div>
                 <div class="row justify-content-center p-3 mb-3">
                     <!-- Input Choices -->
                     {% for radio in form.trip %}
-                        <div class="col-6 col-md-4 col-lg-4 col-xl-3 radio-options">
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3 radio-options">
                         <div class="d-flex justify-content-around">
                             <div class="block"></div>
                             <div class="block"></div>
                         </div>
                         <div class="block w-100"></div>
-                            {{ radio.tag }}
-                            <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
-                        </div>
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="date-option">{{ radio.choice_label }}</label>
+                    </div>
                     {% endfor %}
                 </div>
 
-                    <div class="col-12 text-center">
-                        <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal"
-                            data-target="#confirmModal">
-                            Confirm
-                        </button>
-                        <!-- Confirm Choice model -->
-                        <div class="modal fade p-3 pb-4" id="confirmModal" tabindex="-1" role="dialog"
-                            aria-labelledby="confirmModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="row modal-header">
-                                        <div class="col-10">
-                                            <h2 class="text-left">Confirm Selection</h2>
-                                        </div>
-                                        <button class="col-2 btn text-center btn-x" type="button" data-dismiss="modal"
-                                            aria-label="Close">
-                                            <i class="fas fa-times fa-2x" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <form>
-                                            <div class="form-group">
-                                                {% for destination in  destination_obj %}
-                                                <p>{{ destination.name }}</p>
-                                                <p id="date-choice"></p>
-                                                <p id="booking-details">
-                                                    <span id="quantity">{{ passengers }}</span>
-                                                    x £
-                                                    <span id="cost">{{ destination.price }}</span>
-                                                </p>
-                                                <p id="total">Total:</p>
-                                                {% endfor %}
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="w-100 btn cancel-btn rounded-0" type="button" data-dismiss="modal"
-                                            aria-label="Close">Cancel
-                                        </button>
-                                        <input type="submit" class="btn btn-outline w-100" value="Proceed" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End of modal-->
-                    </div>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-outline" id="confirm-btn" data-toggle="modal"
+                        data-target="#confirmModal">
+                        Confirm
+                    </button>
+                    <!-- Confirm Choice model -->
+                    {% include 'bookings/includes/modals/booking-confirm-create.html' %}
+                    <!-- End of modal-->
                 </div>
             </form>
         </div>
     </section>
-    
+
 </main>
 {% endblock content %}
 

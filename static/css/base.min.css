@@ -287,11 +287,18 @@ form h2 {
   }
 }
 
-.form-container h1, .form-heading {
+.form-container h1 {
   font-family: 'Orbitron', cursive;
   font-size: 1.8rem;
   font-weight: 200;
   color: #2AB1B7;
+}
+
+.form-heading {
+  font-family: 'Orbitron', cursive;
+  font-size: 1.8rem;
+  font-weight: 200;
+  color: #f5f5f5;
 }
 
 .form-container h2, .form-subheading {
@@ -444,6 +451,84 @@ input.invalid {
   border: 1px solid #f5c6cb;
   background-color: #f8d7da;
   color: #721c24;
+}
+
+/* Modals ------------------------------ */
+.modal {
+  color: #595959;
+}
+
+.modal .btn-x {
+  padding: 0 5px;
+  outline: none;
+  background: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: #595959;
+}
+
+.modal h2 {
+  font-size: 2rem;
+}
+
+.modal .modal-header {
+  border: none;
+  color: #595959;
+}
+
+.modal .modal-body {
+  font-size: 1.1rem;
+}
+
+.modal .modal-footer {
+  border: none;
+}
+
+.modal .btn-outline, .modal .btn-outline-reverse, .modal .hero-btn {
+  background-color: #2AB1B7;
+  color: #141516;
+}
+
+.modal .cancel-btn {
+  text-transform: uppercase;
+  letter-spacing: .3rem;
+  padding: 1rem 1.5rem;
+  background-color: #999999;
+  color: #141516;
+}
+
+/* Toasts ------------------------------ */
+.message-container {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.message-container .toast.show {
+  opacity: 0.95;
+}
+
+.message-container .toast {
+  background-color: #f5f5f5;
+  color: #595959;
+}
+
+.message-container .toast button {
+  border: 0;
+  opacity: 1;
+  color: #f5f5f5;
+}
+
+.message-container .toast .btn-x {
+  padding: 0 5px;
+  outline: none;
+  background: transparent;
+  color: #595959;
+}
+
+.message-container .toast .btn-accept {
+  background-color: #99B821;
 }
 
 /* Landing Page ------------------------------ */
@@ -599,10 +684,6 @@ input.invalid {
   }
 }
 
-/* Destination Details Template ------------------------------ */
-/* Add on List Template ------------------------------ */
-/* Insurance List Template ------------------------------ */
-/* Add on List Template ------------------------------ */
 /* Search Trips Template ------------------------------ */
 #focus-search > form {
   -webkit-box-orient: vertical !important;
@@ -617,36 +698,3 @@ input.invalid {
 }
 
 /* Unavailable Template ------------------------------ */
-/* Toasts ------------------------------ */
-.message-container {
-  position: fixed;
-  top: 72px;
-  right: 20px;
-  z-index: 9999;
-}
-
-.message-container .toast.show {
-  opacity: 0.95;
-}
-
-.message-container .toast {
-  background-color: #f5f5f5;
-  color: #595959;
-}
-
-.message-container .toast button {
-  border: 0;
-  opacity: 1;
-  color: #f5f5f5;
-}
-
-.message-container .toast .btn-x {
-  padding: 0 5px;
-  outline: none;
-  background: transparent;
-  color: #595959;
-}
-
-.message-container .toast .btn-accept {
-  background-color: #99B821;
-}

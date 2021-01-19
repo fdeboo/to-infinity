@@ -31,7 +31,7 @@
 
         <!-- Checkout and Summary -->
         <section class="row justify-content-center my-5">
-            <div class="col-md-10">
+            <div class="col-md-10 position-static">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="logo-font mb-4">Checkout</h2>
@@ -59,11 +59,9 @@
                     </div>
 
                     <!-- Booking Summary -->
-                    <div class="col-12 col-lg-6 mb-5">
-                        <div class="row flex-column align-items-end sticky">
-                            <div class="my-3 col-12 col-lg-10 booking-summary">
-                                {% include 'checkout/includes/booking-summary.html' %}
-                            </div>
+                    <div class="col-12 col-lg-6 mb-5 d-flex flex-column align-items-end">
+                        <div class="my-3 booking-summary sticky">
+                            {% include 'checkout/includes/booking-summary.html' %}
                         </div>
                     </div>
                 </div>

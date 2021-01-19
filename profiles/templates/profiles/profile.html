@@ -13,124 +13,125 @@
 
 {% block content %}
 <main class="container-fluid black-bg">
-    <section class="row justify-content-center my-5">
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="logo-font mb-4">Profile</h2>
-                        <hr>
-                    </div>
+    <div class="row justify-content-center my-5">
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="logo-font mb-4">Profile</h2>
+                    <hr>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-lg-7 order-lg-last mb-5">
-                        <!-- Open Bookings-->
-                        {% if open_bookings %}
-                            <p class="text-muted">Bookings in progress:</p>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Booking Reference</th>
-                                            <th>Destination</th>
-                                            <th>Date</th>
-                                            <th><i class="fas fa-user-friends"></i></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for booking in open_bookings %}
-                                            <tr>
-                                                <td>
-                                                    <a href="{% url 'edit_booking' booking.booking_ref %}"
-                                                        title="{{ booking.booking_ref }}">
-                                                        {{ booking.booking_ref|truncatechars:6 }}
-                                                    </a>
-                                                </td>
-                                                <td>{{ booking.trip.destination }}</td>
-                                                <td>{{ booking.trip.date | date:'d/m/Y' }}</td>
-                                                <td>{{ booking.passengers }}</td>
-                                                <td>
-                                                    <button type="button" class="cancel-btn-icon p-0 btn bg-transparent"
-                                                        data-toggle="modal" data-target="#cancelModal">
-                                                        cancel <i class="fas fa-times"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            {% include 'bookings/includes/booking_confirm_delete.html' %}
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% endif %}
-                        <hr>
-                        <!-- Completed Bookings-->
-                        <p class="text-muted">Completed Bookings:</p>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th>Booking Reference</th>
-                                        <th>Date Completed</th>
-                                        <th>Booking Total</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for booking in complete_bookings %}
-                                        <tr>
-                                            <td>
-                                                <a href="#"
-                                                    title="{{ booking.booking_ref }}">
-                                                    {{ booking.booking_ref|truncatechars:6 }}
-                                                </a>
-                                            </td>
-                                            <td>{{ booking.date_completed | date:'d/m/Y' }}</td>
-                                            <td>
-                                                <ul class="list-unstyled">
-                                                    {% for item in booking.bookings_items %}
-                                                    <li class="small">
-                                                        {{ item.product.name }} x{{ item.quantity }}
-                                                    </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </td>
-                                            <td>£{{ booking.booking_total | intcomma }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- User Profile Form -->
-                    <div class="col-12 col-lg-5">
-                        <div class="mb-3">
-                            <p class="text-muted">Account Information</p>
-                            <div class="row my-3 align-items-center">
-                                <div class="col account-info">
-                                    <i class="fas fa-user mr-2"></i>{{ user }}
-                                </div>
-                                <div class="col text-right">edit <i class="far fa-edit"></i></div>
-                            </div>
-                            <div class="row my-3 align-items-center">
-                                <div class="col-9 account-info">
-                                    <i class="fas fa-at mr-2"></i>{{ user.email }}
-                                </div>
-                                <div class="col text-right"> 
-                                    <a href="{% url 'account_email' %}">edit <i class="far fa-edit"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <p class="text-muted">Profile Information</p>
-                            {% crispy form %}
-                        </div>
-                    </div>
-                </div>
-                
             </div>
-    </section>
+            <div class="row">
+
+                <!-- User Profile Form -->
+                <section class="col-12 col-lg-5">
+                    <div class="mb-3">
+                        <p class="text-muted">Account Information</p>
+                        <div class="row my-3 align-items-center">
+                            <div class="col-auto account-info">
+                                <i class="fas fa-user mr-2"></i>{{ user }}
+                            </div>
+                            <div class="col text-right">edit <i class="far fa-edit"></i></div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-auto account-info">
+                                <i class="fas fa-at mr-2"></i>{{ user.email }}
+                            </div>
+                            <div class="col text-right">
+                                <a href="{% url 'account_email' %}">edit <i class="far fa-edit"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-5">
+                        <p class="text-muted">Profile Information</p>
+                        {% crispy form %}
+                    </div>
+                </section>
+
+                <!-- Saved Bookings -->
+                <section class="col-12 col-lg-7 order-lg-last mb-5">
+                    <!-- Status: Open -->
+                    {% if open_bookings %}
+                    <p class="text-muted">Bookings in progress:</p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Booking Reference</th>
+                                    <th>Destination</th>
+                                    <th>Date</th>
+                                    <th><i class="fas fa-user-friends"></i></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in open_bookings %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'edit_booking' booking.booking_ref %}"
+                                            title="{{ booking.booking_ref }}">
+                                            {{ booking.booking_ref|truncatechars:6 }}
+                                        </a>
+                                    </td>
+                                    <td>{{ booking.trip.destination }}</td>
+                                    <td>{{ booking.trip.date | date:'d/m/Y' }}</td>
+                                    <td>{{ booking.passengers }}</td>
+                                    <td class="text-right">
+                                        <button type="button" class="btn cancel-btn-icon p-0 bg-transparent"
+                                            data-toggle="modal" data-target="#cancelModal">
+                                            cancel <i class="fas fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% include 'bookings/includes/modals/booking-confirm-delete.html' %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <!-- Status: Complete -->
+                    <p class="text-muted">Completed Bookings:</p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Booking Reference</th>
+                                    <th>Date Completed</th>
+                                    <th>Booking Total</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in complete_bookings %}
+                                <tr>
+                                    <td>
+                                        <a href="#" title="{{ booking.booking_ref }}">
+                                            {{ booking.booking_ref|truncatechars:6 }}
+                                        </a>
+                                    </td>
+                                    <td>{{ booking.date_completed | date:'d/m/Y' }}</td>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            {% for item in booking.bookings_items %}
+                                            <li class="small">
+                                                {{ item.product.name }} x{{ item.quantity }}
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>£{{ booking.booking_total | intcomma }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
 </main>
 
 {% endblock content %}
