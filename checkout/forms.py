@@ -52,8 +52,18 @@ class BookingCheckoutForm(forms.Form):
         # Defines the layout for the form using crispy FormHelper
         self.helper = FormHelper()
         self.helper.form_method = "POST"
+        self.helper.form_class = "crispyform"
         self.helper.form_id = "payment-form"
         self.helper.layout = Layout(
+            HTML(
+                """
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                            <p class="booking-subheader">Please fill out the \
+                                form below to complete your booking</p>                     
+                            <div class="crispyform">
+                """
+            ),
             Fieldset(
                 "Contact Details",
                 Field("full_name", placeholder="Full Name", autofocus=True),
@@ -87,16 +97,24 @@ class BookingCheckoutForm(forms.Form):
                     ),
                 css_class="px-3",
             ),
+            HTML(
+                """
+                </div>
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="col-12 col-lg-6 mb-5">
+                    <div class="my-3 sticky d-flex flex-column align-items-end">
+                        <div class="my-3 booking-summary">
+                        {% include 'checkout/includes/booking-summary.html' %}
+                        </div>
+                """
+            ),
             ButtonHolder(
                 HTML(
                     """
-                    <button id="submit-button" class="btn btn-outline \
-                        rounded-0">
-                        <span class="font-weight-bold">Complete Order</span>
-                        <span class="icon">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </button>
+                        {% include 'checkout/includes/checkout-button.html' %}
+                    </div>
                     """
                 ),
                 css_class="submit-button text-right px-3 mt-3 mb-2",

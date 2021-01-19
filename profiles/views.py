@@ -71,13 +71,13 @@ class ProfileView(UpdateView):
 
     def form_valid(self, form):
         messages.success(self.request, 'Profile updated successfully')
-        return super(ProfileView, self).form_valid(form)  
+        return super(ProfileView, self).form_valid(form)
 
     def form_invalid(self, form):
         messages.error(
                 self.request, 'Update failed. Please ensure the form is valid'
             )
         return super(ProfileView, self).form_invalid(form)
-    
+
     def get_success_url(self):
         return self.request.path

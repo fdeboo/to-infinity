@@ -350,7 +350,12 @@ input.invalid {
 }
 
 .invalid-feedback {
-    color: $form-alert;
+    color: $form-alert !important;
+}
+
+.warning-feedback {
+    color: $form-alert !important;
+    display: block;
 }
 
 .alert {

@@ -38,33 +38,10 @@
                         <hr>
                     </div>
                 </div>
-                <div class="row">
-                    <!-- Checkout -->
-                    <div class="col-12 col-lg-6">
-                        <p class="booking-subheader">Please fill out the form below to complete your booking</p>                        
-                        <div class="crispyform">
 
-                            <!-- Checkout Form -->
-                            {% crispy form %}
-
-                            <p class="small text-danger invalid-feedback my-0 text-right px-3">
-                                <span class="icon">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </span>
-                                <span>Your card will be charged
-                                    <strong>£{{ booking_total|intcomma }}</strong>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Booking Summary -->
-                    <div class="col-12 col-lg-6 mb-5 d-flex flex-column align-items-end">
-                        <div class="my-3 booking-summary sticky">
-                            {% include 'checkout/includes/booking-summary.html' %}
-                        </div>
-                    </div>
-                </div>
+                <!--Checkout Form and summary -->
+                {% crispy form %}
+                
             </div>
         </section>
 
