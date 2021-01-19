@@ -1,61 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
 {% endblock extra_css %}
 
 {% block header %}
-    {% include 'includes/navbar-dark.html' %}
+{% include 'includes/navbar-dark.html' %}
 {% endblock header %}
 
 {% block content %}
-    <main class="container-fluid black-bg">
-        <!-- Progress Bar -->
-        <section class="row justify-content-center booking-steps-container">
-            <div class="col-md-10">
-                <div class="row booking-steps">
-                    {% include 'bookings/includes/progressbar/steptwo-enabled.html' %}
-                    <div class="col p-0">
-                        <div class="row align-items-center m-0">
-                            {% include 'bookings/includes/progressbar/stepthree-active.html' %}
-                            <div class="col progress-bar-disabled p-0"></div>
-                        </div>
+<main class="container-fluid black-bg">
+    <!-- Progress Bar -->
+    <section class="row justify-content-center booking-steps-container">
+        <div class="col-md-10">
+            <div class="row booking-steps">
+                {% include 'bookings/includes/progressbar/steptwo-enabled.html' %}
+                <div class="col p-0">
+                    <div class="row align-items-center m-0">
+                        {% include 'bookings/includes/progressbar/stepthree-active.html' %}
+                        <div class="col progress-bar-disabled p-0"></div>
                     </div>
-                    {% include 'bookings/includes/progressbar/stepfour-disabled.html' %}
                 </div>
+                {% include 'bookings/includes/progressbar/stepfour-disabled.html' %}
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Passenger Details Form -->
-        <section class="row justify-content-center my-5">
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="booking-header">Passenger Details</h2>
+    <!-- Passenger Details Form -->
+    <section class="row justify-content-center my-5">
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="booking-header">Passenger Details</h2>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <p class="booking-subheader">Please fill out details for each traveller</p>
+                    <div class="crispyform">
+                        {% crispy form %}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <p class="booking-subheader">Please fill out details for each traveller</p>
-                        <div class="crispyform">
-                            {% crispy form %}
+                <div class="col-12 col-lg-6 mb-5">
+                    <div class="row flex-column align-items-end sticky">
+                        <div class="my-3 col-12 col-lg-10 booking-summary">
+                            {% include 'checkout/includes/booking-summary.html' %}
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-1">
+                                <a href="#">
+                                    {% if item.product.image_thumb %}
+                                    <img class="w-100" src="{{ item.product.image_thumb.url }}"
+                                        alt="{{ item.product.name }}">
+                                    {% else %}
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ item }}">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                {% if item.product.category.pk == 3 %}
+                                <p class="my-0 small text-muted"> {{ booking.trip.date | date }}</p>
+                                {% endif %}
+                                <p class="my-0 small text-muted">Travellers: {{ item.quantity }}</p>
+                            </div>
+                            <div class="col-4 mb-1 text-right">
+                                <p class="my-0 small text-muted">{{ item.line_total|intcomma }}</p>
+                            </div>
+
+                        </div>
+                        <hr class="my-2">
+                        <div class="col-12 text-right mx-0 px-0">
+                            <button type="button" class="btn btn-outline">Update</button>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 mb-5">
-                        <div class="row flex-column align-items-end sticky">
-                            <div class="my-3 col-12 col-lg-10 booking-summary">
-                                {% include 'checkout/includes/booking-summary.html' %}
-                            </div>
-                            <div class="col-12 text-right mx-0 px-0">
-                                <button type="button" class="btn btn-outline">Update</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 {% endblock content %}
-
-

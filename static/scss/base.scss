@@ -1,5 +1,5 @@
 @import 'config';
-@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap');
 
 /* Universal Styles ------------------------------ */
 html {
@@ -363,9 +363,11 @@ input.invalid {
 
 .hero-text {
     color: $off-white;
+    line-height: 7rem;
     font: {
         family: 'Euphoria Script', cursive;
-        size: 4rem;
+        size: 7rem;
+        weight: 800;
     }
 }
 
@@ -377,8 +379,11 @@ input.invalid {
     right: 0;
     background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
     background-size: cover;
-    background-position: 50% -50%;
-    
+    background-position: bottom -15vh right 50%;
+    z-index: -1;
+    position: fixed;
+    //height: 100vh;
+    width: 100vw;
 }
 
 /* Destination List Template ------------------------------ */

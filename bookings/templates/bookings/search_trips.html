@@ -29,18 +29,14 @@
     
     <!-- Search Form -->
     <section class="row w-100 justify-content-center flex-grow-1 align-items-center">
-        <div class="col-12">
-            <div class="row justify-content-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 my-5 form-container">
-                        <h1>Search</h1>
-                        <h2>Find available trips:</h2>
-                        <div class="row justify-content-center mt-3">
-                            <div class="col-12 col-xl-10" id="focus-search">
-                                {% crispy form %}
-                            </div>
-                        </div>                       
-                    </div>
-            </div>
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 px-3 px-md-5 my-5 m-xl-5 form-container">
+            <h1>Search</h1>
+            <h2>Find available trips:</h2>
+            <div class="row justify-content-center mt-3">
+                <div class="col-12 col-xl-10" id="focus-search">
+                    {% crispy form %}
+                </div>
+            </div>                       
         </div>
     </section>
 </main>

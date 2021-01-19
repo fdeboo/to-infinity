@@ -1,6 +1,6 @@
 /* define colours */
 /* harmonious colours credit: Adobe Color */
-@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400&family=Orbitron:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap");
 /* Universal Styles ------------------------------ */
 html {
   height: 100%;
@@ -439,8 +439,10 @@ input.invalid {
 
 .hero-text {
   color: #f5f5f5;
+  line-height: 7rem;
   font-family: 'Euphoria Script', cursive;
-  font-size: 4rem;
+  font-size: 7rem;
+  font-weight: 800;
 }
 
 .bg-hero {
@@ -451,7 +453,10 @@ input.invalid {
   right: 0;
   background: #000 url("/media/international-space-station-1176518.jpg") no-repeat;
   background-size: cover;
-  background-position: 50% -50%;
+  background-position: bottom -15vh right 50%;
+  z-index: -1;
+  position: fixed;
+  width: 100vw;
 }
 
 /* Destination List Template ------------------------------ */
