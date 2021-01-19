@@ -152,33 +152,18 @@
 .passenger-formset {
     //border: 1px solid $base-teal;
     margin-top: 3rem;
+    border: 1px solid $near-black;
     &:not(:last-of-type) {
         margin-bottom: 3rem;
     }
     @media only screen and (max-width: 767px) {
-        border: none;
+        margin: 0 1rem;
     }
 }
 
 .formset-legend {
+    margin-bottom: 1rem;
     font-size: 1.1rem;
-    //text-transform:uppercase;
-    font-family: 'Orbitron', cursive;
-    color: $base-teal;
-    font-size: 1.1rem;
-}
-
-.formset_row-passengers {
-    margin: 2rem 0;
-}
-
-.formset-width, .formset-width ~ span {
-    width: 90%;
-    margin: auto;
-}
-
-.formset-width ~ span {
-    margin-top: 0.3rem;
 }
 
 .addon-set {

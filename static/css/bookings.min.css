@@ -169,6 +169,7 @@
 /* Passenger Details ------------------------------ */
 .passenger-formset {
   margin-top: 3rem;
+  border: 1px solid #141516;
 }
 
 .passenger-formset:not(:last-of-type) {
@@ -177,28 +178,13 @@
 
 @media only screen and (max-width: 767px) {
   .passenger-formset {
-    border: none;
+    margin: 0 1rem;
   }
 }
 
 .formset-legend {
+  margin-bottom: 1rem;
   font-size: 1.1rem;
-  font-family: 'Orbitron', cursive;
-  color: #2AB1B7;
-  font-size: 1.1rem;
-}
-
-.formset_row-passengers {
-  margin: 2rem 0;
-}
-
-.formset-width, .formset-width ~ span {
-  width: 90%;
-  margin: auto;
-}
-
-.formset-width ~ span {
-  margin-top: 0.3rem;
 }
 
 .addon-set {

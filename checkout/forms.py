@@ -60,7 +60,7 @@ class BookingCheckoutForm(forms.Form):
                 <div class="row">
                     <div class="col-12 col-lg-6">
                             <p class="booking-subheader">Please fill out the \
-                                form below to complete your booking</p>                     
+                                form below to complete your booking</p>
                             <div class="crispyform">
                 """
             ),
@@ -104,7 +104,7 @@ class BookingCheckoutForm(forms.Form):
 
                 <!-- Booking Summary -->
                 <div class="col-12 col-lg-6 mb-5">
-                    <div class="my-3 sticky d-flex flex-column align-items-end">
+                <div class="my-3 sticky d-flex flex-column align-items-end">
                         <div class="my-3 booking-summary">
                         {% include 'checkout/includes/booking-summary.html' %}
                         </div>

@@ -1,23 +1,21 @@
 {% load static %}
 
-<div class="row justify-content-center">
-    <div class="col-12">
-        {{ formset.management_form | crispy }}
-        {{ formset.non_form_errors }}
-        {% for form in formset.forms %}
-            <fieldset class="passenger-formset mt-3 px-3 pt-3 rounded">      
-                {% if forloop.first %}
-                    <legend class="text-center formset-legend"><i class="fas fa-user mr-2 fa-sm"></i>Lead Passenger</legend>
-                    {% crispy form %}
-                    {{ form.saveinfo| as_crispy_field }}
-                    <hr class="d-md-none mt-5">
-                {% else %}
-                    <legend class="text-center formset-legend"><i class="fas fa-user mr-2 fa-sm"></i>Passenger
-                            {{forloop.counter}}</legend>
-                    {% crispy form %}
-                    <hr class="d-md-none mt-5">
-                {% endif %}
-            </fieldset>
-        {% endfor %}
+
+
+{{ formset.management_form | crispy }}
+{{ formset.non_form_errors }}
+{% for form in formset.forms %}
+    <div class="passenger-formset mt-3 p-4 rounded">
+        <fieldset>
+            {% if forloop.first %}
+                <legend class="text-muted formset-legend"><i class="fas fa-user mr-2 fa-sm"></i>Lead Passenger</legend>
+                {% crispy form %}
+                {{ form.saveinfo| as_crispy_field }}
+            {% else %}
+                <legend class="text-muted formset-legend"><i class="fas fa-user mr-2 fa-sm"></i>Passenger
+                    {{forloop.counter}}</legend>
+                {% crispy form %}
+            {% endif %}
+        </fieldset>
     </div>
-</div>
+{% endfor %}

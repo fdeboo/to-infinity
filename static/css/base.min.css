@@ -460,6 +460,7 @@ input.invalid {
 
 /* Modals ------------------------------ */
 .modal {
+  z-index: 9999;
   color: #595959;
 }
 

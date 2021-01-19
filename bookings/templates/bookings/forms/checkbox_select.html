@@ -1,7 +1,7 @@
 {% with id=widget.attrs.id %}
-    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group all-form-shadow mb-0 px-3 pt-3 formset-width">
+    <div {% if id %} id="div_{{ id }}" {% endif %} class="form-group all-form-shadow mb-0 pt-3 formset-width">
         <label class="small text-muted" for="">Choose Activities:</label>
-        <div class="custom-checkbox-group p-3">
+        <div class="custom-checkbox-group py-3">
             {% for group, options, index in widget.optgroups %}
                     {% for option in options %} 
                         <div class="addon-set">

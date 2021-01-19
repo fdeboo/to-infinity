@@ -12,8 +12,8 @@ from crispy_forms.layout import (
     Submit,
     Field,
     Div,
-    Button,
     ButtonHolder,
+    HTML,
 )
 from products.models import AddOn
 from .models import Destination, Booking, Passenger
@@ -187,7 +187,7 @@ class UpdateSearchForm(SearchTripsForm):
     and date preference.
     All fields include an id attribute for referencing in Javascript
     """
-    
+
     def __init__(self, *args, **kwargs):
         self.destination = kwargs.pop("destination", None)
         super().__init__(*args, **kwargs)
@@ -409,14 +409,32 @@ class InputPassengersForm(forms.ModelForm):
         self.helper.label_class = "col-md-3 create-label"
         self.helper.field_class = "col-md-12"
         self.helper.layout = Layout(
-            Div(
-                Field("trip"),
-                # Custom layout object defined externally
-                Formset("passenger_formset"),
-                css_class="mb-3"
+            HTML(
+                """
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <p class="booking-subheader">Please fill out details \
+                            for each traveller</p>
+                        <div class="crispyform mb-3">
+                """
+            ),
+            Field("trip"),
+            # Custom layout object defined externally
+            Formset("passenger_formset"),
+            HTML(
+                """
+                </div>
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="col-12 col-lg-6 mb-5">
+                <div class="my-3 sticky d-flex flex-column align-items-end">
+                    <div class="my-3 booking-summary">
+                        {% include 'checkout/includes/booking-summary.html' %}
+                    </div>
+                """
             ),
             ButtonHolder(
                 Submit("submit", "Proceed", css_class="m-0 btn btn-outline"),
-                Button("submit", "Cancel", css_class="m-0 btn btn-outline"),
             ),
         )

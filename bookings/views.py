@@ -313,6 +313,7 @@ class InputPassengersView(UpdateView):
             data['profile'] = profile
             data['booking_total'] = booking_total
             data['trip_items'] = trip_items
+            data['booking'] = self.booking
             data['passenger_formset'] = formset(
                 self.request.POST,
                 instance=self.object
@@ -321,6 +322,7 @@ class InputPassengersView(UpdateView):
             data['profile'] = profile
             data['booking_total'] = booking_total
             data['trip_items'] = trip_items
+            data['booking'] = self.booking
             data['passenger_formset'] = formset(
                 initial=[{
                     "first_name": profile.user.first_name,

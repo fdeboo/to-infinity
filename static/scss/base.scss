@@ -271,7 +271,7 @@ form h2 {
 legend {
     position: relative;
     right: 0.5rem;
-    color: #999999;
+    color: $form-grey;
     padding: 0 .5rem;
     font: {
         size: 80%;
@@ -379,6 +379,7 @@ input.invalid {
 
 /* Modals ------------------------------ */
 .modal {
+    z-index: 9999;
     color: $form-disabled-grey;
     .btn-x {
         padding: 0 5px;
