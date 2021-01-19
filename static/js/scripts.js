@@ -3,14 +3,7 @@ $(document).ready(function () {
     $("input, select").on({
         invalid: (e) => $(e.target).addClass("invalid"),
         input: (e) => $(e.target).toggleClass("invalid", e.target.validity.valid),
-
     });
-
-    $("input, select").on({
-        invalid: (e) => $(e.target).addClass("invalid"),
-        input: (e) => $(e.target).toggleClass("invalid", e.target.validity.valid),
-    });
-
 
     if ($('#selected-trip').val() == '') {
         $('#passengers-max').prop("disabled", true);

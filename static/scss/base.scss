@@ -19,6 +19,10 @@ body {
     cursor: url("/static/icons/shuttleicon.png") 0 0, pointer;
 }
 
+header {
+    box-shadow: 0 0 1rem #000;
+}
+
 .content {
     flex: 1 auto;
     display: flex;
@@ -68,6 +72,12 @@ footer {
         width: 2rem;
         padding: 0 1.2rem;
     }
+    @media only screen and (max-width: 575px) {
+        .contact-icon ~ div {
+            margin-right: 0;
+            padding: 0;
+        }
+	} 
 }
 
 a {
@@ -179,6 +189,13 @@ a {
             }
             &.dropdown-item {
                 color: $near-black;
+                white-space: normal;
+                &:before {
+                    content: none;
+                }
+                &:active {
+                    background-color: $square-green;
+                }
             }
             
         }
@@ -190,6 +207,9 @@ a {
             a {
                 &.dropdown-item {
                     color: $form-grey;
+                    &:active, &:hover {
+                        color: $near-black;
+                    }
                 }   
             }
         }
@@ -219,12 +239,12 @@ form h2 {
     padding: 3rem;
     border: 1px solid $base-teal;
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 767px) {
 		border: none;
 	} 
 }
 
-.form-container h1 {
+.form-container h1, .form-heading {
     font: {
         family: 'Orbitron', cursive;
         size: 1.8rem;
@@ -233,11 +253,12 @@ form h2 {
     color: $base-teal;
 }
 
-.form-container h2 {
+.form-container h2, .form-subheading {
     font: {
         size: 1.3rem;
         weight: 200;
     }
+    color: $off-white;
 }
 
 legend {
@@ -317,7 +338,8 @@ input:-webkit-autofill-selected {
 input.invalid {
     -moz-box-shadow: none;
     box-shadow: none;
-    outline: 2px solid $form-alert;
+    border: 2px solid $form-alert;
+    outline: none;
 }
 
 .invalid-feedback {
@@ -352,8 +374,9 @@ input.invalid {
     color: $near-black;
     opacity: 1;
     &:hover {
-        background-color: $near-black;
-        color: $off-white;
+        background-color: $off-white;
+        color: $base-teal;
+        box-shadow: 0 0 1rem $base-teal;
     }
 }
 
@@ -364,11 +387,16 @@ input.invalid {
 .hero-text {
     color: $off-white;
     line-height: 7rem;
+    text-shadow: 0 0 1rem $triad-dark-teal;
     font: {
         family: 'Euphoria Script', cursive;
         size: 7rem;
         weight: 800;
     }
+    @media only screen and (max-width: 575px) {
+        font-size: 5rem;
+        line-height: 5rem;
+	} 
 }
 
 .bg-hero {
@@ -507,7 +535,7 @@ input.invalid {
     
     .toast {
         background-color: $off-white;
-        color: $near-black;
+        color: $form-disabled-grey;
         button {
             border: 0;
             opacity: 1;
@@ -517,7 +545,7 @@ input.invalid {
             padding: 0 5px;
             outline: none;
             background: transparent;
-            color: $near-black;
+            color: $form-disabled-grey;
         }
         .btn-accept {
             background-color: $square-green;

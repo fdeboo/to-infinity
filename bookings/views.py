@@ -141,6 +141,8 @@ class ConfirmTripView(FormView):
         # Merge both queries
         trips = lt_dates | gte_dates
         trips = trips.order_by("date")
+        print(gte_dates)
+        print(lt_dates)
         return trips
 
     def get(self, request, *args, **kwargs):

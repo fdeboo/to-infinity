@@ -35,12 +35,16 @@
             <form action="{% url 'confirm_trip' %}" method="POST">
                 {% csrf_token %}
                 <div class="text-center p-3">
-                    <h2 class="col-12 text-center my-3">Please choose from the following available dates closest to your search:</h2>
+                    <h1 class="form-heading">Choose a date</h1>
+                    <h2 class="form-subheading col-12 text-center my-3">Please choose from the available dates closest to
+                        your search:</h2>
                     {% for destination in destination_obj %}
-                        <p class="searched-content"><i class="fas fa-search fa-2x d-block"></i>{{ destination.name }}
+                        <p class="searched-content small">
+                        <span><i class="fas fa-search mr-2"></i>
+                            Destination:</span> {{ destination.name }}
                     {% endfor %}
-                        / {{ date }}
-                        / {{ passengers }}
+                        <span>| Date:</span> {{ date }} |
+                        <span>| Travellers:</span> {{ passengers }}
                     </p>
                 </div>
                 <div class="row justify-content-center p-3 mb-3">
