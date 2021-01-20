@@ -110,7 +110,7 @@ $("#update-btn").click(function () {
   to include any checked items.
   */
 
-  // Delete any existing markup in case any previous updates.
+  // Delete any existing markup to avoid build up.
   $(".addon-row").remove();
 
   // Define a new empty array.
@@ -134,7 +134,7 @@ $("#update-btn").click(function () {
       .html();
 
     // Get index of object in the array if it already exists, or -1.
-    let arrayIndex = addOns.findIndex((addon) => addon.name === addonName);
+    const arrayIndex = addOns.findIndex((addon) => addon.name === addonName);
 
     // If returned value was -1, Create object and add to array.
     if (arrayIndex === -1) {
@@ -151,8 +151,8 @@ $("#update-btn").click(function () {
     }
   });
 
-  let strTotal = $("#booking-total").text().slice(0, -3).split(",");
-  bookingTotal = Number(strTotal[0] + strTotal[1]);
+  const strTotal = $("#booking-total").text().slice(0, -3).split(",");
+  let bookingTotal = Number(strTotal[0] + strTotal[1]);
 
   // Construct html for summary and append to existing html
   for (i = 0; i < addOns.length; i++) {
@@ -174,4 +174,14 @@ $("#update-btn").click(function () {
     $("#booking-total").text(formattedTotal + ".00");
     $("#summary").append(row);
   }
+
+  const count = 1 + addOns.length;
+  let items;
+  if (count > 1) { 
+    items = " items)";
+  } else { 
+    items = " item)"; 
+  }
+  
+  $("#item-count").text("Booking Summary (" + count + items);
 });

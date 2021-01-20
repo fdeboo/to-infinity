@@ -8,7 +8,7 @@
         <div class="my-2 booking-summary">
             <div id="summary">
                 <div class="d-flex align-items-end justify-content-between mb-4">
-                    <div>
+                    <div id="item-count">
                         Booking Summary 
                         {% if booking_items %}
                         ({{ booking_items|length }} item{% if booking_items|length > 1 %}s{% endif %}){% endif %}
