@@ -1,0 +1,7 @@
+{% include 'checkout/includes/summary/summary-headers.html' %}
+<div class="row">
+    {% for item in trip_items  %}
+    {% include 'checkout/includes/summary/line-item-summary.html' %}
+    {% endfor %}
+</div>
+<hr class="my-2">

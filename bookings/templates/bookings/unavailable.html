@@ -1,21 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block page_nav %}
-{% include 'includes/light_nav.html' %}
-{% endblock page_nav %}
+
+{% block header %}
+    {% include 'includes/navbar-dark.html' %}
+{% endblock header %}
 
 {% block content %}
-<section class="container-fluid">
-<div class="row justify-content-center mt-5">
-<div class="col-10 text-center">
-    <h2>
-        Dammit! There are currently no {{ destination.name }} trips with
-        availability for {{ passengers }}
-        {% if passengers > 1 %} passengers. {% else %} passenger.{% endif %}
-    </h2>
-    <a href="{% url 'search_trip' %}"><button class="btn btn-outline">Go back</button></a>
-</div>
-</div>
-</section>
+
+<main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+    <section class="row w-100 justify-content-center flex-grow-1 align-items-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 px-3 px-md-5 my-5 m-xl-5">
+            <h2>
+                Dammit! There are currently no {{ destination.name }} trips with
+                availability for {{ passengers }}
+                {% if passengers > 1 %} passengers. {% else %} passenger.{% endif %}
+            </h2>
+            <a href="{% url 'search_trip' %}"><button class="btn btn-outline">Go back</button></a>
+        </div>
+    </section>
+</main>
 
 {% endblock content %}

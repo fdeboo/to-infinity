@@ -106,14 +106,14 @@ class BookingCheckoutForm(forms.Form):
                 <div class="col-12 col-lg-6 mb-5">
                 <div class="my-3 sticky d-flex flex-column align-items-end">
                         <div class="my-3 booking-summary">
-                        {% include 'checkout/includes/booking-summary.html' %}
+                        {% include 'checkout/includes/summary/booking-summary.html' %}
                         </div>
                 """
             ),
             ButtonHolder(
                 HTML(
                     """
-                        {% include 'checkout/includes/checkout-button.html' %}
+                    {% include 'checkout/includes/checkout-button.html' %}
                     </div>
                     """
                 ),

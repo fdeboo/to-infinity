@@ -38,18 +38,9 @@
                 </div>
             </div>
 
-
-
-
             <!--Passenger Form and Booking summary -->
             {% crispy form %}
-            <div class="col-12 text-right mx-0 px-0">
-                <button type="button" class="btn btn-outline">Update</button>
-                <button type="button" data_target="#cancelModal" data_toggle="modal"
-                    class="btn btn-outline">
-                Cancel</button>
-                    {% include 'bookings/includes/modals/booking-confirm-delete.html' %}
-            </div>
+            
             <hr class="my-2">
         </div>
         </div>
@@ -58,3 +49,7 @@
     </section>
 </main>
 {% endblock content %}
+
+{% block postloadjs %}
+    <script src="{% static 'bookings/js/scripts.js' %}" crossorigin="anonymous"></script>
+{% endblock postloadjs %}

@@ -316,7 +316,7 @@ hr {
 .booking-summary {
     background-color: $near-black;
     color: $off-white;
-    padding: 3rem;
+    padding: 2rem;
 }
 
 .booking-header {
@@ -333,4 +333,13 @@ hr {
         size: 1.3rem;
         weight: 200;
     }
+}
+
+#update-btn {
+    background-color: $triad-dark-teal;
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    letter-spacing: normal;
+    text-transform: none;
 }

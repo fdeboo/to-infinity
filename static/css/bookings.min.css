@@ -353,7 +353,7 @@ hr.hr-muted {
 .booking-summary {
   background-color: #141516;
   color: #f5f5f5;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .booking-header {
@@ -366,4 +366,13 @@ hr.hr-muted {
 .booking-subheader {
   font-size: 1.3rem;
   font-weight: 200;
+}
+
+#update-btn {
+  background-color: #0E666B;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  letter-spacing: normal;
+  text-transform: none;
 }

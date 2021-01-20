@@ -44,7 +44,7 @@
                     <span>| Travellers:</span> {{ passengers }}
                 </p>
             </div>
-            <form action="{% url 'confirm_trip' %}" method="POST">
+            <form action="{% url 'confirm_trip' %}" method="POST" class="w-100">
                 {% csrf_token %}
                 <div class="row justify-content-center p-3 mb-3">
                     <!-- Input Choices -->

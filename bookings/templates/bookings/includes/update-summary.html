@@ -1,0 +1,33 @@
+{% load humanize %}
+    </div>
+</div>
+
+<!-- Booking Summary -->
+<div class="col-12 col-lg-6 mb-5">
+    <div class="my-3 sticky d-flex flex-column align-items-end">
+        <div class="my-2 booking-summary">
+            <div id="summary">
+                <div class="d-flex align-items-end justify-content-between mb-4">
+                    <div>
+                        Booking Summary 
+                        {% if booking_items %}
+                        ({{ booking_items|length }} item{% if booking_items|length > 1 %}s{% endif %}){% endif %}
+                    </div>
+                    <div>
+                        <button id="update-btn" class="btn btn-outline" type="button">
+                            Update
+                        </button>
+                    </div>
+                </div>
+                {% include 'checkout/includes/summary/trip-item-listing.html' %}
+                <!-- Javascript populated markup here -->
+            </div>
+            <div class="row text-black text-right">
+                <div class="col-12 text-right">
+                    <p class="my-0">
+                        <span class="mx-3">Booking Total:</span>£
+                        <span id="booking-total">{{ booking_total|intcomma }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
