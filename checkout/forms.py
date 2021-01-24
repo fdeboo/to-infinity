@@ -14,26 +14,27 @@ from crispy_forms.layout import (
     Hidden,
     ButtonHolder,
 )
-
+from bookings.models import Booking
 
 class CustomCheckbox(Field):
     """ Provides template for custom Checkbox field used in crispy form """
     template = 'checkout/forms/saveinfo-checkbox.html'
 
 
-class BookingCheckoutForm(forms.Form):
+class BookingCheckoutForm(forms.ModelForm):
     """ Form to collect payment information for billing """
 
-    full_name = forms.CharField(required=True, max_length=50)
-    email = forms.EmailField(required=True, max_length=100)
-    phone_number = forms.CharField(required=True, max_length=20)
-    postcode = forms.CharField(required=True, max_length=20)
-    town_or_city = forms.CharField(required=True, max_length=40)
+    class Meta:
+        model = Booking
+        fields = ["full_name", "contact_number", "contact_email"]
+
+    saveinfo = forms.BooleanField(required=False)
     street_address1 = forms.CharField(required=True, max_length=80)
     street_address2 = forms.CharField(required=False, max_length=80)
+    town_or_city = forms.CharField(required=True, max_length=40)
     county = forms.CharField(required=False, max_length=80)
+    postcode = forms.CharField(required=True, max_length=20)
     country = CountryField(blank_label="Country *").formfield()
-    saveinfo = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         """
@@ -67,8 +68,8 @@ class BookingCheckoutForm(forms.Form):
             Fieldset(
                 "Contact Details",
                 Field("full_name", placeholder="Full Name", autofocus=True),
-                Field("email", placeholder="Email Address"),
-                Field("phone_number", placeholder="Phone Number"),
+                Field("contact_email", placeholder="Email Address"),
+                Field("contact_number", placeholder="Phone Number"),
                 CustomCheckbox('saveinfo'),
                 css_class="rounded px-3 mb-3",
             ),

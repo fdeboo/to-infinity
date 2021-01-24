@@ -98,7 +98,9 @@ class Booking(models.Model):
         choices=BOOKING_STATUS_CHOICES,
         default="OPENED",
     )
-    contact_number = models.CharField(max_length=20, null=True, blank=True)
+    full_name = models.CharField(max_length=50, null=True, blank=True)
+    contact_number = models.CharField(max_length=15, null=True, blank=True)
+    contact_email = models.EmailField(max_length=50, null=True, blank=True)
     date_created = models.DateTimeField(null=True, blank=True, editable=False)
     date_completed = models.DateTimeField(null=True, blank=True)
     original_bag = models.TextField(null=False, blank=False, default="")

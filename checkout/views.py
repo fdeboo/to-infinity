@@ -7,7 +7,7 @@ if checkout successful.
 import json
 import datetime
 import stripe
-from django.views.generic import View, FormView
+from django.views.generic import View, FormView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.decorators.http import require_POST
 from django.shortcuts import reverse, render, HttpResponse
@@ -28,6 +28,8 @@ def cache_checkout_data(request):
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         save_info = request.POST.get('save_info')
+        print(pid)
+        print(save_info)
         stripe.PaymentIntent.modify(pid, metadata={
             "booking_items": json.dumps(
                 request.session.get("booking_items", {})
@@ -48,16 +50,16 @@ def cache_checkout_data(request):
 
 
 @method_decorator(login_required, name="dispatch")
-class CheckoutView(FormView):
+class CheckoutView(UpdateView):
     """ A view to complete the booking with payment information """
 
+    model = Booking
     form_class = BookingCheckoutForm
     template_name = "checkout/checkout.html"
 
-    def get_object(self, request, **kwargs):
-        """ Retrieves the primary key from the kwargs to use for lookup """
-
-        booking = Booking.objects.get(pk=self.kwargs.get('pk'))
+    def get_object(self, **kwargs):
+        """ Retrieve the primary key from the kwargs to use for lookup """
+        booking = self.model.objects.get(pk=self.kwargs.get('pk'))
         return booking
 
     def get_initial(self):
@@ -67,8 +69,8 @@ class CheckoutView(FormView):
             profile = UserProfile.objects.get(user=self.request.user)
             initial.update({
                 "full_name": profile.user.get_full_name(),
-                "email": profile.user.email,
-                "phone_number": profile.default_phone_num,
+                "contact_email": profile.user.email,
+                "contact_number": profile.default_phone_num,
             })
         except UserProfile.DoesNotExist:
             pass
@@ -80,7 +82,7 @@ class CheckoutView(FormView):
         stripe_public_key = settings.STRIPE_PUBLIC_KEY
         stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-        booking = self.get_object(self.request)
+        booking = self.get_object()
         items = self.request.session.get("booking_items")
         booking_items = []
         addon_items = []
@@ -129,31 +131,30 @@ class CheckoutView(FormView):
         data["stripe_public_key"] = stripe_public_key
         data["client_secret"] = intent.client_secret
         return data
-
+    
     def form_valid(self, form):
         pid = self.request.POST.get('client_secret').split('_secret')[0]
-        booking = self.get_object(self.request)
-        booking.contact_number = form.cleaned_data['phone_number']
-        booking.date_completed = datetime.datetime.now()
-        booking.stripe_pid = pid
+        self.object = form.save(commit=False)
+        self.object.date_completed = datetime.datetime.now()
+        self.object.stripe_pid = pid
         booking_items = self.request.session.get('booking_items', {})
-        booking.original_bag = json.dumps(booking_items)
+        self.object.original_bag = json.dumps(booking_items)
         for product_id, quantity in booking_items.items():
             product = Product.objects.get(pk=product_id)
             booking_line_item = BookingLineItem(
-                booking=booking,
+                booking=self.object,
                 product=product,
                 quantity=quantity,
             )
             booking_line_item.save()
-        booking.status = "COMPLETE"
-        booking.save()
+        self.object.status = "COMPLETE"
+        self.object.save()
 
         # save the save_info input to the session
         return super(CheckoutView, self).form_valid(form)
 
     def get_success_url(self):
-        booking = self.get_object(self.request)
+        booking = self.get_object()
         return reverse("checkout_success", args=(booking.pk,))
 
     def form_invalid(self, form):

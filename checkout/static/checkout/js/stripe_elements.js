@@ -58,12 +58,13 @@ form.addEventListener('submit', function(ev) {
     $('#submit-button').attr('disabled', true);
     $('#payment-form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
-
-
+    console.log('Arrived');
+    
+    
     // Create a few variables to capture the form data we can't put in the payment intent
     // Instead, post it to the cache_checkout_data view
     // The view updates the payment intent and returns a response
-
+    
     const saveInfo = $("#id_saveinfo").is(":checked");
     // from using {% csrf_token %} in the form
     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
@@ -72,6 +73,7 @@ form.addEventListener('submit', function(ev) {
         'client_secret': clientSecret,
         'save_info': saveInfo,
     };
+    console.log('Arrived2');
     const url = '/checkout/cache_checkout_data/';
 
      // When the view returns a 200 response, call the confirmCardPayment method from stripe
@@ -84,8 +86,8 @@ form.addEventListener('submit', function(ev) {
                 card: card,
                 billing_details: {
                     name: $.trim(form.full_name.value),
-                    phone: $.trim(form.phone_number.value),
-                    email: $.trim(form.email.value),
+                    phone: $.trim(form.contact_number.value),
+                    email: $.trim(form.contact_email.value),
                     address:{
                         line1: $.trim(form.street_address1.value),
                         line2: $.trim(form.street_address2.value),
@@ -97,6 +99,7 @@ form.addEventListener('submit', function(ev) {
             }
         }).then(function(result) {
             if (result.error) {
+                console.log("Arrived3");
                 const errorDiv = document.getElementById('card-errors');
                 const html = `
                     <span class="icon" role="alert">
@@ -104,6 +107,7 @@ form.addEventListener('submit', function(ev) {
                     </span>
                     <span>${result.error.message}</span>`;
                 $(errorDiv).html(html);
+                console.log("Arrived4");
                 $('#payment-form').fadeToggle(100);
                 $('#loading-overlay').fadeToggle(100);
                 card.update({ 'disabled': false });

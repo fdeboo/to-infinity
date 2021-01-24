@@ -1,0 +1,100 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "bookings": {
+      "name": "bookings",
+      "isOrdered": true,
+      "folders": {
+        "__pycache__": {
+          "name": "__pycache__",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "fixtures": {
+          "name": "fixtures",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "migrations": {
+          "name": "migrations",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "static": {
+          "name": "static",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "templates": {
+          "name": "templates",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        }
+      },
+      "files": {}
+    },
+    "checkout": {
+      "name": "checkout",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "home": {
+      "name": "home",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "media": {
+      "name": "media",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "products": {
+      "name": "products",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "profiles": {
+      "name": "profiles",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "static": {
+      "name": "static",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "templates": {
+      "name": "templates",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "to_infinity": {
+      "name": "to_infinity",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "wireframes": {
+      "name": "wireframes",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    }
+  },
+  "files": {
+    "README": 0
+  }
+}

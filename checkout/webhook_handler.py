@@ -49,9 +49,14 @@ class StripeWH_Handler:
         """
 
         intent = event.data.object
-        booking_pk = intent.metadata.booking
+        print(intent)
         booking_items = intent.metadata.booking_items
+        booking_pk = intent.metadata.booking
         booking = Booking.objects.get(pk=booking_pk)
+        if booking:
+            booking_exists = True
+        else:
+            booking_exists = False
         attempt = 1
         while attempt <= 5:
             if booking.status == "COMPLETE":
@@ -60,7 +65,7 @@ class StripeWH_Handler:
                 attempt += 1
                 time.sleep(1)
         if booking.status == "COMPLETE":
-            self._send_confirmation_email(booking)
+            # self._send_confirmation_email(booking)
             return HttpResponse(
                     content=f'Webhook received: {event["type"]} | SUCCESS: \
                     Verified booking status has already been updated',
@@ -83,7 +88,7 @@ class StripeWH_Handler:
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500,
                 )
-        self._send_confirmation_email(booking)
+        # self._send_confirmation_email(booking)
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created \
                 order in webhook',

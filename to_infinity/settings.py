@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = [
-    'toinfinity.herokuapp.com', '127.0.0.1', '*.ngrok.io', 'localhost'
+    'toinfinity.herokuapp.com', '127.0.0.1', '66c1c808f77f.ngrok.io', 'localhost'
 ]
 
 
