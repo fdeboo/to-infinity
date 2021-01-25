@@ -1,5 +1,6 @@
 let price;
 let priceTotal;
+let baseTotal;
 
 // credit: https://stackoverflow.com/a/26549774/2342815
 // Renders a formatted price with no floating decimals unless necessary
@@ -20,8 +21,7 @@ String.prototype.insert = function () {
 };
 
 $(document).ready(function () {
-  // Provides markup to input options
-
+  // DATE CHOICE FORM: Provides markup to input options
   const selected = $("input[type='radio']:checked");
   $(selected).siblings(".block").css("background-color", "#99B821");
   $(selected).siblings().children(".block").css("background-color", "#99B821");
@@ -47,8 +47,15 @@ $(document).ready(function () {
   $(".date-option").addClass("formatted-label");
   $(".day").addClass("formatted-day");
   $(".price").addClass("formatted-price");
+
+
+  // INPUT PASSENGERS FORM: Records the booking total so that it can be updated
+  const strTotal = $("#booking-total").text().slice(0, -3).split(",");
+  baseTotal = Number(strTotal[0] + strTotal[1]);
 });
 
+
+// DATE CHOICE FORM: Applies CSS to the different states of the radio options
 $("input[type='radio']").change(function () {
   const selected = $("input[type='radio']:checked");
   const unselected = $("input[type='radio']:not(':checked')");
@@ -146,13 +153,12 @@ $("#update-btn").click(function () {
       };
       addOns.push(addOn);
     } else {
-      // Increment the quantity value for the existitng object
+      // Otherwsie increment the quantity of the existitng object
       addOns[arrayIndex]["qty"] += 1;
     }
   });
 
-  const strTotal = $("#booking-total").text().slice(0, -3).split(",");
-  let bookingTotal = Number(strTotal[0] + strTotal[1]);
+  let bookingTotal = baseTotal
 
   // Construct html for summary and append to existing html
   for (i = 0; i < addOns.length; i++) {
@@ -185,3 +191,4 @@ $("#update-btn").click(function () {
   
   $("#item-count").text("Booking Summary (" + count + items);
 });
+

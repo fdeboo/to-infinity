@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bookings.min.css' %}">
+{% endblock extra_css %}
+
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
+{% endblock header %}
+
+
 {% block content %}
+<main class="container-fluid black-bg">
 <section>
     <div class="row justify-content-center">
         
@@ -12,6 +23,7 @@
         </div>
     </div>
 </section>
+</main>
 {% endblock content %}
 
 

@@ -285,6 +285,7 @@ class InputPassengersView(CreateView):
     def __init__(self):
         self.trip = None
         self.object = None
+        self.cancel = False
         self.save = False
 
     def get_context_data(self, **kwargs):
@@ -302,7 +303,7 @@ class InputPassengersView(CreateView):
         profile = UserProfile.objects.get(user=self.request.user)
 
         # Provide the context for the booking summary
-        items = self.request.session.get("booking_items")
+        items = self.request.session.get("booking_items", "")
         trip_items = []
         booking_total = 0
         for product_id, quantity in items.items():
@@ -341,6 +342,24 @@ class InputPassengersView(CreateView):
         initial = super(InputPassengersView, self).get_initial()
         initial.update({"trip": self.trip})
         return initial
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if 'cancel' in form.data:
+            self.cancel = True
+            if "booking_items" in self.request.session:
+                del self.request.session["booking_items"]
+            if "booking" in self.request.session:
+                del self.request.session["booking"]
+            if "destination_choice" in self.request.session:
+                del self.request.session["destination_choice"]
+            if "request_date" in self.request.session:
+                del self.request.session["request_date"]
+            if "passenger_total" in self.request.session:
+                del self.request.session["passenger_total"]
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super(InputPassengersView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         """
@@ -414,6 +433,8 @@ class InputPassengersView(CreateView):
                 return super(InputPassengersView, self).form_invalid(form)
 
     def get_success_url(self):
+        if self.cancel:
+            return reverse("home")
         if self.save:
             return reverse("profile")
         else:

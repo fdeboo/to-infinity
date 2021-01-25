@@ -1,17 +1,14 @@
 {% load humanize %}
-    </div>
-</div>
-
-<!-- Booking Summary -->
 <div class="col-12 col-lg-6 mb-5">
     <div class="my-3 sticky d-flex flex-column align-items-end">
         <div class="my-2 booking-summary">
             <div id="summary">
                 <div class="d-flex align-items-end justify-content-between mb-4">
                     <div id="item-count">
-                        Booking Summary 
+                        Booking Summary
                         {% if booking_items %}
-                        ({{ booking_items|length }} item{% if booking_items|length > 1 %}s{% endif %}){% endif %}
+                        ({{ booking_items|length }}
+                        item{% if booking_items|length > 1 %}s{% endif %}){% endif %}
                     </div>
                     <div>
                         <button id="update-btn" class="btn btn-outline" type="button">
@@ -31,3 +28,17 @@
                 </div>
             </div>
         </div>
+        <hr class="my-2">
+        <div class="col-md-10 text-right">
+            <input type="submit" value="Proceed" name="submit" id="submit-id-submit" class="btn btn-outline">
+            <input type="submit" value="Save" name="save" id="submit-id-save" class="btn btn-outline">
+            <button type="button" class="btn btn-outline" id="cancel-btn" data-toggle="modal"
+                data-target="#cancelModal">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Cancel Booking model -->
+    {% include 'bookings/includes/modals/booking-confirm-cancel.html' %}
+<!-- End of modal-->

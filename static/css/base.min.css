@@ -508,7 +508,7 @@ input.invalid {
   position: fixed;
   top: 72px;
   right: 20px;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .message-container .toast.show {

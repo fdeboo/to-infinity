@@ -45,7 +45,7 @@ card.addEventListener('change', function (event) {
 });
 
 // Handle form submit
-const form = document.getElementById('payment-form');
+const form = $('#payment-form');
 
 // When a user clicks the submit button,
 // The Event Listener prevents the form from submitting,

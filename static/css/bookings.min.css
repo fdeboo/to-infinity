@@ -6,6 +6,8 @@
   position: sticky;
   top: 4rem;
   background-color: #141516;
+  -webkit-box-shadow: 0 0 1rem #000;
+          box-shadow: 0 0 1rem #000;
   z-index: 35;
 }
 

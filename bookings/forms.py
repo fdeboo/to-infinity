@@ -13,6 +13,7 @@ from crispy_forms.layout import (
     Field,
     Div,
     ButtonHolder,
+    Button,
     HTML,
 )
 from products.models import AddOn
@@ -414,7 +415,8 @@ class InputPassengersForm(forms.ModelForm):
                 <div class="row">
                     <div class="col-12 col-lg-6">
                         <p class="booking-subheader">Please fill out details \
-                            for each traveller</p>
+                            for each traveller
+                        </p>
                         <div class="crispyform mb-3">
                 """
             ),
@@ -423,13 +425,11 @@ class InputPassengersForm(forms.ModelForm):
             Formset("passenger_formset"),
             HTML(
                 """
-                {% include 'bookings/includes/update-summary.html' %}
+                        </div>
+                    </div>
+                    <!-- Booking Summary -->
+                    {% include 'bookings/includes/update-summary.html' %}
+                </div>
                 """
-            ),
-            ButtonHolder(
-                Submit(
-                    "save", "Save for later", css_class="mr-3 btn btn-outline"
-                ),
-                Submit("submit", "Proceed", css_class="m-0 btn btn-outline"),
             ),
         )
