@@ -52,6 +52,7 @@ class StripeWH_Handler:
 
         intent = event.data.object
         pid = intent.id
+        print(intent)
         booking_items = intent.metadata.booking_items
         if 'booking' in intent.metadata:
             booking_exists = True
@@ -73,15 +74,12 @@ class StripeWH_Handler:
         attempt = 1
         while attempt <= 5:
             if booking_exists:
-                print('exists')
                 if booking.status == "COMPLETE":
                     break
                 else:
                     attempt += 1
                     time.sleep(1)
             else:
-                print('noexists')
-                print(attempt)
                 try:
                     booking = Booking.objects.get(
                         full_name__iexact=contact_details.name,

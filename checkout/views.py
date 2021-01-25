@@ -6,6 +6,7 @@ if checkout successful.
 
 import json
 import datetime
+import ast
 import stripe
 from django.views.generic import View, UpdateView, CreateView
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
@@ -29,16 +30,26 @@ def cache_checkout_data(request):
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         save_info = request.POST.get('save_info')
-        print(pid)
-        print(save_info)
-        stripe.PaymentIntent.modify(pid, metadata={
-            "booking_items": json.dumps(
-                request.session.get("booking_items", {})
-                ),
-            "username": request.user,
-            "save_info": save_info,
-            # "booking": request.session.get("booking", ""),
-        })
+        booking = request.session.get("booking", "")
+        if booking:
+            print('yes')
+            stripe.PaymentIntent.modify(pid, metadata={
+                "booking_items": json.dumps(
+                    request.session.get("booking_items", {})
+                    ),
+                "booking": booking,
+                "username": request.user,
+                "save_info": save_info,
+            })
+        else:
+            print('no')
+            stripe.PaymentIntent.modify(pid, metadata={
+                "booking_items": json.dumps(
+                    request.session.get("booking_items", {})
+                    ),
+                "username": request.user,
+                "save_info": save_info,
+            })
         request.session['save_info'] = save_info
         if 'booking' in request.session:
             del request.session["booking"]
@@ -67,6 +78,12 @@ class CheckoutView(SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFor
             self.object = None
         else:
             self.object = self.get_object()
+            booking = Booking.objects.get(pk=pk)
+            original_bag = booking.original_bag
+            self.request.session['booking_items'] = ast.literal_eval(original_bag)
+            self.request.session['booking'] = booking.pk
+            print(self.request.session['booking_items'])
+
         return super(CheckoutView, self).get(request, *args, **kwargs)
 
     def get_object(self, **kwargs):
@@ -214,7 +231,7 @@ class CheckoutSuccessView(SingleObjectMixin, View):
             del self.request.session["destination_choice"]
         if "request_date" in self.request.session:
             del self.request.session["request_date"]
-        if self.request.session["passenger_total"]:
+        if  "passenger_total" in self.request.session:
             del self.request.session["passenger_total"]
 
         template = "checkout/checkout-success.html"

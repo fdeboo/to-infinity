@@ -68,10 +68,14 @@
                                 {% for booking in open_bookings %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'edit_booking' booking.booking_ref %}"
+                                        <a href="{% url 'saved_order' booking.booking_ref %}"
                                             title="{{ booking.booking_ref }}">
                                             {{ booking.booking_ref|truncatechars:6 }}
                                         </a>
+                                        <!---<a href="{% url 'edit_booking' booking.booking_ref %}"
+                                            title="{{ booking.booking_ref }}">
+                                            {{ booking.booking_ref|truncatechars:6 }}
+                                        </a>-->
                                     </td>
                                     <td>{{ booking.trip.destination }}</td>
                                     <td>{{ booking.trip.date | date:'d/m/Y' }}</td>

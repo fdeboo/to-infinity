@@ -252,7 +252,7 @@ class ConfirmTripView(FormView):
         """
 
         # Create object to store data relevant to the booking
-        booking = {}
+        booking_model = {}
 
         # Create object to store data relevant to the products for purchase
         booking_items = {}
@@ -261,11 +261,11 @@ class ConfirmTripView(FormView):
         product_id = destination.product_id
         quantity = self.passengers
         booking_items[product_id] = quantity
-        booking["trip"] = trip.pk
-        booking["original_bag"] = booking_items
+        booking_model["trip"] = trip.pk
+        booking_model["original_bag"] = booking_items
 
         # Save both objects to the session
-        self.request.session["booking"] = booking
+        self.request.session["booking_model"] = booking_model
         self.request.session["booking_items"] = booking_items
 
         return redirect("create_passengers")
@@ -291,7 +291,7 @@ class InputPassengersView(CreateView):
     def get_context_data(self, **kwargs):
         # Get data from the session that will be used to define the forms
         passenger_total = self.request.session["passenger_total"]
-        trip_pk = self.request.session["booking"]["trip"]
+        trip_pk = self.request.session["booking_model"]["trip"]
         self.trip = Trip.objects.get(pk=trip_pk)
 
         # Send trip data to the formset to determine the addon options
@@ -349,6 +349,8 @@ class InputPassengersView(CreateView):
             self.cancel = True
             if "booking_items" in self.request.session:
                 del self.request.session["booking_items"]
+            if "booking_model" in self.request.session:
+                del self.request.session["booking_model"]
             if "booking" in self.request.session:
                 del self.request.session["booking"]
             if "destination_choice" in self.request.session:
