@@ -8,7 +8,8 @@ import json
 import datetime
 import stripe
 from django.views.generic import View, UpdateView, CreateView
-from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import ModelFormMixin, ProcessFormView
+from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
 from django.views.decorators.http import require_POST
 from django.shortcuts import reverse, render, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -52,127 +53,26 @@ def cache_checkout_data(request):
 
 
 @method_decorator(login_required, name="dispatch")
-class CheckoutSavedView(UpdateView):
+class CheckoutView(SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFormView):
     """ A view to complete the booking with payment information """
 
     model = Booking
     form_class = BookingCheckoutForm
     template_name = "checkout/checkout.html"
+
+    def get(self, request, *args, **kwargs):
+        # Check if pk in url and if not set to none
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        if pk is None:
+            self.object = None
+        else:
+            self.object = self.get_object()
+        return super(CheckoutView, self).get(request, *args, **kwargs)
 
     def get_object(self, **kwargs):
-        """ Retrieve the primary key from the kwargs to use for lookup """
+        """ Retrieve the primary key from the kwargs to use for lookup"""
         booking = self.model.objects.get(pk=self.kwargs.get('pk'))
         return booking
-
-    def get_initial(self):
-        # Provide initial values for the form
-        initial = super(CheckoutSavedView, self).get_initial()
-        try:
-            profile = UserProfile.objects.get(user=self.request.user)
-            initial.update({
-                "full_name": profile.user.get_full_name(),
-                "contact_email": profile.user.email,
-                "contact_number": profile.default_phone_num,
-            })
-        except UserProfile.DoesNotExist:
-            pass
-        return initial
-
-    def get_context_data(self, **kwargs):
-        """ Retrieves the booking so far """
-
-        stripe_public_key = settings.STRIPE_PUBLIC_KEY
-        stripe_secret_key = settings.STRIPE_SECRET_KEY
-
-        booking = self.get_object()
-        items = self.request.session.get("booking_items")
-        booking_items = []
-        addon_items = []
-        trip_items = []
-        # insurance+items = []
-        booking_total = 0
-        for product_id, quantity in items.items():
-            product = Product.objects.get(pk=product_id)
-            item = {
-                'product': product,
-                'quantity': quantity,
-                'line_total': (product.price * quantity)
-            }
-            booking_total += item['line_total']
-            booking_items.append(item)
-            if product.category.pk == 1:
-                addon_items.append(item)
-                # elif product.category.pk == 2:
-                #  insurance_items.append(item)
-            elif product.category.pk == 3:
-                trip_items.append(item)
-            else:
-                pass
-        stripe_total = round(booking_total * 100)
-        stripe.api_key = stripe_secret_key
-        intent = stripe.PaymentIntent.create(
-            amount=stripe_total,
-            currency=settings.STRIPE_CURRENCY
-        )
-
-        if not stripe_public_key:
-            messages.warning(
-                self.request,
-                "Stripe public key is missing. \
-                Did you forget to set it in your environment?",
-            )
-        self.request.session['booking'] = booking.pk
-
-        # Add data to the get_context_data dictionary
-        data = super(CheckoutSavedView, self).get_context_data(**kwargs)
-        data["booking_total"] = booking_total
-        data["booking_items"] = booking_items
-        data["trip_items"] = trip_items
-        data["addon_items"] = addon_items
-        # data["insurance_items"] = insurance_items
-        data["stripe_public_key"] = stripe_public_key
-        data["client_secret"] = intent.client_secret
-        return data
-
-    def form_valid(self, form):
-        pid = self.request.POST.get('client_secret').split('_secret')[0]
-        self.object = form.save(commit=False)
-        self.object.date_completed = datetime.datetime.now()
-        self.object.stripe_pid = pid
-        booking_items = self.request.session.get('booking_items', {})
-        self.object.original_bag = json.dumps(booking_items)
-        for product_id, quantity in booking_items.items():
-            product = Product.objects.get(pk=product_id)
-            booking_line_item = BookingLineItem(
-                booking=self.object,
-                product=product,
-                quantity=quantity,
-            )
-            booking_line_item.save()
-        self.object.status = "COMPLETE"
-        self.object.save()
-
-        # save the save_info input to the session
-        return super(CheckoutSavedView, self).form_valid(form)
-
-    def get_success_url(self):
-        booking = self.get_object()
-        return reverse("checkout_success", args=(booking.pk,))
-
-    def form_invalid(self, form):
-        messages.add_message(
-                self.request, messages.WARNING, "Check the form errors."
-            )
-        return super(CheckoutSavedView, self).form_invalid(form)
-
-
-@method_decorator(login_required, name="dispatch")
-class CheckoutView(CreateView):
-    """ A view to complete the booking with payment information """
-
-    model = Booking
-    form_class = BookingCheckoutForm
-    template_name = "checkout/checkout.html"
 
     def get_initial(self):
         # Provide initial values for the form
@@ -241,6 +141,16 @@ class CheckoutView(CreateView):
         data["stripe_public_key"] = stripe_public_key
         data["client_secret"] = intent.client_secret
         return data
+
+    def post(self, request, *args, **kwargs):
+        # Check if pk in url and if not set to none
+
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        if pk is None:
+            self.object = None
+        else:
+            self.object = self.get_object()
+        return super(CheckoutView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         pid = self.request.POST.get('client_secret').split('_secret')[0]

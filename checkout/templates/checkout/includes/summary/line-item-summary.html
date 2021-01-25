@@ -5,7 +5,7 @@
         {% if item.product.image_thumb %}
         <img class="w-100" src="{{ item.product.image_thumb.url }}" alt="{{ item.product.name }}">
         {% else %}
-        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ item }}">
+        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ MEDIA_URL }}">
         {% endif %}
     </a>
 </div>
