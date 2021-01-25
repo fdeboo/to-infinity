@@ -53,6 +53,7 @@
     "python.linting.flake8Enabled": true,
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
+        "--disable=W0221",
         "--disable=imported-auth-user",
     ],
     "python.linting.pylintEnabled": true,
