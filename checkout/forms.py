@@ -60,9 +60,10 @@ class BookingCheckoutForm(forms.ModelForm):
                 """
                 <div class="row">
                     <div class="col-12 col-lg-6">
-                            <p class="booking-subheader">Please fill out the \
-                                form below to complete your booking</p>
-                            <div class="crispyform">
+                        <p class="booking-subheader">Please fill out the \
+                            form below to complete your booking
+                        </p>
+                        <div class="crispyform">
                 """
             ),
             Fieldset(
@@ -100,24 +101,10 @@ class BookingCheckoutForm(forms.ModelForm):
             ),
             HTML(
                 """
-                </div>
+                    </div>
                 </div>
 
-                <!-- Booking Summary -->
-                <div class="col-12 col-lg-6 mb-5">
-                <div class="my-3 sticky d-flex flex-column align-items-end">
-                        <div class="my-3 booking-summary">
-                        {% include 'checkout/includes/summary/booking-summary.html' %}
-                        </div>
+                {% include 'checkout/includes/summary/checkout-summary.html' %}
                 """
-            ),
-            ButtonHolder(
-                HTML(
-                    """
-                    {% include 'checkout/includes/checkout-button.html' %}
-                    </div>
-                    """
-                ),
-                css_class="submit-button text-right px-3 mt-3 mb-2",
-            ),
+            )
         )

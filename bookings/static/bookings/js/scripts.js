@@ -48,12 +48,10 @@ $(document).ready(function () {
   $(".day").addClass("formatted-day");
   $(".price").addClass("formatted-price");
 
-
   // INPUT PASSENGERS FORM: Records the booking total so that it can be updated
   const strTotal = $("#booking-total").text().slice(0, -3).split(",");
   baseTotal = Number(strTotal[0] + strTotal[1]);
 });
-
 
 // DATE CHOICE FORM: Applies CSS to the different states of the radio options
 $("input[type='radio']").change(function () {
@@ -70,7 +68,6 @@ $("input[type='radio']").change(function () {
 });
 
 $("input[type='radio']").mouseover(function () {
-  console.log("hovered");
   $(this).siblings(".block").css("background-color", "#2AB1B7");
   $(this).siblings().children(".block").css("background-color", "#2AB1B7");
   $(this).css("border", "1px solid #2AB1B7");
@@ -119,7 +116,8 @@ $("#update-btn").click(function () {
 
   // Delete any existing markup to avoid build up.
   $(".addon-row").remove();
-
+  $(".addon-hr").remove();
+  
   // Define a new empty array.
   let addOns = [];
   $("input:checked").each(function () {
@@ -158,7 +156,7 @@ $("#update-btn").click(function () {
     }
   });
 
-  let bookingTotal = baseTotal
+  let bookingTotal = baseTotal;
 
   // Construct html for summary and append to existing html
   for (i = 0; i < addOns.length; i++) {
@@ -166,29 +164,28 @@ $("#update-btn").click(function () {
 
     total = parseFloat(addOns[i]["price"].slice(1) * addOns[i]["qty"]);
     nameP = "<p class='my-0'><strong>" + addOns[i]["name"] + "</strong></p>";
-    qtyP = "<p class='my-0 small text-muted'>Travellers: " + addOns[i]["qty"] + "</p>";
+    qtyP =
+      "<p class='my-0 small text-muted'>Travellers: " +
+      addOns[i]["qty"] + "</p>";
     priceP = "<p class='my-0 small text-muted'>" + total.toFixed(2) + "</p>";
     detailDiv = "<div class='col-6'>" + nameP + qtyP + "</div>";
     priceDiv = "<div class='col-4 mb-1 text-right'>" + priceP + "</div>";
     imgDiv = "<div class='col-2 mb-1'>" + addOns[i]["image"] + "</div>";
     row =
       "<div class='addon-row row'>" + imgDiv + detailDiv + priceDiv + "</div>";
-
     bookingTotal += total;
     let formattedTotal = String(bookingTotal).insert();
-    console.log(formattedTotal);
     $("#booking-total").text(formattedTotal + ".00");
     $("#summary").append(row);
   }
 
+  $("#summary").append("<hr class='my-2 addon-hr'>");
   const count = 1 + addOns.length;
   let items;
-  if (count > 1) { 
+  if (count > 1) {
     items = " items)";
-  } else { 
-    items = " item)"; 
+  } else {
+    items = " item)";
   }
-  
   $("#item-count").text("Booking Summary (" + count + items);
 });
-

@@ -1,0 +1,23 @@
+{% load static %}
+{% load humanize %}
+<!-- Booking Summary -->
+<div class="col-12 col-lg-6 mb-5">
+    <div class="my-3 sticky d-flex flex-column align-items-end">
+        <div class="my-3 booking-summary">
+            {% include 'checkout/includes/summary/booking-summary.html' %}
+        </div>
+        <div class="submit-button text-right px-3 mt-3 mb-2">
+            <button id="submit-button" class="btn btn-outline rounded-0">
+                Complete Order <span class="icon"><i class="fas fa-lock"></i></span>
+            </button>
+            <p class="small text-danger warning-feedback my-2 text-right px-0 sticky">
+                <span class="icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <span>Your card will be charged
+                    <strong>£{{ booking_total|intcomma }}</strong>
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
