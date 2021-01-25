@@ -35,12 +35,10 @@ class BookingAdmin(admin.ModelAdmin):
     readonly_fields = (
         "booking_ref",
         "booking_total",
-        "lead_passenger",
         "original_bag",
         "contact_number",
         "date_completed",
         "booking_total",
-        "trip",
     )
 
     fields = (
