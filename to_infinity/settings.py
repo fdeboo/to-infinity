@@ -25,7 +25,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 ALLOWED_HOSTS = [
     'toinfinity.herokuapp.com',
     '127.0.0.1',
-    '882ee3418a3c.ngrok.io',
+    'dd0368c1f8e8.ngrok.io',
     'localhost'
 ]
 
