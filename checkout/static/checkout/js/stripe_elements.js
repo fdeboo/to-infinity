@@ -113,6 +113,7 @@ form.addEventListener('submit', function(ev) {
                 card.update({ 'disabled': false });
                 $('#submit-button').attr('disabled', false);
             } else {
+                console.log("Arrived3");
                 if (result.paymentIntent.status === 'succeeded') {
                     form.submit();
                 }

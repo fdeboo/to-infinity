@@ -8,6 +8,11 @@ from .webhooks import webhook
 urlpatterns = [
     path(
         'booking/<pk>/',
+        views.CheckoutSavedView.as_view(),
+        name="saved_order"),
+    
+    path(
+        'booking/',
         views.CheckoutView.as_view(),
         name="create_order"),
 

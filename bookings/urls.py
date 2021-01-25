@@ -16,7 +16,7 @@ urlpatterns = [
         name="confirm_trip"),
 
     path(
-        '<pk>/passengers/add/',
+        'passengers/add/',
         views.InputPassengersView.as_view(),
         name="create_passengers"),
 

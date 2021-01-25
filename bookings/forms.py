@@ -285,9 +285,9 @@ class CustomCheckboxSet(forms.CheckboxSelectMultiple):
         return option_dict
 
 
-def make_passenger_form(active_booking):
+def make_passenger_form(active_trip):
     """
-    Provides the PassengerForm with the booking instance received in params
+    Provides the PassengerForm with the trip instance received in params
     (used to create queryset for addon field, and to validate each individual
     form instance.
     """
@@ -319,7 +319,7 @@ def make_passenger_form(active_booking):
 
             # Uses value from function param to create query for qs.
             self.fields["trip_addons"].queryset = AddOn.objects.filter(
-                destination=active_booking.trip.destination
+                destination=active_trip.destination
             )
             formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
             self.helper = FormHelper()
@@ -382,7 +382,7 @@ def make_passenger_form(active_booking):
                 # Validate if passenger already exists on any bookings
                 # for the same trip
                 existing_passengers = Passenger.objects.filter(
-                    booking__trip=active_booking.trip
+                    booking__trip=active_trip
                 ).filter(
                     booking__trip__bookings__passengers__passport_no=passport_no
                 )
@@ -427,6 +427,9 @@ class InputPassengersForm(forms.ModelForm):
                 """
             ),
             ButtonHolder(
+                Submit(
+                    "save", "Save for later", css_class="mr-3 btn btn-outline"
+                ),
                 Submit("submit", "Proceed", css_class="m-0 btn btn-outline"),
             ),
         )
