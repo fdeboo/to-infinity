@@ -4,11 +4,10 @@ summary and form to collect payment details for Stripe. Updates booking status
 if checkout successful.
 """
 
+from datetime import datetime
 import json
-import datetime
 import ast
 import stripe
-from datetime import datetime
 from django.views.generic import View
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 from django.views.generic.detail import (
@@ -257,7 +256,9 @@ class CheckoutView(
                 user=self.request.user
             )
             self.object.save()
-            passenger_details = self.request.session.get('passenger_details', {})
+            passenger_details = self.request.session.get(
+                'passenger_details', {}
+            )
             for passenger in passenger_details:
                 addons = passenger['addons']
                 addon_qs = None

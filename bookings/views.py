@@ -126,7 +126,12 @@ class ConfirmTripView(FormView):
         """
 
         available_trips = self.get_available_trips(destination, passengers)
-        lt_dates = available_trips.filter(date__lt=date).order_by("-date")[:3]
+        today = datetime.today()
+        lt_dates = (
+            available_trips.filter(date__lt=date)
+            .filter(date__gt=today)
+            .order_by("-date")[:3]
+        )
         return lt_dates
 
     def make_timezone_naive(self, obj):
@@ -346,7 +351,7 @@ class InputPassengersView(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        if 'cancel' in form.data:
+        if "cancel" in form.data:
             self.cancel = True
             if "booking_items" in self.request.session:
                 del self.request.session["booking_items"]
@@ -360,7 +365,9 @@ class InputPassengersView(CreateView):
                 del self.request.session["passenger_total"]
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return super(InputPassengersView, self).post(request, *args, **kwargs)
+            return super(InputPassengersView, self).post(
+                request, *args, **kwargs
+            )
 
     def form_valid(self, form):
         """
@@ -373,7 +380,7 @@ class InputPassengersView(CreateView):
         booking_items = self.request.session["booking_items"]
 
         # Check to see if form was 'saved for later'
-        if 'save' in form.data:
+        if "save" in form.data:
             self.save = True
             self.object = form.save()
             if formset.is_valid():
@@ -388,7 +395,7 @@ class InputPassengersView(CreateView):
                 formset.instance = self.object
                 formset.save()
                 booking = self.object
-                booking.status = 'OPENED'
+                booking.status = "OPENED"
                 booking.original_bag = booking_items
                 booking.lead_passenger = self.profile
                 booking.save()
@@ -426,7 +433,7 @@ class InputPassengersView(CreateView):
                         "email": form.cleaned_data["email"],
                         "passport": form.cleaned_data["passport_no"],
                         "is_leaduser": lead_passenger,
-                        "addons": addon_set
+                        "addons": addon_set,
                     }
                     passenger_details.append(passenger)
                 self.request.session["passenger_details"] = passenger_details

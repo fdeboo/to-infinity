@@ -2,7 +2,7 @@ $(document).ready(function () {
     // Overrides the browser default styling for invalid input of required fields
     $("input, select").on({
         invalid: (e) => $(e.target).addClass("invalid"),
-        input: (e) => $(e.target).toggleClass("invalid", e.target.validity.valid),
+        input: (e) => $(e.target).removeClass("invalid", e.target.validity.valid),
     });
 
     if ($('#selected-trip').val() == '') {
