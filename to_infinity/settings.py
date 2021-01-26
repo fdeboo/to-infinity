@@ -25,7 +25,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 ALLOWED_HOSTS = [
     'toinfinity.herokuapp.com',
     '127.0.0.1',
-    '8198e6b0478b.ngrok.io',
+    'f2e66c83e8e4.ngrok.io',
     'localhost'
 ]
 
@@ -213,7 +213,7 @@ STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'toinfinity@example.com'
+    DEFAULT_FROM_EMAIL = 'info@toinfinity.com'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
@@ -221,4 +221,4 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
-    DEFAULT_FROM_USER = os.environ.get('EMAIL_HOST_USER')
+    DEFAULT_FROM_USER = os.environ.get('DEFAULT_FROM_USER')
