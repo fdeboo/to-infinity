@@ -8,6 +8,7 @@ import json
 import datetime
 import ast
 import stripe
+from datetime import datetime
 from django.views.generic import View
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 from django.views.generic.detail import (
@@ -20,7 +21,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
-from django.db.models import Count
 from products.models import Product, AddOn
 from bookings.models import Booking, BookingLineItem, Passenger, Trip
 from profiles.models import UserProfile
@@ -99,6 +99,7 @@ class CheckoutView(
         pk = self.kwargs.get(self.pk_url_kwarg)
         if pk is None:
             self.object = None
+            booking = None
             booking_model = self.request.session.get('booking_model', {})
             trip_pk = booking_model['trip']
         else:
@@ -117,6 +118,21 @@ class CheckoutView(
         passenger_total = self.request.session["passenger_total"]
         print(passenger_total)
         print(trip.seats_available)
+
+        # Prepare trip date for comparison by making it a naive date
+        date_attr = trip.date
+        date_string = date_attr.strftime("%Y-%m-%d")
+        datetime_naive = datetime.strptime(date_string, "%Y-%m-%d")
+
+        # Check to see if the date is in the past
+        if datetime_naive < datetime.today():
+            if booking:
+                booking.delete()
+            template_name = "checkout/date-passed.html"
+            context = {
+                "date": trip.date,
+            }
+            return render(request, template_name, context)
 
         # Check to see if there are still seats available on the trip
         if trip.seats_available < passenger_total:
