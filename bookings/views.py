@@ -22,6 +22,7 @@ from .models import (
     Destination,
     UserProfile,
 )
+from products.models import AddOn
 from .forms import (
     SearchTripsForm,
     DateChoiceForm,
@@ -262,7 +263,6 @@ class ConfirmTripView(FormView):
         quantity = self.passengers
         booking_items[product_id] = quantity
         booking_model["trip"] = trip.pk
-        booking_model["original_bag"] = booking_items
 
         # Save both objects to the session
         self.request.session["booking_model"] = booking_model
@@ -287,6 +287,7 @@ class InputPassengersView(CreateView):
         self.object = None
         self.cancel = False
         self.save = False
+        self.profile = None
 
     def get_context_data(self, **kwargs):
         # Get data from the session that will be used to define the forms
@@ -294,13 +295,13 @@ class InputPassengersView(CreateView):
         trip_pk = self.request.session["booking_model"]["trip"]
         self.trip = Trip.objects.get(pk=trip_pk)
 
-        # Send trip data to the formset to determine the addon options
+        # Pass trip data to the formset to determine the addon options
         passenger_form = make_passenger_form(self.trip)
 
-        # Send passenger_total to determine number of forms
+        # Pass passenger_total to determine number of forms
         formset = make_passenger_formset(passenger_form, passenger_total)
         data = super(InputPassengersView, self).get_context_data(**kwargs)
-        profile = UserProfile.objects.get(user=self.request.user)
+        self.profile = UserProfile.objects.get(user=self.request.user)
 
         # Provide the context for the booking summary
         items = self.request.session.get("booking_items", "")
@@ -318,21 +319,21 @@ class InputPassengersView(CreateView):
                 trip_items.append(item)
 
         if self.request.POST:
-            data["profile"] = profile
+            data["profile"] = self.profile
             data["booking_total"] = booking_total
             data["trip_items"] = trip_items
             data["passenger_formset"] = formset(self.request.POST)
         else:
-            data["profile"] = profile
+            data["profile"] = self.profile
             data["booking_total"] = booking_total
             data["trip_items"] = trip_items
             data["passenger_formset"] = formset(
                 initial=[
                     {
-                        "first_name": profile.user.first_name,
-                        "last_name": profile.user.last_name,
-                        "email": profile.user.email,
-                        "passport_no": profile.default_passport_num,
+                        "first_name": self.profile.user.first_name,
+                        "last_name": self.profile.user.last_name,
+                        "email": self.profile.user.email,
+                        "passport_no": self.profile.default_passport_num,
                     }
                 ],
             )
@@ -351,8 +352,6 @@ class InputPassengersView(CreateView):
                 del self.request.session["booking_items"]
             if "booking_model" in self.request.session:
                 del self.request.session["booking_model"]
-            if "booking" in self.request.session:
-                del self.request.session["booking"]
             if "destination_choice" in self.request.session:
                 del self.request.session["destination_choice"]
             if "request_date" in self.request.session:
@@ -391,8 +390,7 @@ class InputPassengersView(CreateView):
                 booking = self.object
                 booking.status = 'OPENED'
                 booking.original_bag = booking_items
-                profile = UserProfile.objects.get(user=self.request.user)
-                booking.lead_passenger = profile
+                booking.lead_passenger = self.profile
                 booking.save()
                 messages.add_message(
                     self.request, messages.SUCCESS, "Changes were saved."
@@ -407,22 +405,30 @@ class InputPassengersView(CreateView):
         else:
             # Else, save the form data to the session and proceed
             self.object = form.save(commit=False)
-            passenger_details = {}
+            passenger_details = []
             if formset.is_valid():
                 for count, form in enumerate(formset):
-                    passenger_details[count] = {
-                        "fname": form.cleaned_data["first_name"],
-                        "lname": form.cleaned_data["last_name"],
-                        "email": form.cleaned_data["email"],
-                        "passport": form.cleaned_data["passport_no"],
-                    }
+                    lead_passenger = False
+                    if count == 0:
+                        lead_passenger = True
                     addons = form.cleaned_data["trip_addons"]
+                    addon_set = []
                     for addon in addons:
+                        addon_set.append(addon.pk)
                         product_id = addon.product_id
                         quantity = 1
                         if product_id in booking_items:
                             quantity += booking_items.get(product_id)
                         booking_items[product_id] = quantity
+                    passenger = {
+                        "fname": form.cleaned_data["first_name"],
+                        "lname": form.cleaned_data["last_name"],
+                        "email": form.cleaned_data["email"],
+                        "passport": form.cleaned_data["passport_no"],
+                        "is_leaduser": lead_passenger,
+                        "addons": addon_set
+                    }
+                    passenger_details.append(passenger)
                 self.request.session["passenger_details"] = passenger_details
                 messages.add_message(
                     self.request, messages.SUCCESS, "Changes were saved."
