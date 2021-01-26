@@ -233,7 +233,7 @@ class CheckoutView(
     def form_valid(self, form):
         pid = self.request.POST.get("client_secret").split("_secret")[0]
         self.object = form.save(commit=False)
-        self.object.date_completed = datetime.datetime.now()
+        self.object.date_completed = datetime.now()
         self.object.stripe_pid = pid
         booking_items = self.request.session.get("booking_items", {})
         self.object.original_bag = json.dumps(booking_items)
@@ -278,6 +278,10 @@ class CheckoutView(
                 new_passenger.save()
                 if addon_qs:
                     new_passenger.trip_addons.set(addon_qs)
+
+        else:
+            booking = Booking.objects.get(pk=pk)
+            booking.trip.update_seats_available()
 
         # save the save_info input to the session
         return super(CheckoutView, self).form_valid(form)
