@@ -1,0 +1,1 @@
+2infinity Confirmation for Booking Reference {{ booking.booking_ref }}

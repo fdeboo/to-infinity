@@ -429,6 +429,14 @@ input.invalid {
   outline: none;
 }
 
+input.invalid:focus,
+input.invalid:active {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: 2px solid #B88421;
+  outline: none;
+}
+
 .invalid-feedback {
   color: #B88421 !important;
 }

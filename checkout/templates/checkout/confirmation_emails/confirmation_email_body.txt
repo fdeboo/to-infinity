@@ -1,0 +1,22 @@
+Hello {{ booking.full_name }}!
+
+You are booked on {{ booking.trip }}!
+Your booking details are below:
+
+Booking Reference: {{ booking.booking_ref }}
+Booking Date: {{ booking.date }}
+Booking Total: £{{ booking.booking_total }}
+
+
+
+We've got your phone number on file as {{ booking.contact_number }}.
+
+If you have any questions, feel free to contact us at {{ contact_email }}.
+
+Thank you for booking with us.
+We look forward to travelling with you!
+
+Sincerely,
+
+2infinity
+

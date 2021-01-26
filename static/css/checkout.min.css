@@ -115,7 +115,7 @@ select option[value=""] {
   height: 100%;
 }
 
-span {
+span .error-message {
   color: #2AB1B7;
   font-weight: 500;
 }

@@ -34,7 +34,10 @@
                 <div class="col-12">
                     <h2 class="logo-font mb-4">Thank you</h2>
                     <hr>
-                    <p>Your booking information is below. A confirmation email will be sent to {{ booking.email }}</p>
+                    <p>
+                        Your booking information is below. A confirmation email 
+                        will be sent to {{ booking.contact_email }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -87,7 +90,7 @@
                                 <p class="mb-0 text-black font-weight-bold">Full Name</p>
                             </div>
                             <div class="col-12 col-md-8 text-md-right">
-                                <p class="mb-0">{{ booking.lead_passenger.user.full_name }}</p>
+                                <p class="mb-0">{{ booking.full_name }}</p>
                             </div>
                         </div>
 

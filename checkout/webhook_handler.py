@@ -23,15 +23,15 @@ class StripeWH_Handler:
         self.request = request
 
     def _send_confirmation_email(self, booking):
-        """Send the user a confirmation email"""
-        cust_email = booking.email
+        """Sends the user a confirmation email"""
+        cust_email = booking.contact_email
         subject = render_to_string(
             "checkout/confirmation_emails/confirmation_email_subject.txt",
             {"booking": booking},
         )
         body = render_to_string(
             "checkout/confirmation_emails/confirmation_email_body.txt",
-            {"order": booking, "contact_email": settings.DEFAULT_FROM_EMAIL},
+            {"booking": booking, "contact_email": settings.DEFAULT_FROM_EMAIL},
         )
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [cust_email])
 
@@ -52,19 +52,16 @@ class StripeWH_Handler:
 
         intent = event.data.object
         pid = intent.id
-        print(intent)
         booking_items = intent.metadata.booking_items
         if 'booking' in intent.metadata:
             booking_exists = True
             booking_pk = intent.metadata.booking
             booking = Booking.objects.get(pk=booking_pk)
-            print(booking_pk)
         else:
             booking_exists = False
         contact_details = intent.charges.data[0].billing_details
         username = intent.metadata.username
         profile = UserProfile.objects.get(user__username=username)
-        print(profile)
 
         # Clean data in the contact_details
         for field, value in contact_details.items():
@@ -95,11 +92,8 @@ class StripeWH_Handler:
                     attempt += 1
                     time.sleep(1)
 
-        print(booking_exists)
-        print(booking.status)
-
         if booking_exists and booking.status == 'COMPLETE':
-            # self._send_confirmation_email(booking)
+            self._send_confirmation_email(booking)
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: \
                 Verified booking status has already been updated',
@@ -136,7 +130,7 @@ class StripeWH_Handler:
                         status=500,
                     )
 
-        # self._send_confirmation_email(booking)
+        self._send_confirmation_email(booking)
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created \
                 order in webhook',

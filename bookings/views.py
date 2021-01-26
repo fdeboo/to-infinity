@@ -22,7 +22,6 @@ from .models import (
     Destination,
     UserProfile,
 )
-from products.models import AddOn
 from .forms import (
     SearchTripsForm,
     DateChoiceForm,

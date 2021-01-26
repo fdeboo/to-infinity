@@ -349,6 +349,14 @@ input.invalid {
     outline: none;
 }
 
+input.invalid:focus,
+input.invalid:active {
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 2px solid $form-alert;
+    outline: none;
+}
+
 .invalid-feedback {
     color: $form-alert !important;
 }
