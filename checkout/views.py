@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.conf import settings
+from django.db.models import Count
 from products.models import Product, AddOn
 from bookings.models import Booking, BookingLineItem, Passenger, Trip
 from profiles.models import UserProfile
@@ -89,20 +90,43 @@ class CheckoutView(
     form_class = BookingCheckoutForm
     template_name = "checkout/checkout.html"
 
+    def __init__(self):
+        self.object = None
+        self.trip = None
+
     def get(self, request, *args, **kwargs):
         """ Check if pk in url and if not set to None. """
         pk = self.kwargs.get(self.pk_url_kwarg)
         if pk is None:
             self.object = None
+            booking_model = self.request.session.get('booking_model', {})
+            trip_pk = booking_model['trip']
         else:
             self.object = self.get_object()
             booking = Booking.objects.get(pk=pk)
             original_bag = booking.original_bag
+            trip_pk = booking.trip.pk
+            passenger_count = Passenger.objects.filter(
+                booking=booking.pk).count()
+            self.request.session["passenger_total"] = passenger_count
+            self.request.session["booking"] = booking.pk
             self.request.session["booking_items"] = ast.literal_eval(
                 original_bag
             )
-            self.request.session["booking"] = booking.pk
-            print(self.request.session["booking_items"])
+        trip = Trip.objects.get(pk=trip_pk)
+        passenger_total = self.request.session["passenger_total"]
+        print(passenger_total)
+        print(trip.seats_available)
+
+        # Check to see if there are still seats available on the trip
+        if trip.seats_available < passenger_total:
+            template_name = "checkout/seats-unavailable.html"
+            context = {
+                "destination": trip.destination,
+                "date": trip.date,
+                "passengers": passenger_total,
+            }
+            return render(request, template_name, context)
 
         return super(CheckoutView, self).get(request, *args, **kwargs)
 

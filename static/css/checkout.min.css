@@ -114,3 +114,12 @@ select option[value=""] {
   margin: 0;
   height: 100%;
 }
+
+span {
+  color: #2AB1B7;
+  font-weight: 500;
+}
+
+.page-btn {
+  width: 50%;
+}

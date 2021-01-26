@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.min.css' %}">
+{% endblock extra_css %}
+
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
+{% endblock header %}
+
+{% block content %}
+
+<main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
+    <section class="row w-100 justify-content-center flex-grow-1 align-items-center">
+        <div class="col-12 col-sm-10 col-md-8 my-5 m-xl-5 text-center form-container">
+            <h1 class="logo-font">Oh no!</h2>
+            <h2 class="mb-5">
+                There are no longer seats available for <span>{{ passengers }}
+                    {% if passengers > 1 %} passengers {% else %}
+                    passenger{% endif %}</span> to join the <span>{{ destination }}</span>
+                trip on <span>{{ date | date:'d/m/Y'}}</span>. 
+            </h2>
+            <div>
+                <a href="{% url 'search_trip' %}"><button class="btn btn-outline my-2 page-btn">Start a new search</button></a>
+                <a href="{% url 'profile' %}"><button class="btn btn-outline my-2 page-btn">Back to Profile</button></a>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}
