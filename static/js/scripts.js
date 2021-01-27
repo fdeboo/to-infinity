@@ -12,7 +12,6 @@ $(document).ready(function () {
         let maxNm = $('#selected-trip option:selected').data('maxNum');
     $('#passengers-max').attr("max", maxNm).prop("disabled", false);
     }
-
 });
 
 $('#selected-trip').change(function() {
@@ -25,6 +24,3 @@ $('#selected-trip').change(function() {
     }
 });
 
-$('.toggle-form').click(function(){
-    $(".search-trips-form").toggleClass("position-translate");
-});

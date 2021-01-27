@@ -1,53 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block header %}
-    {% include 'includes/navbar-dark.html' %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.min.css' %}">
+{% endblock extra_css %}
 
-    <!-- Navigation within the page  -->
-    <div class="row justify-content-center py-3 icon-menu-bar">
-        <div class="col-12 col-md-8 d-flex justify-content-around align-items-center">
-            <a href="#trip1"><img src="{% static 'icons/missiontomars.png' %}" alt="Mission to Mars link"></a>
-            <a href="#trip2"><img src="{% static 'icons/moonlanding.png' %}" alt="Moon Landing link"></a>
-            <a href="#trip3"><img src="{% static 'icons/earthorbit.png' %}" alt="Earth Orbit link"></a>
-            <a href="#trip4"><img src="{% static 'icons/iss.png' %}" alt="International Space Station link"></a>
-        </div>
-    </div>
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
 {% endblock header %}
 
+
 {% block content %}
-    <section class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10">
-        <!-- Listing of Destinations -->
-        {% for destination in destinations %}
-            <div class="row">
-                <div class="col-12 col-lg-7 image-container py-3 {% if forloop.counter|divisibleby:2 %}order-last{% endif %}" id="trip{{ forloop.counter }}">
-                    <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
-                </div>
-                <div class="col-lg-5 d-flex flex-column justify-content-center align-items-center">
-                    <a href="{% url 'destination_detail' destination.pk %}">
-                        <p>{{ destination.name }}</p>
-                    </a>
-                    <p>{{ destination.description }}</p>
+{% for destination in destinations %}
+<div class="col-5 image-container" id="div-id-trip-{{ forloop.counter }}">
+    <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
+</div>
+{% endfor %}
+<main class="container-fluid d-flex flex-column p-0 black-bg">
+    <section class="destination-list row w-100 align-items-center m-0">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-6 p-0 d-flex flex-column align-items-center justify-content-center mb-5">
+
+            <div class="tabbed row m-5">
+
+                <input type="radio" name="tabs" id="id-trip-1" checked>
+                <label for="id-trip-1" class="m-0 px-2 d-flex justify-content-center align-items-center">
+                    <img src="{% static 'icons/missiontomars_fff.png' %}" alt="Mission to Mars link">
+                </label>
+                <input type="radio" name="tabs" id="id-trip-2">
+                <label for="id-trip-2" class="m-0 px-2 d-flex justify-content-center align-items-center">
+                    <img src="{% static 'icons/moonlanding_fff.png' %}" alt="Moon Landing link">
+                </label>
+                <input type="radio" name="tabs" id="id-trip-3">
+                <label for="id-trip-3" class="m-0 px-2 d-flex justify-content-center align-items-center">
+                    <img src="{% static 'icons/earthorbit_fff.png' %}" alt="Earth Orbit link">
+                </label>
+                <input type="radio" name="tabs" id="id-trip-4">
+                <label for="id-trip-4" class="m-0 px-2 d-flex justify-content-center align-items-center">
+                    <img src="{% static 'icons/iss_fff.png' %}" alt="International Space Station link">
+                </label>
+                <div class="tabs col-12">
+                    <!-- Listed Destinations -->
+                    {% for destination in destinations %}
+                    <div class="container">
+                        <div class="row align-items-center my-2">
+                            <div class="col-12">
+                                <h1>{{ destination.name}}</h2>
+                            </div>
+                            <div class="col-10 d-flex flex-column justify-space-between">
+                                <p class="m-auto">{{ destination.description }}</p>
+                                <a href="{% url 'destination_detail' destination.pk %}">
+                                    <button type="button" class="btn btn-outline my-3"> Find out more</button>
+                                </a>
+                            </div>
+                            <div class="col-5">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-        {% endfor %}
+    </section>
+
+
+    <!-- Form to search for available trips -->
+    <button class="btn toggle-form">
+        <div class="icon">
+            <i class="far fa-calendar-alt fa-3x"></i>
         </div>
-    </div>
-
-
-        <!-- Form to search for available trips -->
-        <div class="row search-trips-form justify-content-center form-bg">
-            <button type="button" class="toggle-form"><i class="far fa-calendar-alt fa-2x"></i></button>
+    </button>
+    <section class="search-trips-form container-fluid form-bg">
+        <div class="row justify-content-center">
             <div class="col-md-10 col-xl-9 py-4" id="featured-search">
                 {% crispy form %}
             </div>
         </div>
     </section>
+</main>
 {% endblock content %}
 
 
 {% block postloadjs %}
-    <script src="{% static 'js/scripts.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'products/js/scripts.js' %}" crossorigin="anonymous"></script>
 {% endblock postloadjs %}

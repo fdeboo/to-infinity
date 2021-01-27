@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap');
+
+.image-container {
+    position: absolute;
+    height: 100%;
+    width:100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1;
+    top: 0;
+    display: none;
+    a {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font: {
+            size: 3rem;
+            family: 'Orbitron', sans-serif;
+            weight: bold;
+        }
+    }
+    img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+    }
+}
+
+.icon-menu-bar {
+    position: sticky;
+    top: 4rem;
+    background-color: #2AB1B7;
+    z-index: 35;
+}
+
+/* Search form ------------------------------ */
+.toggle-form {
+    visibility: hidden;
+    background-color: #fff;
+    width: 5em;
+    height: 5rem;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    color: #f5f5f5;
+    z-index: 2000;		
+    &:hover {
+        background-color: #f5f5f5;
+        color: #2AB1B7;
+        box-shadow: 0 0 1rem #2AB1B7;
+    }
+    .icon {
+        overflow: hidden;
+        background-color: #f5f5f5;
+        color: #2AB1B7;
+    }
+    @media only screen and (max-width: 991px) {
+        visibility: visible;
+    }
+}
+
+.search-trips-form {
+    position: sticky;
+    bottom: 0rem;
+    z-index: 10;
+    box-shadow: 0 0 1rem #000;
+    @media only screen and (max-width: 991px) {
+        bottom: -22.5rem;
+        height: 21.5rem;
+        transition: 1s;
+        position: fixed;
+        &.position-translate {
+            visibility: visible;
+            bottom: 0rem;
+        }
+    }
+
+    @media only screen and (min-width: 992px) {
+        flex-shrink: inherit;
+
+        #featured-search .all-form-input {
+            margin-bottom:0 !important;
+        }
+    }
+
+    #featured-search > form {
+        flex-direction: column !important;
+        @media only screen and (min-width: 992px) {
+            flex-direction: row !important;
+        }
+    }
+
+    #featured-search .all-form-input {
+        margin-top:1rem;
+    }
+
+	#featured-search .buttonHolder {
+        margin: 2rem auto;
+        text-align: right;
+        @media only screen and (max-width: 991px) {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.destination-list {
+    flex: 1 auto;
+    z-index: 2;
+}
+
+
+
+/* Tabs ------------------------------ */
+.tabbed {
+    >input {
+        display: none;
+        &:checked{
+            & + label {
+                background: #2AB1B7;
+                &:hover {
+                    background: #2AB1B7;
+                }
+            }
+        }
+    }
+    >input + label {
+        display: inline-block;
+        width: 6rem;
+        height: 4rem;
+        padding: 12px 20px;
+        background-color: #141516;
+        cursor: pointer;
+        transition: background-color .3s;
+        &:hover {
+            background-color: #000;
+        }
+        @media only screen and (max-width: 991px) {
+            width: 5rem;
+            height: 4rem;
+        }
+    }
+    .tabs {
+        background-color: #2AB1B7;
+        color: #141516;;
+        > div {
+            position: absolute;
+            display: none;
+            transition: opacity .3s, transform 1s;
+            z-index: 0;
+            h1 {
+                font-family: 'Orbitron', cursive;
+                font-size: 3.5rem;
+                font-weight: 500;
+                @media only screen and (max-width: 767px) {
+                    font-size: 2.5rem;
+                }
+            }
+            p {
+                font-size: 1.3rem;
+                font-weight: 400;
+                @media only screen and (max-width: 991px) {
+                    font-size: 1rem;
+                }
+            }
+        }
+        & button {
+            background-color: #141516;;
+        }
+    }
+}
+
+#id-trip-1:checked ~ .tabs > div:nth-of-type(1),
+#id-trip-2:checked ~ .tabs > div:nth-of-type(2),
+#id-trip-3:checked ~ .tabs > div:nth-of-type(3),
+#id-trip-4:checked ~ .tabs > div:nth-of-type(4) {
+    display: block;
+    position: static;
+    z-index: 1;
+}

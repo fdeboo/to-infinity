@@ -1,0 +1,229 @@
+@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap");
+.image-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1;
+  top: 0;
+  display: none;
+}
+
+.image-container a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+}
+
+.image-container img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+}
+
+.icon-menu-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 4rem;
+  background-color: #2AB1B7;
+  z-index: 35;
+}
+
+/* Search form ------------------------------ */
+.toggle-form {
+  visibility: hidden;
+  background-color: #fff;
+  width: 5em;
+  height: 5rem;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  color: #f5f5f5;
+  z-index: 2000;
+}
+
+.toggle-form:hover {
+  background-color: #f5f5f5;
+  color: #2AB1B7;
+  -webkit-box-shadow: 0 0 1rem #2AB1B7;
+          box-shadow: 0 0 1rem #2AB1B7;
+}
+
+.toggle-form .icon {
+  overflow: hidden;
+  background-color: #f5f5f5;
+  color: #2AB1B7;
+}
+
+@media only screen and (max-width: 991px) {
+  .toggle-form {
+    visibility: visible;
+  }
+}
+
+.search-trips-form {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0rem;
+  z-index: 10;
+  -webkit-box-shadow: 0 0 1rem #000;
+          box-shadow: 0 0 1rem #000;
+}
+
+@media only screen and (max-width: 991px) {
+  .search-trips-form {
+    bottom: -22.5rem;
+    height: 21.5rem;
+    -webkit-transition: 1s;
+    transition: 1s;
+    position: fixed;
+  }
+  .search-trips-form.position-translate {
+    visibility: visible;
+    bottom: 0rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .search-trips-form {
+    -ms-flex-negative: inherit;
+        flex-shrink: inherit;
+  }
+  .search-trips-form #featured-search .all-form-input {
+    margin-bottom: 0 !important;
+  }
+}
+
+.search-trips-form #featured-search > form {
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+      -ms-flex-direction: column !important;
+          flex-direction: column !important;
+}
+
+@media only screen and (min-width: 992px) {
+  .search-trips-form #featured-search > form {
+    -webkit-box-orient: horizontal !important;
+    -webkit-box-direction: normal !important;
+        -ms-flex-direction: row !important;
+            flex-direction: row !important;
+  }
+}
+
+.search-trips-form #featured-search .all-form-input {
+  margin-top: 1rem;
+}
+
+.search-trips-form #featured-search .buttonHolder {
+  margin: 2rem auto;
+  text-align: right;
+}
+
+@media only screen and (max-width: 991px) {
+  .search-trips-form #featured-search .buttonHolder {
+    margin-bottom: 0;
+  }
+}
+
+.destination-list {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 auto;
+          flex: 1 auto;
+  z-index: 2;
+}
+
+/* Tabs ------------------------------ */
+.tabbed > input {
+  display: none;
+}
+
+.tabbed > input:checked + label {
+  background: #2AB1B7;
+}
+
+.tabbed > input:checked + label:hover {
+  background: #2AB1B7;
+}
+
+.tabbed > input + label {
+  display: inline-block;
+  width: 6rem;
+  height: 4rem;
+  padding: 12px 20px;
+  background-color: #141516;
+  cursor: pointer;
+  -webkit-transition: background-color .3s;
+  transition: background-color .3s;
+}
+
+.tabbed > input + label:hover {
+  background-color: #000;
+}
+
+@media only screen and (max-width: 991px) {
+  .tabbed > input + label {
+    width: 5rem;
+    height: 4rem;
+  }
+}
+
+.tabbed .tabs {
+  background-color: #2AB1B7;
+  color: #141516;
+}
+
+.tabbed .tabs > div {
+  position: absolute;
+  display: none;
+  -webkit-transition: opacity .3s, -webkit-transform 1s;
+  transition: opacity .3s, -webkit-transform 1s;
+  transition: opacity .3s, transform 1s;
+  transition: opacity .3s, transform 1s, -webkit-transform 1s;
+  z-index: 0;
+}
+
+.tabbed .tabs > div h1 {
+  font-family: 'Orbitron', cursive;
+  font-size: 3.5rem;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 767px) {
+  .tabbed .tabs > div h1 {
+    font-size: 2.5rem;
+  }
+}
+
+.tabbed .tabs > div p {
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+@media only screen and (max-width: 991px) {
+  .tabbed .tabs > div p {
+    font-size: 1rem;
+  }
+}
+
+.tabbed .tabs button {
+  background-color: #141516;
+}
+
+#id-trip-1:checked ~ .tabs > div:nth-of-type(1),
+#id-trip-2:checked ~ .tabs > div:nth-of-type(2),
+#id-trip-3:checked ~ .tabs > div:nth-of-type(3),
+#id-trip-4:checked ~ .tabs > div:nth-of-type(4) {
+  display: block;
+  position: static;
+  z-index: 1;
+}

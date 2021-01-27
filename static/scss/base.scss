@@ -37,6 +37,7 @@ footer {
     color: $triad-dark-teal;
     font-weight: 400;
     font-size:0.9rem;
+    z-index: 5;
     h2 {
         font-size: 1.2rem;
         margin-top: 1rem;
@@ -500,92 +501,6 @@ input.invalid:active {
     width: 100vw;
 }
 
-/* Destination List Template ------------------------------ */
-.image-container {
-    height: 100vh;
-    margin: 0 !important;
-    padding: 0 !important;
-    position: relative;
-    a {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font: {
-            size: 3rem;
-            family: 'Orbitron', sans-serif;
-            weight: bold;
-        }
-    }
-    img {
-        object-fit: cover;
-        height: 100%;
-        width: 100%;
-    }
-}
-
-.icon-menu-bar {
-    background-color:  whitesmoke;
-}
-
-// Styles instance of 'trips' search form
-.search-trips-form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    
-    #featured-search > form {
-        flex-direction: column !important;
-        @media only screen and (min-width: 992px) {
-            flex-direction: row !important;
-        }
-    }
-
-    #featured-search .all-form-input {
-        margin-top:0;
-        @media only screen and (min-width: 992px) {
-            margin-bottom: 0 !important;
-        }
-    }
-
-    #featured-search .buttonHolder {
-        margin: 2rem auto;
-        text-align: right;
-    }
-
-	@media only screen and (max-width: 991px) {
-        bottom: -316px;
-        height: 316px;
-        transition: 1s;
-        
-        &.position-translate {
-            visibility: visible;
-            bottom: 0px;
-        }
-	}
-    
-	.toggle-form {
-        visibility: hidden;
-        background-color: blue;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        position: absolute;
-        padding: 1rem;
-        margin: 1.5rem;
-        top: -6rem;
-        right: 3rem;
-        color: white;
-        z-index: 10;
-        
-		@media only screen and (max-width: 991px) {
-            visibility: visible;
-		}
-	}
-}
 
 /* Search Trips Template ------------------------------ */
 #focus-search > form {
