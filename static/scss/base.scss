@@ -89,6 +89,14 @@ a {
     }
 }
 
+hr {
+    margin: 0.6rem 0;
+    border-top: 1px solid $triad-dark-teal;
+    &.hr-muted {
+        opacity: 0.4;
+    }
+}
+
 ::selection {
     background-color: $base-teal;
     color: #000;
@@ -537,10 +545,4 @@ input.invalid:active {
 #focus-search .buttonHolder {
     margin: 2rem auto;
     text-align: center;
-}
-
-
-hr {
-    display: block;
-    border-top: 1px solid;  
 }

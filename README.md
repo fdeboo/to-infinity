@@ -50,21 +50,79 @@
 * As a buisness owner I would like to view the number of seats available for each trip
 
 ## Wireframes <a name="wireframes"></a>
+### Base Skeleton  
 
-<img src="media/wireframes/home.png" alt="login view">
-<img src="media/wireframes/products_trips.png" alt="profile view">
-<img src="media/wireframes/detail.png" alt="detail view">
-<img src="media/wireframes/searchtripsform.png" alt="Search trips">
-<img src="media/wireframes/selecttrips.png" alt="Search trips">
-<img src="media/wireframes/passengerdetailsform.png" alt="Search trips">
+&nbsp;
+![Base Template](wireframes/base_layout.png "Base Structure")
 
+
++ The pager header, containing the navigation links and company logo, is anchored to the top of the viewport window and has a high z-index so that the page content scrolls behind it.
+
++ When the entire body fits within the viewport height, the footer anchors to bottom of the screen while the main content 'grows' to fill the remaining space.
+
++ If the main content overflows the viewport height, the content becomes scrollable and the footer is positioned as per default, in the normal flow of the page.  
+
++ The content is structured using Bootstrap's Grid System. On all screen sizes, the containing elements - **header**, **main**, and **footer** are given the class **"container-fluid"** so that the background extends accross the full width of the screen.
+
++ The content within the **header** and **main** elements is contained within a content column. This is a full width column (**"col-12"**) on small devices, but reduced to 83.33\% width on viewports wider than 991px, to allow a margin on the left and right of content (**"col-md-10"**)
+
++ On all devices, the content column within the footer is set to (**"col-12"**) which gives the page a solid base.
+
+
+
+&nbsp;
+### Landing Page  
+
+&nbsp;
+
+
+![Landing Page](wireframes/home.png "Landing Page Template")
+
++ The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
+
++ The page is filled with a dynamic full screen background image of the Earth
+photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
+
++ The font family used for the hero text is **'Euphoria Script'**. It was chosen to contrast the main font for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
+
++ On all devices, the entire template fits within the viewport so the user will be able to access everything without the need to scroll.
+
++ The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
+
+&nbsp;
+### AllAuth Templates 
+
+&nbsp;
+
+
+![All auth Sign Up](wireframes/register.png "Sign Up Template")
+![All auth Sign In](wireframes/signin.png "Sign In Template Page")
+![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
+
++ The templates to sign in, sign up and sign out all conform to the base structure of the app; The header is anchored at the top and the main content is centered vertically and horizontally, filling the space between the header and the footer at the bottom of the screen.
+
++ The individual forms are the only features of their respective templates and are styled as per the form style.
+
++ On larger screen sizes the forms are contained by a 1px solid border in the base teal colour. On mobile devices, the border is removed as viewport comfortably takes over as the form's 'container'.
+
+&nbsp;
+### Book a Trip
+
+&nbsp;
+
+
+![Book a Trip](wireframes/searchtrips.png "Search Trip Template")
+
++ The template features a progress bar just beneath the main navigation bar. As this is the first step in the booking process, the first icon is highlighted in the highlight colour, whereas the rest of the icons are greyed out as though disabled. This will enable the user to track where they are in the booking process.
+
++ On smaller screen sizes, the sizes of the progress bar icons reduces slightly in proportion to the smaller space.
 ## Design Notes <a name="design"></a>
 
 ### Typography
 
-* The fonts chosen for this project are <b>"Orbitron,"</b> <b>"Euphoria"</b> and <b>"."</b> from google fonts
++ The main fonts used in this app are **"Orbitron,"** and **"Montserrat"** from google fonts.
 
-<img src="media/wireframes/colourpalette.png" alt="colors"> <img src="media/wireframes/colourpalette2nd.png" alt="colors">
+![Colours](wireframes/colourpalette2nd.png "ColourHarmonies")
 
 # Information Architecture <a name="models"></a>
 
@@ -92,7 +150,7 @@
 
 Booking
 
-<br>
+&nbsp;
 ### Trip:
 
 | Name | Key in db | Field Type | Validation |
@@ -190,22 +248,22 @@ Booking
 1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](media/screenshots/clone.png) to clone or download it.
 2. Either:
 ***or***
-    * Click to **Download Zip** and save the folder somewhere on your local system
+
+```
+  git clone https://github.com/fdeboo/to-infinity.git
+```
+
+* Click to **Download Zip** and save the folder somewhere on your local system
     * File > Open the project from within your IDE
     * Copy the web url. In the terminal of your IDE, change directory / `cd` to where you want the project saved on your system.
     * Type `git clone` and paste in the copied web url to complete the command *(as below)*:
-
-    ```
-      git clone https://github.com/fdeboo/to-infinity.git
-    ```
-
 3. Activate a virtual environment. For this, I recommend using the **pipenv** package which manages the virtualenv and automatically adds/removes packages to a Pipfile when they are un/installed.
-    * On MacOS, pipenv is installed simply by typing `brew install pipenv` in the Mac Terminal. You can read more about pipenv and its installation using other software [here](https://pypi.org/project/pipenv/).
 
-    > *NOTE: The Pipfile created by **pipenv** supersedes the requirements.txt*
+> *NOTE: The Pipfile created by **pipenv** supersedes the requirements.txt*
 
-    * Once pipenv insalled, activate it with the following command:
+* Once pipenv insalled, activate it with the following command:
     <code data-te-codeblock="">pipenv shell</code>
+    * On MacOS, pipenv is installed simply by typing `brew install pipenv` in the Mac Terminal. You can read more about pipenv and its installation using other software [here](https://pypi.org/project/pipenv/).
 4. Install the project dependencies detailed in the Pipfile by typing
 
 ```
@@ -225,8 +283,8 @@ Booking
 ```
 
 *\*for guidance on where to obtain these values click [here](#guidance)*
-6. If using VSCode, or else if necessary, restart the IDE and reactivate the virtual environment (as per step 3)
-7. Migrate the admin panel models to create the database template:
+6\. If using VSCode\, or else if necessary\, restart the IDE and reactivate the virtual environment \(as per step 3\)
+7\. Migrate the admin panel models to create the database template:
 
 ```
  python3 manage.py migrate
@@ -272,7 +330,7 @@ python3 manage.py runserver
 11. Ensure the following are set:
 *\*for guidance on where to obtain these values click [here](#guidance)*
 ![Heroku Config Vars](media/screenshots/blurred_heroku_vars.png)
-<br>
+
 - - -
 
 \#\# Guidance
@@ -290,17 +348,16 @@ USE\_AWS:
 - - -
 
 * Set this to True
-    * As above
-    * From the side menu, click on **Developers** > **Webhooks**
-    * Click on button to '+ Add endpoint'.
-    * Provide your endpoint url. If you are working locally, you may need to take these extra steps for a temporary url:
-    <br>
-    > Remember to append the path for the checkout to the end of the url, including the trailing '/': `/checkout/wh/`
 
-        * Install ngrok. (On MacOs, `brew install ngrok`)
-        * Type `ngrok http  8000` in the terminal
-        * Add the temporary server address to ALLOWED\_HOSTS in the app settings eg. `[“9e96e1506ea8.ngrok.io”, “127.0.0.1”]`
-    * Click the link alternative to **'receive all events'** in the 'Events to send' section and then 'Add endpoint'
+> Remember to append the path for the checkout to the end of the url, including the trailing '/': `/checkout/wh/`
+
+```
+  * Install ngrok. (On MacOs, `brew install ngrok`)
+  * Type `ngrok http  8000` in the terminal
+  * Add the temporary server address to ALLOWED\_HOSTS in the app settings eg. `[“9e96e1506ea8.ngrok.io”, “127.0.0.1”]`
+```
+
+* Click the link alternative to **'receive all events'** in the 'Events to send' section and then 'Add endpoint'
     * Copy the Signing secret provided.
     * As above
     * Copy the Secret Key token
@@ -319,6 +376,11 @@ USE\_AWS:
     * Create an account / Sign in to AWS and navigate to the **AWS Management Console**
     * Search for S3 in AWS Services and **Create a bucket**. Follow the AWS [documentation.](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-configure-bucket.html)
     * Create a User via the IAM service provided by aws
+    * As above
+    * From the side menu, click on **Developers** > **Webhooks**
+    * Click on button to '+ Add endpoint'.
+    * Provide your endpoint url. If you are working locally, you may need to take these extra steps for a temporary url:
+
 12. Migrate changes to the database models
 13. Commit any changes to GitHub (master branch) and deploy to Heroku. If this is not set to happen automatically, click **Deploy** from Heroku dashboard and navigate to **Manual Deploy** at the bottom of the page. Select the master branch and click **Deploy Branch**.
 14. Once the build is complete, click on **Open app** to view the site.
@@ -350,7 +412,7 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 * The [Try DJANGO Tutorial](https://www.youtube.com/watch?v=6oOHlcHkX2U&list=PLEsfXFp6DpzTD1BD1aWNxS2Ep06vIkaeW&index=23) youtube series *(Episode 23-28)*, by Coding Entrepreneurs helped me understand the advantages of Django Forms
 * [HTML5 Date Input With Django Forms](https://www.youtube.com/watch?v=I2-JYxnSiB0) by Pretty Printed
 * [Inline Formsets](https://dev.to/zxenia/django-inline-formsets-with-class-based-views-and-crispy-forms-14o6)
-*
+* 
 * Stack overflow
 [For forms](https://stackoverflow.com/questions/34781524/django-populate-a-form-choicefield-field-from-a-queryset-and-relate-the-choice-b)
 * I based my booking form which used inline\_formets to created a nested fomm, on [this](https://swapps.com/blog/working-with-nested-forms-with-django/) walkthrough tutorial from Swapps.

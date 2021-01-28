@@ -107,6 +107,15 @@ a:hover {
   text-decoration: none;
 }
 
+hr {
+  margin: 0.6rem 0;
+  border-top: 1px solid #0E666B;
+}
+
+hr.hr-muted {
+  opacity: 0.4;
+}
+
 ::-moz-selection {
   background-color: #2AB1B7;
   color: #000;
@@ -646,9 +655,4 @@ input.invalid:active {
 #focus-search .buttonHolder {
   margin: 2rem auto;
   text-align: center;
-}
-
-hr {
-  display: block;
-  border-top: 1px solid;
 }

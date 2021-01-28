@@ -301,14 +301,6 @@
     }
 }
 
-hr {
-    margin: 0.6rem 0;
-    border-top: 1px solid $triad-dark-teal;
-    &.hr-muted {
-        opacity: 0.4;
-    }
-}
-
 .sticky {
     position: sticky;
     top: 14rem;
