@@ -84,6 +84,7 @@ photographed from space. The image is fixed so that image appears to zoom in and
 &nbsp;
 ![Landing Page](wireframes/home.png "Landing Page Template")
 
+
 &nbsp;
 ### AllAuth Templates 
 
@@ -94,31 +95,103 @@ photographed from space. The image is fixed so that image appears to zoom in and
 + On larger screen sizes the forms are contained by a 1px solid border in the base teal colour. On mobile devices, the border is removed as viewport comfortably takes over as the form's 'container'.
 
 &nbsp;
-#### Sign Up
+#### Sign Up   
+
 ![All auth Sign Up](wireframes/register.png "Sign Up Template")
-#### Sign In
+
+&nbsp;
+#### Sign In    
 ![All auth Sign In](wireframes/signin.png "Sign In Template Page")
-#### Sign Out
+
+&nbsp;
+#### Sign Out    
 ![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
 
-&nbsp;
-### Book a Trip
 
 &nbsp;
+### View Trips
 
++ 
 
-![Book a Trip](wireframes/searchtrips.png "Search Trip Template")
+&nbsp;
+![Destination List](wireframes/viewtrips.png "Destination List template Template")
 
-+ The template features a progress bar just beneath the main navigation bar. As this is the first step in the booking process, the first icon is highlighted in the highlight colour, whereas the rest of the icons are greyed out as though disabled. This will enable the user to track where they are in the booking process.
+&nbsp;
+### Destination Detail
+
++ 
+
+&nbsp;
+![Destination Detail](wireframes/destinationdetail.png "Destination Detail")
+
+&nbsp;
+### Book A Trip
+
++ The template features a progress bar just beneath the main navigation bar. As this is the first step in the booking process, the first icon is highlighted in the highlight colour, whereas the rest of the icons are greyed out and disabled. This will enable the user to track where they are in the booking process.
 
 + On smaller screen sizes, the sizes of the progress bar icons reduces slightly in proportion to the smaller space.
+
+&nbsp;
+![Book a Trip](wireframes/searchtrips.png "Search Trip Template")
+
+&nbsp;
+### Confirm Trip
+
++ The template features the progress bar which reflects that the user has reached the second step in the booking process; the first and second icon are highlighted in the highlight colour, whereas the rest of the icons are greyed out.
+
++ The first step in the progress bar is an active link back to the Search Trips template.
+
++ Just as in the "Book A Trip" template, the size of the progress bar icons is reduced on smaller screens.
+
++ The form contains one field; a set of radio input options based on the available dates for the destination and number of passengers requested. The set of options is also refined to the dates closest to the date the user provides in their search.  
+
++ The radio buttons are hidden in favor of custom styled input labels which display the date, and cost per traveller.
+
++ When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
+
+&nbsp;
+![Confirm Trip](wireframes/confirmtrips.png "Confrim Trip Template")
+
+&nbsp;
+### Passenger Details
+
++ 
+
+&nbsp;
+![Passenger Details](wireframes/passengerdetails.png "Passenger Details Template")
+
+&nbsp;
+### Checkout
+
++ 
+
+&nbsp;
+![Checkout](wireframes/checkout.png "Checkout Template")
+
+
+&nbsp;
+### Checkout Success
+
++ 
+
+&nbsp;
+![Checkout Success](wireframes/checkoutsuccess.png "Checkout Success Template")
+
+&nbsp;
+### User Profile
+
++ 
+
+&nbsp;
+![User Profile](wireframes/userprofile.png "User Profile Template")
+
 ## Design Notes <a name="design"></a>
 
 ### Typography
 
 + The main fonts used in this app are **"Orbitron,"** and **"Montserrat"** from google fonts.
 
-![Colours](wireframes/colourpalette2nd.png "ColourHarmonies")
+![Colours](wireframes/colourscheme.png "Main Colors")
 
 # Information Architecture <a name="models"></a>
 
