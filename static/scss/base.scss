@@ -32,9 +32,9 @@ header {
 
 footer {
     flex-shrink: 0;
-    background-color: $base-teal; 
+    background-color: $base-cyan; 
     padding: 1rem 20px;
-    color: $triad-dark-teal;
+    color: $triad-teal;
     font-weight: 400;
     font-size:0.9rem;
     z-index: 5;
@@ -43,10 +43,10 @@ footer {
         margin-top: 1rem;
     }
     a {
-        color: $triad-dark-teal;
+        color: $triad-teal;
         &:hover {
             font-weight: 600;
-            color: $triad-dark-teal;
+            color: $triad-teal;
             text-decoration: underline;
         }
     }
@@ -61,7 +61,7 @@ footer {
                 content: '';
                 width: 100%;
                 height: 2px;
-                background-color: $triad-dark-teal;
+                background-color: $triad-teal;
                 position: absolute;
                 top: -4px;
                 left:0;
@@ -91,14 +91,14 @@ a {
 
 hr {
     margin: 0.6rem 0;
-    border-top: 1px solid $triad-dark-teal;
+    border-top: 1px solid $triad-teal;
     &.hr-muted {
         opacity: 0.4;
     }
 }
 
 ::selection {
-    background-color: $base-teal;
+    background-color: $base-cyan;
     color: #000;
 }
 
@@ -115,7 +115,7 @@ hr {
 .btn-outline {
     box-sizing: content-box;
     border-radius: 0;
-    border: 1px solid $base-teal;
+    border: 1px solid $base-cyan;
     background-color: $near-black;
     opacity:0.8;
     text-transform: uppercase;
@@ -124,7 +124,7 @@ hr {
     transition: background-color .75s, color .75s ease-out;
     color: $off-white;
     &:hover {
-        background-color: $base-teal;
+        background-color: $base-cyan;
     }
 }
 
@@ -145,7 +145,7 @@ hr {
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     span {
-        color: $base-teal;
+        color: $base-cyan;
     }
 }
 
@@ -167,7 +167,7 @@ hr {
                 content: "";
                 width: calc(100% - 1px);
                 height: 1px;
-                background-color: $base-teal;
+                background-color: $base-cyan;
                 bottom: -6px;
                 left: 0;
                 transform: scale(0, 1);
@@ -244,7 +244,7 @@ form h2 {
     text-align: center;
     color: $off-white;
     padding: 3rem;
-    border: 1px solid $base-teal;
+    border: 1px solid $base-cyan;
 
     @media only screen and (max-width: 767px) {
 		border: none;
@@ -257,7 +257,7 @@ form h2 {
         size: 1.8rem;
         weight: 200;
     }
-    color: $base-teal;
+    color: $base-cyan;
 }
 
 .form-heading {
@@ -290,7 +290,7 @@ legend {
 
 .all-form-bg {
     border: 0;
-    border-bottom: 2px solid $base-teal;
+    border-bottom: 2px solid $base-cyan;
     background-color: $near-black;
     opacity: 0.8;
     border-radius: 0px;
@@ -367,7 +367,7 @@ legend {
                 color: $form-alert;
             }
             &.primary {
-                color: $triad-dark-teal;
+                color: $triad-teal;
             }
         }
     }
@@ -446,7 +446,7 @@ input.invalid:active {
         border: none;
     }
     .btn-outline {
-        background-color: $base-teal;
+        background-color: $base-cyan;
         color: $near-black;
     }
     .cancel-btn {
@@ -491,14 +491,14 @@ input.invalid:active {
 /* Landing Page ------------------------------ */
 .hero-btn {
     @extend .btn-outline;
-    border: 1px solid $base-teal;
-    background-color: $base-teal;
+    border: 1px solid $base-cyan;
+    background-color: $base-cyan;
     color: $near-black;
     opacity: 1;
     &:hover {
         background-color: $off-white;
-        color: $base-teal;
-        box-shadow: 0 0 1rem $base-teal;
+        color: $base-cyan;
+        box-shadow: 0 0 1rem $base-cyan;
     }
 }
 
@@ -509,7 +509,7 @@ input.invalid:active {
 .hero-text {
     color: $off-white;
     line-height: 7rem;
-    text-shadow: 0 0 1rem $triad-dark-teal;
+    text-shadow: 0 0 1rem $triad-teal;
     font: {
         family: 'Euphoria Script', cursive;
         size: 7rem;
