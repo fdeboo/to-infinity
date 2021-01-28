@@ -303,7 +303,7 @@ legend {
 }
 
 .all-form-input,
-.allauth-form-inner-content input:not([id="id_remember"])  {
+.allauth-form-inner-content input:not([id="id_remember"]) {
     @extend .all-form-bg;
     font: {
         family: 'Orbitron', sans-serif;
@@ -314,6 +314,11 @@ legend {
     padding: 0.5rem 1rem;
     transition: box-shadow 150ms ease;
     margin-top: 1.5rem;
+    &.email_input {
+        height: auto;
+        margin: 0 1rem;
+        padding: inherit;
+    }
     
     &[type="date" i] {
         color: $off-white;
@@ -331,11 +336,33 @@ legend {
     &:disabled::placeholder{
         color: $form-disabled-grey;
     }
-    
 }
 
-.allauth-form-inner-content label:not([for='id_remember']) {
+.allauth-form-inner-content label {
     display:none;
+    &[for='id_remember'] {
+        display: inline;
+    }
+    &.email_label {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1.2rem;
+        span {
+            font-size: 80%;
+            font-weight: 600;
+            line-height: 2;
+            &.verified {
+                color: $square-green;
+            }
+            &.unverified {
+                color: $form-alert;
+            }
+            &.primary {
+                color: $triad-dark-teal;
+            }
+        }
+    }
 }
 
 input:-webkit-autofill-selected {

@@ -362,6 +362,13 @@ legend {
   margin-top: 1.5rem;
 }
 
+.all-form-input.email_input,
+.allauth-form-inner-content input:not([id="id_remember"]).email_input {
+  height: auto;
+  margin: 0 1rem;
+  padding: inherit;
+}
+
 .all-form-input[type="date" i],
 .allauth-form-inner-content input:not([id="id_remember"])[type="date" i] {
   color: #f5f5f5;
@@ -414,8 +421,41 @@ legend {
   color: #595959;
 }
 
-.allauth-form-inner-content label:not([for='id_remember']) {
+.allauth-form-inner-content label {
   display: none;
+}
+
+.allauth-form-inner-content label[for='id_remember'] {
+  display: inline;
+}
+
+.allauth-form-inner-content label.email_label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+.allauth-form-inner-content label.email_label span {
+  font-size: 80%;
+  font-weight: 600;
+  line-height: 2;
+}
+
+.allauth-form-inner-content label.email_label span.verified {
+  color: #99B821;
+}
+
+.allauth-form-inner-content label.email_label span.unverified {
+  color: #B88421;
+}
+
+.allauth-form-inner-content label.email_label span.primary {
+  color: #0E666B;
 }
 
 input:-webkit-autofill-selected {
