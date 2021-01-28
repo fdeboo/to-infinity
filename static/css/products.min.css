@@ -1,33 +1,49 @@
-@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap");
-.image-container {
-  position: absolute;
-  height: 100%;
+@import url("https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;600;800&family=Orbitron:wght@400;500;600;700&display=swap");
+.destination-list {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 auto;
+          flex: 1 auto;
+  z-index: 2;
+}
+
+.destination-list > h1 {
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.destination-card {
+  margin-bottom: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.destination-card img {
   width: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
-  z-index: 1;
-  top: 0;
-  display: none;
-}
-
-.image-container a {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  font-size: 3rem;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: bold;
-}
-
-.image-container img {
+  height: 12rem;
   -o-object-fit: cover;
      object-fit: cover;
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
+}
+
+.destination-card h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.destination-card .card-title {
+  border-bottom: 2px solid #2AB1B7;
+}
+
+.destination-card .card-footer {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 .icon-menu-bar {
@@ -41,11 +57,11 @@
 /* Search form ------------------------------ */
 .toggle-form {
   visibility: hidden;
-  background-color: #fff;
+  background-color: #f5f5f5;
   width: 5em;
   height: 5rem;
   border-radius: 50%;
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 2rem;
   color: #f5f5f5;
@@ -71,22 +87,23 @@
   }
 }
 
+.toggle-form.bottom-translate {
+  bottom: 23.5rem !important;
+}
+
 .search-trips-form {
   position: -webkit-sticky;
   position: sticky;
   bottom: 0rem;
   z-index: 10;
-  -webkit-box-shadow: 0 0 1rem #000;
-          box-shadow: 0 0 1rem #000;
 }
 
 @media only screen and (max-width: 991px) {
   .search-trips-form {
     bottom: -22.5rem;
     height: 21.5rem;
-    -webkit-transition: 1s;
-    transition: 1s;
     position: fixed;
+    padding-top: 2rem;
   }
   .search-trips-form.position-translate {
     visibility: visible;
@@ -133,97 +150,4 @@
   .search-trips-form #featured-search .buttonHolder {
     margin-bottom: 0;
   }
-}
-
-.destination-list {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 auto;
-          flex: 1 auto;
-  z-index: 2;
-}
-
-/* Tabs ------------------------------ */
-.tabbed > input {
-  display: none;
-}
-
-.tabbed > input:checked + label {
-  background: #2AB1B7;
-}
-
-.tabbed > input:checked + label:hover {
-  background: #2AB1B7;
-}
-
-.tabbed > input + label {
-  display: inline-block;
-  width: 6rem;
-  height: 4rem;
-  padding: 12px 20px;
-  background-color: #141516;
-  cursor: pointer;
-  -webkit-transition: background-color .3s;
-  transition: background-color .3s;
-}
-
-.tabbed > input + label:hover {
-  background-color: #000;
-}
-
-@media only screen and (max-width: 991px) {
-  .tabbed > input + label {
-    width: 5rem;
-    height: 4rem;
-  }
-}
-
-.tabbed .tabs {
-  background-color: #2AB1B7;
-  color: #141516;
-}
-
-.tabbed .tabs > div {
-  position: absolute;
-  display: none;
-  -webkit-transition: opacity .3s, -webkit-transform 1s;
-  transition: opacity .3s, -webkit-transform 1s;
-  transition: opacity .3s, transform 1s;
-  transition: opacity .3s, transform 1s, -webkit-transform 1s;
-  z-index: 0;
-}
-
-.tabbed .tabs > div h1 {
-  font-family: 'Orbitron', cursive;
-  font-size: 3.5rem;
-  font-weight: 500;
-}
-
-@media only screen and (max-width: 767px) {
-  .tabbed .tabs > div h1 {
-    font-size: 2.5rem;
-  }
-}
-
-.tabbed .tabs > div p {
-  font-size: 1.3rem;
-  font-weight: 400;
-}
-
-@media only screen and (max-width: 991px) {
-  .tabbed .tabs > div p {
-    font-size: 1rem;
-  }
-}
-
-.tabbed .tabs button {
-  background-color: #141516;
-}
-
-#id-trip-1:checked ~ .tabs > div:nth-of-type(1),
-#id-trip-2:checked ~ .tabs > div:nth-of-type(2),
-#id-trip-3:checked ~ .tabs > div:nth-of-type(3),
-#id-trip-4:checked ~ .tabs > div:nth-of-type(4) {
-  display: block;
-  position: static;
-  z-index: 1;
 }

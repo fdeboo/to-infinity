@@ -1,5 +1,5 @@
 @import 'config';
-@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;800&family=Orbitron:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Montserrat:wght@300;400;600;800&family=Orbitron:wght@400;500;600;700&display=swap');
 
 /* Universal Styles ------------------------------ */
 html {
@@ -511,4 +511,9 @@ input.invalid:active {
     margin: 2rem auto;
     text-align: center;
 }
-/* Unavailable Template ------------------------------ */
+
+
+hr {
+    display: block;
+    border-top: 1px solid;  
+}

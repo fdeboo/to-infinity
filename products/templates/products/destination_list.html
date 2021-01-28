@@ -1,67 +1,66 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/products.min.css' %}">
 {% endblock extra_css %}
 
 {% block header %}
-{% include 'includes/navbar-dark.html' %}
+    {% include 'includes/navbar-dark.html' %}
 {% endblock header %}
 
 
 {% block content %}
-{% for destination in destinations %}
-<div class="col-5 image-container" id="div-id-trip-{{ forloop.counter }}">
-    <img class="" src="{{ destination.image.url }}" alt="{{ destination.name }}" />
-</div>
-{% endfor %}
-<main class="container-fluid d-flex flex-column p-0 black-bg">
-    <section class="destination-list row w-100 align-items-center m-0">
-        <div class="col-12 col-md-10 col-lg-8 col-xl-6 p-0 d-flex flex-column align-items-center justify-content-center mb-5">
+<main class="container-fluid d-flex flex-column p-0 dark-bg">
+    <div class="row justify-content-center m-0">
+        <div class="col-md-10 my-5">
 
-            <div class="tabbed row m-5">
-
-                <input type="radio" name="tabs" id="id-trip-1" checked>
-                <label for="id-trip-1" class="m-0 px-2 d-flex justify-content-center align-items-center">
-                    <img src="{% static 'icons/missiontomars_fff.png' %}" alt="Mission to Mars link">
-                </label>
-                <input type="radio" name="tabs" id="id-trip-2">
-                <label for="id-trip-2" class="m-0 px-2 d-flex justify-content-center align-items-center">
-                    <img src="{% static 'icons/moonlanding_fff.png' %}" alt="Moon Landing link">
-                </label>
-                <input type="radio" name="tabs" id="id-trip-3">
-                <label for="id-trip-3" class="m-0 px-2 d-flex justify-content-center align-items-center">
-                    <img src="{% static 'icons/earthorbit_fff.png' %}" alt="Earth Orbit link">
-                </label>
-                <input type="radio" name="tabs" id="id-trip-4">
-                <label for="id-trip-4" class="m-0 px-2 d-flex justify-content-center align-items-center">
-                    <img src="{% static 'icons/iss_fff.png' %}" alt="International Space Station link">
-                </label>
-                <div class="tabs col-12">
-                    <!-- Listed Destinations -->
-                    {% for destination in destinations %}
-                    <div class="container">
-                        <div class="row align-items-center my-2">
-                            <div class="col-12">
-                                <h1>{{ destination.name}}</h2>
+            <!-- Destination list-->
+            <section class="row justify-content-center destination-list">
+                <h1 class="col-12 text-center logo-font pb-3">Our current trips</h1>
+                {% for destination in destinations %}
+                    <div class="col-12 col-md-6 col-xl-3 my-4">
+                        <div class="destination-card h-100 rounded-0 bg-transparent">
+                            <img class="img-fluid" src="{{ destination.image.url }}" alt="{{ destination.name }}">
+                            <div class="px-0 my-3">
+                                <div class="card-title">
+                                    <h2 class="">{{ destination.name }}</h1>
+                                    <p class="text-muted my-2">£{{ destination.price | intcomma }}</p>
+                                </div>
+                                <p class="my-3">{{ destination.description }}</p>
                             </div>
-                            <div class="col-10 d-flex flex-column justify-space-between">
-                                <p class="m-auto">{{ destination.description }}</p>
+                            <div class="card-footer p-0 d-flex align-items-end">
                                 <a href="{% url 'destination_detail' destination.pk %}">
-                                    <button type="button" class="btn btn-outline my-3"> Find out more</button>
+                                    <button class="btn btn-outline" type="button">View</button>
                                 </a>
-                            </div>
-                            <div class="col-5">
-                                
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
-                </div>
-            </div>
-    </section>
 
+                    <hr>
+
+                    {% if forloop.counter|divisibleby:2 %}
+                    <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-4">
+                        <hr>
+                    </div>
+                    {% endif %}
+
+                    {% if forloop.counter|divisibleby:3 %}
+                    <div class="col-12 d-none d-lg-none mb-4">
+                        <hr>
+                    </div>
+                    {% endif %}
+
+                    {% if forloop.counter|divisibleby:4 %}
+                    <div class="col-12 d-none d-xl-block mb-4">
+                        <hr>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        </div>
+    </div>
 
     <!-- Form to search for available trips -->
     <button class="btn toggle-form">
@@ -70,8 +69,8 @@
         </div>
     </button>
     <section class="search-trips-form container-fluid form-bg">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-xl-9 py-4" id="featured-search">
+        <div class="row justify-content-center pb-3">
+            <div class="col-md-10 col-xl-9" id="featured-search">
                 {% crispy form %}
             </div>
         </div>

@@ -1,12 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block page_nav %}
-    <div class="row bg-black justify-content-center">
-        {% include 'includes/dark_nav.html' %}
-    </div>
-{% endblock page_nav %}
+{% load humanize %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.min.css' %}">
+{% endblock extra_css %}
+
+{% block header %}
+{% include 'includes/navbar-dark.html' %}
+{% endblock header %}
 
 {% block content %}
+<main class="container-fluid d-flex flex-column p-0 dark-bg">
+    <div class="row justify-content-center m-0">
+        <div class="col-md-10 my-5">
+
+            <!-- Destination list-->
+            <section class="row justify-content-center destination-list">
+            </section>
+        </div>
+    </div>
+</main>
+
     <div class="row">
         <div class="col-md-5">
             <a href="{{ product.image_url }}">
