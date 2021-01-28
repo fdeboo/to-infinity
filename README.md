@@ -1,4 +1,4 @@
-<img src="wireframes/mockup.png" alt="Mockup on all Devices">
+<img src="wireframes/multidevicemockup.png" alt="Mockup on all Devices">
 
 # Table of contents
 
@@ -201,18 +201,15 @@ photographed from space. The image is fixed so that image appears to zoom in and
 
 ## Profile
 
-### Profile:
+### UserProfile:
 
 | Name | Key in db | Field Type | Options |
 | ---- | --------- | ---------- | ------- |
 | User | user | OneToOneField(User) | on\_delete=CASCADE |
 | First Name | default\_first\_name | CharField | max\_lenghth=80, null=False, blank=False |
 | Last Name | default\_last\_name | CharField | max\_length=80, null=False, blank=False |
-| Address 1 | default\_address1 | CharField | max\_length=80, null=True, blank=True |
-| Address 2 | default\_address2 | CharField | max\_length=80, null=True, blank=True |
-| Postcode | default\_postcode | CharField | max\_length=20, null=True, blank=True |
-| City | default\_town\_or\_city | CharField | max\_length=40, null=True, blank=True |
-| Country | default\_country | CountryField | blank\_label="Country", null=True, blank=True |
+| Phone Number | default\_phone\_num | CharField | max\_length=20, null=True, blank=True |
+| Passport Number | default\_passport\_num | CharField | max\_length=9, min\_length=9,null=False, blank=False |
 | Medical Rating | default\_medical\_rating | IntegerField | null=true, blank=True |
 
 - - -
@@ -247,6 +244,10 @@ Booking
 | First Name | first\_name | CharField | on\_delete=SET\_NULL, null=False, blank=False |
 | Last Name | last\_name | CharField | on\_delete=SET\_NULL, null=True, blank=True |
 | Email | email | EmailField | max\_length=254, null=False, blank=False |
+| Passport Number | passport_no | CharField | max\_length=9, min\_length=9, null=False, blank=False |
+| Lead Passenger | is_leadpassenger | BooleanField | null=False, blank=False |
+| Trip Addons | trip_addons | ManyToMany(Addon) | null=True, blank=True |
+| Trip Insurance | trip_insurance | ForeignKEy(Insurance) | on\_delete=SET\_NULL |
 | Medical Assessment | medical\_assessment | OneToOneField(Medical) | on\_delete\_CASCADE, null=True, blank=True |
 | Medical Rating | medical\_rating | IntegerField | max\_digits=3, null=False, blank=False, default=0 |
 
@@ -314,7 +315,7 @@ Booking
 > In order to run the project locally, you will need an IDE, PIP, Python (version 3) and Git installed.
 > You will need to set up a free account with Stripe and with AWS for a S3 bucket.
 
-1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](media/screenshots/clone.png) to clone or download it.
+1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](wireframes/screenshots/clone.png) to clone or download it.
 2. Either:
 ***or***
 
@@ -394,11 +395,11 @@ python3 manage.py runserver
 7. Choose whether you want to deploy Automatically or Manually.
 8. Navigate to **Resources** and search for *postgres* in the Add-ons search bar. Choose **Heroku Postgres** from the dropdown.
 9. Make sure the 'Plan name' is set to **Hobby Dev - Free**
-![Hobby_Dev - Free](media/screenshots/hobby_dev.png)
+![Hobby_Dev - Free](wireframes/screenshots/hobby_dev.png)
 10. Navigate to **Settings** and click on **Reveal Config Vars**.
 11. Ensure the following are set:
 *\*for guidance on where to obtain these values click [here](#guidance)*
-![Heroku Config Vars](media/screenshots/blurred_heroku_vars.png)
+![Heroku Config Vars](wireframes/screenshots/blurred_heroku_vars.png)
 
 - - -
 
