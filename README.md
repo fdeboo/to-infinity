@@ -52,10 +52,6 @@
 ## Wireframes <a name="wireframes"></a>
 ### Base Skeleton  
 
-&nbsp;
-![Base Template](wireframes/base_layout.png "Base Structure")
-
-
 + The pager header, containing the navigation links and company logo, is anchored to the top of the viewport window and has a high z-index so that the page content scrolls behind it.
 
 + When the entire body fits within the viewport height, the footer anchors to bottom of the screen while the main content 'grows' to fill the remaining space.
@@ -68,15 +64,11 @@
 
 + On all devices, the content column within the footer is set to (**"col-12"**) which gives the page a solid base.
 
-
+&nbsp;
+![Base Template](wireframes/base_layout.png "Base Structure")
 
 &nbsp;
 ### Landing Page  
-
-&nbsp;
-
-
-![Landing Page](wireframes/home.png "Landing Page Template")
 
 + The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
 
@@ -90,20 +82,24 @@ photographed from space. The image is fixed so that image appears to zoom in and
 + The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
 
 &nbsp;
-### AllAuth Templates 
+![Landing Page](wireframes/home.png "Landing Page Template")
 
 &nbsp;
-
-
-![All auth Sign Up](wireframes/register.png "Sign Up Template")
-![All auth Sign In](wireframes/signin.png "Sign In Template Page")
-![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
+### AllAuth Templates 
 
 + The templates to sign in, sign up and sign out all conform to the base structure of the app; The header is anchored at the top and the main content is centered vertically and horizontally, filling the space between the header and the footer at the bottom of the screen.
 
 + The individual forms are the only features of their respective templates and are styled as per the form style.
 
 + On larger screen sizes the forms are contained by a 1px solid border in the base teal colour. On mobile devices, the border is removed as viewport comfortably takes over as the form's 'container'.
+
+&nbsp;
+#### Sign Up
+![All auth Sign Up](wireframes/register.png "Sign Up Template")
+#### Sign In
+![All auth Sign In](wireframes/signin.png "Sign In Template Page")
+#### Sign Out
+![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
 
 &nbsp;
 ### Book a Trip
