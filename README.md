@@ -121,7 +121,7 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 
 &nbsp;
 ### Home 
-&nbsp;
+
 ![Landing Page](https://res.cloudinary.com/fdeboo/image/upload/v1611914508/toinfinity_readme/home_krv0lm.png "Landing Page Template")
 
 
@@ -136,58 +136,58 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 
 &nbsp;
 #### Sign Up   
-&nbsp;
+
 ![All auth Sign Up](https://res.cloudinary.com/fdeboo/image/upload/v1611914519/toinfinity_readme/register_kql8mx.png "Sign Up Template")
 
 &nbsp;
 #### Sign In
-&nbsp;
+
 ![All auth Sign In](https://res.cloudinary.com/fdeboo/image/upload/v1611914511/toinfinity_readme/signin_uclenn.png "Sign In Template Page")
 
 &nbsp;
 #### Sign Out
-&nbsp;
+
 ![All auth Sign Out](https://res.cloudinary.com/fdeboo/image/upload/v1611914502/toinfinity_readme/signout_lkkeqi.png"Sign Out Template Page")
 
 
 &nbsp;
 ### View Trips
-&nbsp;
+
 ![Destination List](https://res.cloudinary.com/fdeboo/image/upload/v1611914500/toinfinity_readme/viewtrips_vpfecc.png "Destination List template Template")
 
 &nbsp;
 ### Destination Detail
-&nbsp;
+
 ![Destination Detail]( "Destination Detail")
 
 &nbsp;
 ### Book A Trip
-&nbsp;
+
 ![Book a Trip](https://res.cloudinary.com/fdeboo/image/upload/v1611914525/toinfinity_readme/searchtrips_g02zti.png "Search Trip Template")
 
 &nbsp;
 ### Confirm Trip
-&nbsp;
+
 ![Confirm Trip](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/confirmtrips_pt2lll.png "Confrim Trip Template")
 
 &nbsp;
 ### Passenger Details
-&nbsp;
+
 ![Passenger Details](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/confirmtrips_pt2lll.png "Passenger Details Template")
 
 &nbsp;
 ### Checkout
-&nbsp;
+
 ![Checkout](https://res.cloudinary.com/fdeboo/image/upload/v1611914509/toinfinity_readme/checkout_xna2g2.png "Checkout Template")
 
 &nbsp;
 ### Checkout Success
-&nbsp;
+
 ![Checkout Success](https://res.cloudinary.com/fdeboo/image/upload/v1611914508/toinfinity_readme/checkoutsuccess_p4hcr9.png "Checkout Success Template")
 
 &nbsp;
 ### User Profile
-&nbsp;
+
 ![User Profile](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/userprofile_yqkofy.png "User Profile Template")
 
 
@@ -202,12 +202,11 @@ photographed from space. The image is fixed so that image appears to zoom in and
 
 + The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
 
-&nbsp;
+
 ### Booking App    
-&nbsp;
 
 #### Progress Bar
-&nbsp;
+
 ![Progress Bar](https://res.cloudinary.com/fdeboo/image/upload/v1611906942/toinfinity_readme/progressbar_fq5nmi.png "Progress Bar")
 + The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains it's position if the page requires scrolling.
 
@@ -219,9 +218,9 @@ photographed from space. The image is fixed so that image appears to zoom in and
 
 + The first step in the progress bar is an active link back to the Search Trips template.
 
-&nbsp;
+
 #### Search Trips Form
-&nbsp;
+
 ![Search Trips](https://res.cloudinary.com/fdeboo/image/upload/v1611907015/toinfinity_readme/searchtripsform_omwcg3.png "Search Trips")
 + The form appears in the 'Search Trips' template but is also featured on the 'View Trips' page
 
@@ -262,7 +261,7 @@ def create_option(
         return option_dict
 ```
 
-&nbsp;
+
 #### Confirm Trips Form
 
 + The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by destination and then by seats available. The set of options is further refined to the dates closest to the date that the user requested.  
@@ -275,13 +274,13 @@ def create_option(
 
 + When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
 
-&nbsp;
+
 #### Passenger Formset
 
 + The Formset receives a value for the number of passengers given in the booking and uses it to define the number of forms in the formset.
 
 + The Addons for the trip are represented as a set of checkboxes but the checkboxes are customised to base on a 
-![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906970/toinfinity_readme/customradiobtn_iys5yk.png "Confirm Model")
+![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906926/toinfinity_readme/customcheckboxes_hozdm9.png "Custom Checkboxes")
 
 
 
@@ -418,34 +417,58 @@ Booking
 
 # Technologies Used
 
-## FrontEnd
-+ HTML5
-+ CSS3
-+ Bootstrap
+## Frontend:
++ HTML5, CSS3, Javascript
+    + Frontend programming languages
++ [Sass](https://sass-lang.com/)
+    + CSS extension used to develop the style sheets used in this project
++ [JQuery 3.5.1](https://jquery.com/)
+    + Simplifies access and manipluation of the DOM
+    + Used to generate the markup of the radio input labels in the Confirm Trip view.
+    + Overrides the browser default styles applied to inputs when the 'invalid' event is detected 
++ [JQuery UI 1.12.1](https://jqueryui.com/)
+    + Toggles the search form used in the View Trips template, on small devices with a smooth 1 second transition speed applied
++ [Bootstrap 4.5.3](https://getbootstrap.com/)
+    + Provides the visual formatting of the website and it's responsiveness accross all devices
+    + Boostrap's Grid System and layout components were used extensively to keep consistency accross all templates
++ [Google Fonts](https://fonts.google.com/)
+    + Provides access to the web fonts used in this project
++ [Font Awesome](https://fontawesome.com/)
+    + Provides the icons used in this project to guide the users' navigation, offer visual cues and offer balance to areas of text.
 
-## BackEnd
-+ Django as python web framework for rapid development and clean design.
-+ Django Crispy Forms to style django forms.
+## Backend:
++ [Python 3.8.5](https://www.python.org/downloads/release/python-385/)
+    + For processing all backend logic
++ [Django](https://www.djangoproject.com/)
+    + Python web framework for rapid development and clean design.
++ [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/)
+    + The Crisy Form Helper was used to provide Layout and styling to the many forms used in this app.
++ [Django Allauth](https://django-allauth.readthedocs.io/en/latest/installation.html)
+    + For user authentication, registration and account management.
++ [Django Storages](https://django-allauth.readthedocs.io/en/latest/installation.html)
+    + For management of static files and folders integral to the app.
++ [Stripe](https://stripe.com/)
+    + The payment platform used to validate payments and send webhook responses to the app.
++ [AWS](https://aws.amazon.com/)
+    + Serves the static and media files that are provided to the database.
++ [SQLite3](https://docs.python.org/3/library/sqlite3.html)
+    + Local database provided as default by django
++ [Postgres](https://docs.python.org/3/library/sqlite3.html)
+    + The database used by Heroku (production)
 
-### Other
-+ GitHub to store and share all project code remotely.
-+ Balsamiq to create the wireframes for this project.
-+ Heroku for deployment
-
-+ Visual Studio Code is the IDE used for developing this project.
-+ Stripe as payment platform to validate and accept credit card payments securely.
-+ AWS S3 Bucket to store images entered into the database.
-+ Boto3 to enable creation, configuration and management of AWS S3.
-+ Django Storages a collection of custom storage backends with django to work with boto3 and AWS S3.
-+ Gunicorn WSGI HTTP Server for UNIX to aid in deployment of the Django project to heroku.
-+ Pillow as python imaging library to aid in processing image files to store in database.
-+ Psycopg2 as PostgreSQL database adapter for Python.
-
-
-+ PIPENV for installation of tools needed in this project.
-+ Git to handle version control.
-    
-    
+## Other:
++ [Visual Studio Code](https://code.visualstudio.com/)
+    + The IDE that facilitated the devlopment of this project.
++ [Pipenv](https://pypi.org/project/pipenv/)
+    + Manages the virtualenv and automatically adds/removes packages to a Pipfile when they are un/installed.
++ [GitHub](https://github.com/)
+    + The platform where the project code is stored remotely and publicly available.
++ [Heroku](https://heroku.com/)
+    + For deployment of the app
++ [Balsamiq 4.1.8](https://balsamiq.com/wireframes/)
+    + For the creation of the wireframes used in this project
++ [Cloudinary](https://cloudinary.com/)
+    + Hosts the images used in this README.md file
 
 
 # Deployment <a name="deploying"></a>
@@ -457,16 +480,16 @@ Booking
 
 1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](https://res.cloudinary.com/fdeboo/image/upload/v1611914876/toinfinity_readme/clone_trqifl.png) to clone or download it.
 2. Either:
-***or***
-
-```
-  git clone https://github.com/fdeboo/to-infinity.git
-```
 
 * Click to **Download Zip** and save the folder somewhere on your local system
     * File > Open the project from within your IDE
     * Copy the web url. In the terminal of your IDE, change directory / `cd` to where you want the project saved on your system.
-    * Type `git clone` and paste in the copied web url to complete the command *(as below)*:
+* **or**:
+    * Type `git clone` and paste in the copied web url to complete the command *(as below)
+
+    ```
+    git clone https://github.com/fdeboo/to-infinity.git
+    ```
 3. Activate a virtual environment. For this, I recommend using the **pipenv** package which manages the virtualenv and automatically adds/removes packages to a Pipfile when they are un/installed.
 
 > *NOTE: The Pipfile created by **pipenv** supersedes the requirements.txt*
@@ -477,20 +500,20 @@ Booking
 4. Install the project dependencies detailed in the Pipfile by typing
 
 ```
- pipenv install
+pipenv install
 ```
 
 5. Set up a .env file in the project root and provide the folllowing environment variables:
 
 > *Important! Make sure you set up a .gitignore file and list .env in it so that it is ignored in commits to GitHub*
 
-```
- SECRET_KEY=your_secret_key
- STRIPE_PUBLIC_KEY=your_stripe_public_key
- STRIPE_SECRET_KEY=your_stripe_secret_key
- STRIPE_WH_SECRET=your_stripe_wh_secret
- DEVELOPMENT=True
-```
+    ```
+    SECRET_KEY=your_secret_key
+    STRIPE_PUBLIC_KEY=your_stripe_public_key
+    STRIPE_SECRET_KEY=your_stripe_secret_key
+    STRIPE_WH_SECRET=your_stripe_wh_secret
+    DEVELOPMENT=True
+    ```
 
 *\*for guidance on where to obtain these values click [here](#guidance)*
 6\. If using VSCode\, or else if necessary\, restart the IDE and reactivate the virtual environment \(as per step 3\)
@@ -626,3 +649,13 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 * Stack overflow
 [For forms](https://stackoverflow.com/questions/34781524/django-populate-a-form-choicefield-field-from-a-queryset-and-relate-the-choice-b)
 * I based my booking form which used inline\_formets to created a nested fomm, on [this](https://swapps.com/blog/working-with-nested-forms-with-django/) walkthrough tutorial from Swapps.
+
+## Acknowledgements
+
+* BIG thanks to [Paul DeBoo](https://github.com/phdeboo) for his generous time given to support this project in research, developing ideas and general consultation.
+
+* [Simen Daehlin](https://github.com/Eventyret) for fitting in _many_ extra mentor sessions with me and sharing his expertise.
+
+* [Guillermo Brachetta](https://github.com/GBrachetta) for his  guiding advice and suggestions that have played a huge part in my development journey. For this project in particular, introducing me to Sass.
+
+* [Danielle Tait](https://github.com/Taitdanielle) for her positive outlook and witty banter that I valued throughout my journey without Code Institute
