@@ -10,7 +10,7 @@
 2. [UX](#design)
 3. [Features](#features)
     * [Existing Features](#existing_feat)
-    * [Features left to implment](#future_feat)
+    * [Features left to implement](#future_feat)
 4. [Information Architecture](#models)
 5. [Technologies Used](#technologies)
 6. [Testing](#testing)
@@ -59,7 +59,7 @@ The fonts for this project were sourced from [Google Fonts](https://fonts.google
 
 + The secondary font used for this app is **"Orbiton"**, a sans serif font reminiscent of futuristic sci-fi movies. The geometric typeface was designed for display purposes and as such, is used for 2infinity's main logo and headings. It was chosen for it's strong futuristic character which supports the theme of the app.
 
-+ The font used for the hero text on the landing page is **'Euphoria Script'**. It was chosen to contrast the main display font (Orbitron) for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
++ The font used for the hero text on the landing page is **"Euphoria Script"**. It was chosen to contrast the main display font (Orbitron) for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
 
 ### Icons
 
@@ -287,6 +287,19 @@ def create_option(
 
 #### Booking Summary
 
+## Future Features
+
++ Asynchronous Housekeeping  
+This enhancement would aim to implement structures that make it easy introduce asynchronous housekeeping as requirements are identified, the first example being removal from the database of expired open bookings--bookings created and saved, perhaps by one-time visitors to the site, but never completed.  Any open bookings against expired trips would be targets for this housekeeping.  There are two parts to the implementation of each asynchronous housekeeping requirement:
+
+    + A Python script that executes the specific housekeeping; in the case of expired open bookings, the sole objective of the script is to issue an database query along the lines of "BEGIN; DELETE BOOKING WHERE BOOKING.STATUS = 'Open' AND BOOKING.TRIP = TRIP.PK AND TRIP.DATE < CURRENT_DATE; END"
+    A means to schedule the periodic execution of the script which, in the case of open bookings, is the frequency with which open bookings may become expired.  This would be explored using some combination of Django async views, the Django-Q addon, and Heroku Redis as a queue dispatching service. 
+
+    + Thereafter, each additional housekeeping requirement would be implemented by creating the appropriate housekeeping script, and the additional statements within the async view to invoke the script on the appropriate scheduling basis.
+
++ Passenger Medical Assessments    
+At the moment, 2Infinity bookings accept any Passengers named by the user.  But flights to deep space, or addons such as space walks or space buggy rides, may not be suitable for certain Passengers based on age (too young or too old) or certain medical or physical conditions.  The enhancement would introduce a model whereby each Passenger could be issued with a medical assessment questionnaire, the completion of which becomes a condition for accepting the Passenger for the Trip.  Theoretically, the 2Infinity shop could communicate with a nominated GP for each Passenger to receive the GP's verdict on the Passenger's suitability for the Trip Booking and addon activities.
+
 
 # Information Architecture <a name="models"></a>
 
@@ -401,7 +414,39 @@ Booking
 
 - - -
 
-<img src="wireframes/schema.png" alt="schema">
+![Schema](wireframes/schema.png)
+
+# Technologies Used
+
+## FrontEnd
++ HTML5
++ CSS3
++ Bootstrap
+
+## BackEnd
++ Django as python web framework for rapid development and clean design.
++ Django Crispy Forms to style django forms.
+
+### Other
++ GitHub to store and share all project code remotely.
++ Balsamiq to create the wireframes for this project.
++ Heroku for deployment
+
++ Visual Studio Code is the IDE used for developing this project.
++ Stripe as payment platform to validate and accept credit card payments securely.
++ AWS S3 Bucket to store images entered into the database.
++ Boto3 to enable creation, configuration and management of AWS S3.
++ Django Storages a collection of custom storage backends with django to work with boto3 and AWS S3.
++ Gunicorn WSGI HTTP Server for UNIX to aid in deployment of the Django project to heroku.
++ Pillow as python imaging library to aid in processing image files to store in database.
++ Psycopg2 as PostgreSQL database adapter for Python.
+
+
++ PIPENV for installation of tools needed in this project.
++ Git to handle version control.
+    
+    Photoshop to edit, crop and save images as well as utilizing the colour picker to ensure color consistency over the entire project.
+
 
 # Deployment <a name="deploying"></a>
 
@@ -552,12 +597,12 @@ USE\_AWS:
 
 # Bugs <a name="bugs"></a>
 
-1. Circular import issue.
-**Cause:** I initially listed the 'Trip' model within the products app. I imported the 'Booking' model from the bookings app so that I could place an aggregate Query on the Booking objects and use the data returned to update the trip object. In the bookings app, I required the Trip model to be imported and used as a positional argument in a ForeignKey within the Booking model. This resulted in a circular import and caused an Import Error.
+1. Circular import issue.  
+**Cause:** I initially listed the 'Trip' model within the products app. I imported the 'Booking' model from the bookings app so that I could place an aggregate Query on the Booking objects and use the data returned to update the trip object. In the bookings app, I required the Trip model to be imported and used as a positional argument in a ForeignKey within the Booking model. This resulted in a circular import and caused an Import Error.  
 **Solution:** There were a couple of solutions to this issue. One option was to use lazy evaluation and pass products.Trip as a string in the ForeignKey, instead of just defining the model name. This would the alleviate the need to create an import. However, I did not want to use a lazy lookup so as to protect the app's performance. Instead, I reconsidered the arrangement of the models within the app and was able to solve the issue quite easily by moving the Trip model to the booking app and updating the imports as necessary.
-2. 'NoneType' object has no attribute 'model'
+2. 'NoneType' object has no attribute 'model'  
 **Cause:** When the DateChoiceForm is initialised, the queryset attribute on the ModelChoiceField is overidden with a dynamically generated queryset passed in the \*\*kwargs. If no key is found in the \*\*kwargs, the default value returned is None.
-The DateChoiceForm is instantiated again with request.POST when it comes to retrieving the form's POST data. The problem was that the paramater required to initialise the form was not provided. Therefore the kwarg was taking the fallback value of None and subsequently setting the value of the queryset to None.
+The DateChoiceForm is instantiated again with request.POST when it comes to retrieving the form's POST data. The problem was that the paramater required to initialise the form was not provided. Therefore the kwarg was taking the fallback value of None and subsequently setting the value of the queryset to None.  
 **Solution:** I refactored the code so that a view that renders a form in it's get method also handles the form's POST data in it's post method. Since the DateChoiceForm is dynamically rendered using data from the SearchTripsForm, I passed the SearchTripForm's input values to the session so that it could be accessed from the view associated with the DateChoiceForm. Within this view, I created a series of custom class methods to retrieve the data from the session and generate a queryset with it. The class methods were available to view's default get and post method which meant that the DateChoiceForm could be inititalised with the same queryset in both the post and get methods.
 3. User model imported from django.contrib.auth.models
 This error has been reported [See here](https://github.com/PyCQA/pylint-django/issues/278)
