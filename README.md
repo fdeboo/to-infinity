@@ -5,8 +5,8 @@
 1. [Introduction](#introduction)
     * [Objective](#objective)
     * [User stories](#users)
-    * [Wireframes](#wireframes)
     * [Design Notes](#design)
+    * [Wireframes](#wireframes)
 2. [UX](#design)
 3. [Features](#features)
     * [Existing Features](#existing_feat)
@@ -49,7 +49,59 @@
 * As a buisness owner I would like to add new trips and experiences
 * As a buisness owner I would like to view the number of seats available for each trip
 
+
+## Design Notes <a name="design"></a>
+
+### Fonts
+The fonts for this project were sourced from [Google Fonts](https://fonts.google.com/)
+
++ **"Montserrat"** is the main font used for the body text, links, buttons and subheadings. It was chosen because of it's easy legibility and low contrast strokes that give it a clean, modern feel. The font comes in a good range weights which make it flexible for emphasising words in bold or adding subtle hover effect to links. Montserrat pairs well with the secondary font because of it's smooth, circular curves that contrast with the square form of Orbitron's letters,
+
++ The secondary font used for this app is **"Orbiton"**, a sans serif font reminiscent of futuristic sci-fi movies. The geometric typeface was designed for display purposes and as such, is used for 2infinity's main logo and headings. It was chosen for it's strong futuristic character which supports the theme of the app.
+
++ The font used for the hero text on the landing page is **'Euphoria Script'**. It was chosen to contrast the main display font (Orbitron) for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
+
+### Icons
+
++ Icons are used as visual cues against each of the navigation links in the header.
++ Social Media Icons are included in the footer in lieu of written links as the icons are more immediately recognizable.
++ On the user profile page, the table headings are shortened by using icons to save space.
++ Used in the porgress bar
+
+### Colours
+[Adobe Color](https://color.adobe.com/create) was used to develop the colours for 2infinty.
+
+The brand has a dark theme to reflect the darkness of outer space. Cyan, used for the base colour, is a bright, additative secondary colour created by mixing blue and green light. It was chosen because it captures the glow of Earth as viewed from space.
+
+
+#### Base 
+**#2AB1B7**: Used for h1 Headings, borders, underlines, the hero button and the footer
+ 
+#### Split Complementary
+ **#B88421**: Warnings & form errors
+
+![Split Complementary Colours](wireframes/splitcomplementary.png "Split Complementary Colours")
+
+#### Complementary
+**#0E666B**: Text in the page footer. The contrast from the base cyan is enough to be legible without grabbing too much attention
+
+![Complementary Colours](wireframes/complementary.png "Complementary Colours")
+
+#### Monochromatic
+**#0D3638**: Bottom border colour for form inputs
+
+![Monochromatic Colours](wireframes/monochromatic.png "Monochromatic Colours")
+
+#### Square
+**#99B821**: For links, highlighting selected options and progress bar icons.
+
+![Square Colours](wireframes/square.png "Square Colours")
+
+
 ## Wireframes <a name="wireframes"></a>
+
+The [Bootstrap](https://getbootstrap.com/) framework was used extensively throughout the app to acheive responsive layouts.
+
 ### Base Skeleton  
 
 + The pager header, containing the navigation links and company logo, is anchored to the top of the viewport window and has a high z-index so that the page content scrolls behind it.
@@ -68,19 +120,7 @@
 ![Base Template](wireframes/base_layout.png "Base Structure")
 
 &nbsp;
-### Landing Page  
-
-+ The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
-
-+ The page is filled with a dynamic full screen background image of the Earth
-photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
-
-+ The font family used for the hero text is **'Euphoria Script'**. It was chosen to contrast the main font for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
-
-+ On all devices, the entire template fits within the viewport so the user will be able to access everything without the need to scroll.
-
-+ The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
-
+### Home 
 &nbsp;
 ![Landing Page](wireframes/home.png "Landing Page Template")
 
@@ -96,102 +136,157 @@ photographed from space. The image is fixed so that image appears to zoom in and
 
 &nbsp;
 #### Sign Up   
-
+&nbsp;
 ![All auth Sign Up](wireframes/register.png "Sign Up Template")
 
 &nbsp;
-#### Sign In    
+#### Sign In
+&nbsp;
 ![All auth Sign In](wireframes/signin.png "Sign In Template Page")
 
 &nbsp;
-#### Sign Out    
+#### Sign Out
+&nbsp;
 ![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
 
 
 &nbsp;
 ### View Trips
-
-+ 
-
 &nbsp;
 ![Destination List](wireframes/viewtrips.png "Destination List template Template")
 
 &nbsp;
 ### Destination Detail
-
-+ 
-
 &nbsp;
 ![Destination Detail](wireframes/destinationdetail.png "Destination Detail")
 
 &nbsp;
 ### Book A Trip
-
-+ The template features a progress bar just beneath the main navigation bar. As this is the first step in the booking process, the first icon is highlighted in the highlight colour, whereas the rest of the icons are greyed out and disabled. This will enable the user to track where they are in the booking process.
-
-+ On smaller screen sizes, the sizes of the progress bar icons reduces slightly in proportion to the smaller space.
-
 &nbsp;
 ![Book a Trip](wireframes/searchtrips.png "Search Trip Template")
 
 &nbsp;
 ### Confirm Trip
-
-+ The template features the progress bar which reflects that the user has reached the second step in the booking process; the first and second icon are highlighted in the highlight colour, whereas the rest of the icons are greyed out.
-
-+ The first step in the progress bar is an active link back to the Search Trips template.
-
-+ Just as in the "Book A Trip" template, the size of the progress bar icons is reduced on smaller screens.
-
-+ The form contains one field; a set of radio input options based on the available dates for the destination and number of passengers requested. The set of options is also refined to the dates closest to the date the user provides in their search.  
-
-+ The radio buttons are hidden in favor of custom styled input labels which display the date, and cost per traveller.
-
-+ When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
-
 &nbsp;
 ![Confirm Trip](wireframes/confirmtrips.png "Confrim Trip Template")
 
 &nbsp;
 ### Passenger Details
-
-+ 
-
 &nbsp;
 ![Passenger Details](wireframes/passengerdetails.png "Passenger Details Template")
 
 &nbsp;
 ### Checkout
-
-+ 
-
 &nbsp;
 ![Checkout](wireframes/checkout.png "Checkout Template")
 
-
 &nbsp;
 ### Checkout Success
-
-+ 
-
 &nbsp;
 ![Checkout Success](wireframes/checkoutsuccess.png "Checkout Success Template")
 
 &nbsp;
 ### User Profile
-
-+ 
-
 &nbsp;
 ![User Profile](wireframes/userprofile.png "User Profile Template")
 
-## Design Notes <a name="design"></a>
 
-### Typography
+# Features <a name="features"></a>
+## Existing Features <a name="existing"></a>
 
-+ The main fonts used in this app are **"Orbitron,"** and **"Montserrat"** from google fonts.
+### Home App
++ The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
 
-![Colours](wireframes/colourscheme.png "Main Colors")
++ The page is filled with a dynamic full screen background image of the Earth
+photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
+
++ The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
+
+&nbsp;
+### Booking App    
+&nbsp;
+
+#### Progress Bar
+&nbsp;
+![Progress Bar](wireframes/progressbar.png "Progress Bar")
++ The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains it's position if the page requires scrolling.
+
+* The progess bar enables the user to track where they are in the booking process.
+
++ The active step, and any steps that preceed it in the booking processs are highlighted and their links are enabled. The steps beyond the active step are greyed out and links are disabled. 
+
++ On smaller screen sizes, the size of the progress bar icons reduces slightly to keep in keep in proportion with the space.
+
++ The first step in the progress bar is an active link back to the Search Trips template.
+
+&nbsp;
+#### Search Trips Form
+&nbsp;
+![Search Trips](wireframes/searchtripsform.png "Search Trips")
++ The form appears in the 'Search Trips' template but is also featured on the 'View Trips' page
+
+
+
++ The Passengers field is disabled until a Destination is selected from the dropdown list.
+This is so that the **max** attribute for the passengers input is dynamically set using jquery when it detects a change in the Destination field.    
+
+
+```
+$('#selected-trip').change(function() {
+    if ($('#selected-trip').val() == '') {
+        $('#passengers-max').prop("disabled", true);
+    }
+    else {
+        let maxNm = $('#selected-trip option:selected').data('maxNum');         
+        $('#passengers-max').attr("max", maxNm).prop("disabled", false);
+    }
+});
+```
+
++ For this to work, I created a custom widget, sublassing Django's Select widget and customising its 'create_option' method.  The customised method allows the **max\_passengers** value for the represented destination instance, to be be passed as a data attribute to the option element.
+
+```
+def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        if isinstance(label, dict):
+            opt_attrs = label.copy()
+            label = opt_attrs.pop("label")
+        else:
+            opt_attrs = {}
+        option_dict = super(SelectOptionsWithAttributes, self).create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        for key, val in opt_attrs.items():
+            option_dict["attrs"][key] = val
+        return option_dict
+```
+
+&nbsp;
+#### Confirm Trips Form
+
++ The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by destination and then by seats available. The set of options is further refined to the dates closest to the date that the user requested.  
+
++ The radio buttons are hidden in favor of custom styled input labels which display the date, and price per person.
+
+
+![Customised Radio Inputs](wireframes/customradiobtn.png "Custom Radio Inputs")
+
+
++ When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
+
+&nbsp;
+#### Passenger Formset
+
++ The Formset receives a value for the number of passengers given in the booking and uses it to define the number of forms in the formset.
+
++ The Addons for the trip are represented as a set of checkboxes but the checkboxes are customised to base on a 
+![Custom Checkboxes](wireframes/customcheckboxes.png "Confirm Model")
+
+
+
+#### Booking Summary
+
 
 # Information Architecture <a name="models"></a>
 
@@ -306,7 +401,7 @@ Booking
 
 - - -
 
-<img src="media/wireframes/schema.png" alt="schema">
+<img src="wireframes/schema.png" alt="schema">
 
 # Deployment <a name="deploying"></a>
 
