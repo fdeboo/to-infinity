@@ -1,5 +1,7 @@
 ![Mockup on all Devices](https://res.cloudinary.com/fdeboo/image/upload/v1611907032/toinfinity_readme/multidevicemockup_chz16s.png)
 
+The 2infinity travel shop was created to fulfill the final project requirements to design and build an e-commerce web app. The idea of a space travel website was chosen as a something unusual and fun but within the coming decade, could occupy a real niche. The web app has been built using the Django framework and its extensions. Data is captured and stored in a relational database and payments are handled by Stripe.
+
 # Table of contents
 
 1. [Introduction](#introduction)
@@ -22,7 +24,9 @@
     * [Media](#media)
     * [Acknowledgements](#acknowledgements)
 
-# Introduction <a name="introduction"></a>
+# UX <a name="introduction"></a>
+## Target Audience
+The site envisages a time in the near future when space travel will become safe for the casual traveller and space tourist. The site functions for this audience in the manner of air travel sites that we know today. The site would appeal to travellers looking for unique destinations, to space enthusiasts, and to those looking for unusual experiences.
 
 ## Objective <a name="strategy"></a>
 
@@ -75,7 +79,8 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 
 
 #### Base 
-**#2AB1B7**: Used for h1 Headings, borders, underlines, the hero button and the footer
+**#2AB1B7**: Used for h1 Headings, borders, underlines, the hero button and the footer.
+![Base Cyan](https://res.cloudinary.com/fdeboo/image/upload/v1611949566/toinfinity_readme/Screenshot_2021-01-29_at_19.45.51_dmwfre.png)
  
 #### Split Complementary
  **#B88421**: Warnings & form errors
@@ -85,7 +90,7 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 #### Complementary
 **#0E666B**: Text in the page footer. The contrast from the base cyan is enough to be legible without grabbing too much attention
 
-![Complementary Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611907001/toinfinity_readme/splitcomplementary_a1zubd.png "Complementary Colours")
+![Complementary Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611906923/toinfinity_readme/complementary_ueacnx.png "Complementary Colours")
 
 #### Monochromatic
 **#0D3638**: Bottom border colour for form inputs
@@ -149,7 +154,6 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 
 ![All auth Sign Out](https://res.cloudinary.com/fdeboo/image/upload/v1611914502/toinfinity_readme/signout_lkkeqi.png"Sign Out Template Page")
 
-
 &nbsp;
 ### View Trips
 
@@ -197,8 +201,7 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 ### Home App
 + The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
 
-+ The page is filled with a dynamic full screen background image of the Earth
-photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
++ The page is filled with a dynamic full screen background image of the Earth photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
 
 + The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
 
@@ -210,21 +213,21 @@ photographed from space. The image is fixed so that image appears to zoom in and
 ![Progress Bar](https://res.cloudinary.com/fdeboo/image/upload/v1611906942/toinfinity_readme/progressbar_fq5nmi.png "Progress Bar")
 + The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains it's position if the page requires scrolling.
 
-* The progess bar enables the user to track where they are in the booking process.
+* The progress bar benefits the user experience as it informs them of where they are in the booking process.
 
-+ The active step, and any steps that preceed it in the booking processs are highlighted and their links are enabled. The steps beyond the active step are greyed out and links are disabled. 
++ The progress bar first appears  in the 'Search Trips View'/ when the user clicks the 'Book A Trip' link in the page header.
 
-+ On smaller screen sizes, the size of the progress bar icons reduces slightly to keep in keep in proportion with the space.
++ Each icon in the progress bar is a hyperlink that takes the user back to the respective step in the booking process.
 
-+ The first step in the progress bar is an active link back to the Search Trips template.
++ The active step, and the steps that preceed it are shown in colour and their links are enabled. The steps beyond the active step are greyed out and the links are disabled. The exceptions to this are the Checkout and Checkout Success templates where all the links preceeding the active step are disabled.
+
++ On smaller screen sizes, the size of the progress bar icons reduces slightly to keep in proportion with the space.
 
 
 #### Search Trips Form
 
 ![Search Trips](https://res.cloudinary.com/fdeboo/image/upload/v1611907015/toinfinity_readme/searchtripsform_omwcg3.png "Search Trips")
 + The form appears in the 'Search Trips' template but is also featured on the 'View Trips' page
-
-
 
 + The Passengers field is disabled until a Destination is selected from the dropdown list.
 This is so that the **max** attribute for the passengers input is dynamically set using jquery when it detects a change in the Destination field.    
@@ -656,6 +659,6 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 
 * [Simen Daehlin](https://github.com/Eventyret) for fitting in _many_ extra mentor sessions with me and sharing his expertise.
 
-* [Guillermo Brachetta](https://github.com/GBrachetta) for his  guiding advice and suggestions that have played a huge part in my development journey. For this project in particular, introducing me to Sass.
+* [Guillermo Brachetta](https://github.com/GBrachetta) for his guiding advice and suggestions that have played a huge part in my development journey. For this project in particular, introducing me to Sass.
 
-* [Danielle Tait](https://github.com/Taitdanielle) for her positive outlook and witty banter that I valued throughout my journey without Code Institute
+* [Danielle Tait](https://github.com/Taitdanielle) for her positive outlook and witty banter that I valued throughout my Code Institute journey.
