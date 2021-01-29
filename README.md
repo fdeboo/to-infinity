@@ -1,4 +1,4 @@
-<img src="wireframes/multidevicemockup.png" alt="Mockup on all Devices">
+![Mockup on all Devices](https://res.cloudinary.com/fdeboo/image/upload/v1611907032/toinfinity_readme/multidevicemockup_chz16s.png)
 
 # Table of contents
 
@@ -80,22 +80,22 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 #### Split Complementary
  **#B88421**: Warnings & form errors
 
-![Split Complementary Colours](wireframes/splitcomplementary.png "Split Complementary Colours")
+![Split Complementary Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611907001/toinfinity_readme/splitcomplementary_a1zubd.png "Split Complementary Colours")
 
 #### Complementary
 **#0E666B**: Text in the page footer. The contrast from the base cyan is enough to be legible without grabbing too much attention
 
-![Complementary Colours](wireframes/complementary.png "Complementary Colours")
+![Complementary Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611907001/toinfinity_readme/splitcomplementary_a1zubd.png "Complementary Colours")
 
 #### Monochromatic
 **#0D3638**: Bottom border colour for form inputs
 
-![Monochromatic Colours](wireframes/monochromatic.png "Monochromatic Colours")
+![Monochromatic Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611906927/toinfinity_readme/monochromatic_lokvxw.png "Monochromatic Colours")
 
 #### Square
 **#99B821**: For links, highlighting selected options and progress bar icons.
 
-![Square Colours](wireframes/square.png "Square Colours")
+![Square Colours](https://res.cloudinary.com/fdeboo/image/upload/v1611907007/toinfinity_readme/square_ucnx3j.png "Square Colours")
 
 
 ## Wireframes <a name="wireframes"></a>
@@ -117,12 +117,12 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 + On all devices, the content column within the footer is set to (**"col-12"**) which gives the page a solid base.
 
 &nbsp;
-![Base Template](wireframes/base_layout.png "Base Structure")
+![Base Template](https://res.cloudinary.com/fdeboo/image/upload/v1611906919/toinfinity_readme/base_layout_oevyil.png "Base Structure")
 
 &nbsp;
 ### Home 
 &nbsp;
-![Landing Page](wireframes/home.png "Landing Page Template")
+![Landing Page](https://res.cloudinary.com/fdeboo/image/upload/v1611914508/toinfinity_readme/home_krv0lm.png "Landing Page Template")
 
 
 &nbsp;
@@ -137,58 +137,58 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 &nbsp;
 #### Sign Up   
 &nbsp;
-![All auth Sign Up](wireframes/register.png "Sign Up Template")
+![All auth Sign Up](https://res.cloudinary.com/fdeboo/image/upload/v1611914519/toinfinity_readme/register_kql8mx.png "Sign Up Template")
 
 &nbsp;
 #### Sign In
 &nbsp;
-![All auth Sign In](wireframes/signin.png "Sign In Template Page")
+![All auth Sign In](https://res.cloudinary.com/fdeboo/image/upload/v1611914511/toinfinity_readme/signin_uclenn.png "Sign In Template Page")
 
 &nbsp;
 #### Sign Out
 &nbsp;
-![All auth Sign Out](wireframes/signout.png "Sign Out Template Page")
+![All auth Sign Out](https://res.cloudinary.com/fdeboo/image/upload/v1611914502/toinfinity_readme/signout_lkkeqi.png"Sign Out Template Page")
 
 
 &nbsp;
 ### View Trips
 &nbsp;
-![Destination List](wireframes/viewtrips.png "Destination List template Template")
+![Destination List](https://res.cloudinary.com/fdeboo/image/upload/v1611914500/toinfinity_readme/viewtrips_vpfecc.png "Destination List template Template")
 
 &nbsp;
 ### Destination Detail
 &nbsp;
-![Destination Detail](wireframes/destinationdetail.png "Destination Detail")
+![Destination Detail]( "Destination Detail")
 
 &nbsp;
 ### Book A Trip
 &nbsp;
-![Book a Trip](wireframes/searchtrips.png "Search Trip Template")
+![Book a Trip](https://res.cloudinary.com/fdeboo/image/upload/v1611914525/toinfinity_readme/searchtrips_g02zti.png "Search Trip Template")
 
 &nbsp;
 ### Confirm Trip
 &nbsp;
-![Confirm Trip](wireframes/confirmtrips.png "Confrim Trip Template")
+![Confirm Trip](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/confirmtrips_pt2lll.png "Confrim Trip Template")
 
 &nbsp;
 ### Passenger Details
 &nbsp;
-![Passenger Details](wireframes/passengerdetails.png "Passenger Details Template")
+![Passenger Details](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/confirmtrips_pt2lll.png "Passenger Details Template")
 
 &nbsp;
 ### Checkout
 &nbsp;
-![Checkout](wireframes/checkout.png "Checkout Template")
+![Checkout](https://res.cloudinary.com/fdeboo/image/upload/v1611914509/toinfinity_readme/checkout_xna2g2.png "Checkout Template")
 
 &nbsp;
 ### Checkout Success
 &nbsp;
-![Checkout Success](wireframes/checkoutsuccess.png "Checkout Success Template")
+![Checkout Success](https://res.cloudinary.com/fdeboo/image/upload/v1611914508/toinfinity_readme/checkoutsuccess_p4hcr9.png "Checkout Success Template")
 
 &nbsp;
 ### User Profile
 &nbsp;
-![User Profile](wireframes/userprofile.png "User Profile Template")
+![User Profile](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/userprofile_yqkofy.png "User Profile Template")
 
 
 # Features <a name="features"></a>
@@ -208,7 +208,7 @@ photographed from space. The image is fixed so that image appears to zoom in and
 
 #### Progress Bar
 &nbsp;
-![Progress Bar](wireframes/progressbar.png "Progress Bar")
+![Progress Bar](https://res.cloudinary.com/fdeboo/image/upload/v1611906942/toinfinity_readme/progressbar_fq5nmi.png "Progress Bar")
 + The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains it's position if the page requires scrolling.
 
 * The progess bar enables the user to track where they are in the booking process.
@@ -222,7 +222,7 @@ photographed from space. The image is fixed so that image appears to zoom in and
 &nbsp;
 #### Search Trips Form
 &nbsp;
-![Search Trips](wireframes/searchtripsform.png "Search Trips")
+![Search Trips](https://res.cloudinary.com/fdeboo/image/upload/v1611907015/toinfinity_readme/searchtripsform_omwcg3.png "Search Trips")
 + The form appears in the 'Search Trips' template but is also featured on the 'View Trips' page
 
 
@@ -270,7 +270,7 @@ def create_option(
 + The radio buttons are hidden in favor of custom styled input labels which display the date, and price per person.
 
 
-![Customised Radio Inputs](wireframes/customradiobtn.png "Custom Radio Inputs")
+![Customised Radio Inputs](https://res.cloudinary.com/fdeboo/image/upload/v1611906970/toinfinity_readme/customradiobtn_iys5yk.png "Custom Radio Inputs")
 
 
 + When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
@@ -281,7 +281,7 @@ def create_option(
 + The Formset receives a value for the number of passengers given in the booking and uses it to define the number of forms in the formset.
 
 + The Addons for the trip are represented as a set of checkboxes but the checkboxes are customised to base on a 
-![Custom Checkboxes](wireframes/customcheckboxes.png "Confirm Model")
+![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906970/toinfinity_readme/customradiobtn_iys5yk.png "Confirm Model")
 
 
 
@@ -414,7 +414,7 @@ Booking
 
 - - -
 
-![Schema](wireframes/schema.png)
+![Schema](https://res.cloudinary.com/fdeboo/image/upload/v1611906975/toinfinity_readme/schema_rj3gkm.png)
 
 # Technologies Used
 
@@ -445,7 +445,7 @@ Booking
 + PIPENV for installation of tools needed in this project.
 + Git to handle version control.
     
-    Photoshop to edit, crop and save images as well as utilizing the colour picker to ensure color consistency over the entire project.
+    
 
 
 # Deployment <a name="deploying"></a>
@@ -455,7 +455,7 @@ Booking
 > In order to run the project locally, you will need an IDE, PIP, Python (version 3) and Git installed.
 > You will need to set up a free account with Stripe and with AWS for a S3 bucket.
 
-1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](wireframes/screenshots/clone.png) to clone or download it.
+1. Visit the 2infinity repository on Github; [https://github.com/fdeboo/to-infinity](https://github.com/fdeboo/to-infinity) and click on ![Code](https://res.cloudinary.com/fdeboo/image/upload/v1611914876/toinfinity_readme/clone_trqifl.png) to clone or download it.
 2. Either:
 ***or***
 
@@ -535,11 +535,11 @@ python3 manage.py runserver
 7. Choose whether you want to deploy Automatically or Manually.
 8. Navigate to **Resources** and search for *postgres* in the Add-ons search bar. Choose **Heroku Postgres** from the dropdown.
 9. Make sure the 'Plan name' is set to **Hobby Dev - Free**
-![Hobby_Dev - Free](wireframes/screenshots/hobby_dev.png)
+![Hobby_Dev - Free](https://res.cloudinary.com/fdeboo/image/upload/v1611914876/toinfinity_readme/hobby_dev_ylcbxw.png)
 10. Navigate to **Settings** and click on **Reveal Config Vars**.
 11. Ensure the following are set:
 *\*for guidance on where to obtain these values click [here](#guidance)*
-![Heroku Config Vars](wireframes/screenshots/blurred_heroku_vars.png)
+![Heroku Config Vars](https://res.cloudinary.com/fdeboo/image/upload/v1611914878/toinfinity_readme/blurred_heroku_vars_yac2nh.png)
 
 - - -
 
