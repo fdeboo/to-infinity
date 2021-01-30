@@ -1,11 +1,14 @@
 ![Mockup on all Devices](https://res.cloudinary.com/fdeboo/image/upload/v1611907032/toinfinity_readme/multidevicemockup_chz16s.png)
 
+# Introduction <a name="introduction"></a>
 The 2infinity travel shop was created to fulfill the final project requirements to design and build an e-commerce web app. The idea of a space travel website was chosen as a something unusual and fun but within the coming decade, could occupy a real niche. The web app has been built using the Django framework and its extensions. Data is captured and stored in a relational database and payments are handled by Stripe.
+
+The site can be enjoyed [here](https://toinfinity.herokuapp.com/)
 
 # Table of contents
 
 1. [Introduction](#introduction)
-    * [Objective](#objective)
+    * [Goals](#goals)
     * [User stories](#users)
     * [Design Notes](#design)
     * [Wireframes](#wireframes)
@@ -216,7 +219,7 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 ### Booking App
 + The booking process relies on Django sessions to store the users input and uses the session data to model the forms. In normal workflow, the booking is not created in the database until the user has successfully completed the checkout and made payment.  However they can choose to save the booking prior to checkout and come back to it later. In this case the booking is saved in a model with an 'OPEN' status. 
 
-+ Since many of the forms in the booking process rely on data from the session, check are made early on in the logic before rendering the page to see that all of the required session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user who may have typed in a url without following the booking process from receiving a server error.
++ Since many of the forms in the booking process rely on data from the session, checks are made early on in the logic before rendering the page to see that all of the required session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user who may have typed in a url without following the booking process from receiving a server error.
 
 ![Customised Session Error](https://res.cloudinary.com/fdeboo/image/upload/v1612021457/toinfinity_readme/sessionerrortemplate_mb4zxq.png "No Session Data")
 
