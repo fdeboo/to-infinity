@@ -8,4 +8,9 @@ def index(request):
 
 def privacy(request):
     """ A view to return the privacy policy page """
-    return render(request, 'home/privacypolicy.html')
+    return render(request, 'privacypolicy.html')
+
+
+def terms(request):
+    """ A view to return the privacy policy page """
+    return render(request, 'termsandconditions.html')
