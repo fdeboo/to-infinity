@@ -83,7 +83,7 @@ class Booking(models.Model):
         blank=False,
         related_name="bookings",
     )
-    lead_passenger = models.ForeignKey(
+    lead_user = models.ForeignKey(
         UserProfile,
         on_delete=models.SET_NULL,
         null=True,
@@ -151,7 +151,7 @@ class Passenger(models.Model):
         validators=[MinLengthValidator(9, message="Does not meet the required \
             length")]
     )
-    is_leaduser = models.BooleanField(
+    is_leadpassenger = models.BooleanField(
         null=False, blank=False, default=False, editable=False)
     trip_addons = models.ManyToManyField(AddOn, blank=True)
     trip_insurance = models.ManyToManyField(Insurance)

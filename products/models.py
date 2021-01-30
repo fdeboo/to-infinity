@@ -39,7 +39,7 @@ class Product(models.Model):
     product_id = models.CharField(primary_key=True, max_length=254)
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, default="noimage.png")
     image_thumb = models.ImageField(null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)
 

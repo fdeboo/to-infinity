@@ -17,21 +17,23 @@
 
             <!-- Destination list-->
             <section class="row justify-content-center destination-list">
+                <div class="col-md-5">
+                    <a href="{{ product.image_url }}">
+                        <img class="img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <p>£{{ product.price | intcomma }}</p>
+                    <a href="{% url 'search_trip' %}">
+                        <button class="btn btn-outline">Book this trip</p>
+                    </a>
+                </div>
             </section>
         </div>
     </div>
 </main>
 
-    <div class="row">
-        <div class="col-md-5">
-            <a href="{{ product.image_url }}">
-                <img class="img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
-            </a>
-        </div>
-        <div class="col-md-6">
-            <h2>{{ product.name }}</h2>
-            <p>{{ product.description }}</p>
-            <p>{{ product.price }}</p>
-        </div>
-    </div>
+
 {% endblock content %}

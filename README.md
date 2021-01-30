@@ -25,12 +25,16 @@ The 2infinity travel shop was created to fulfill the final project requirements 
     * [Acknowledgements](#acknowledgements)
 
 # UX <a name="introduction"></a>
-## Target Audience
+## Goals
+### Purpose
+The purpose of the app is to provide a way for users to book and pay for trips to a range of space destinations for themselves and other passengers whom they nominate.
+
+### Target Audience
 The site envisages a time in the near future when space travel will become safe for the casual traveller and space tourist. The site functions for this audience in the manner of air travel sites that we know today. The site would appeal to travellers looking for unique destinations, to space enthusiasts, and to those looking for unusual experiences.
 
-## Objective <a name="strategy"></a>
-
-* To sell trips to outer space
+### The App helps to achieve this by:
++ Simply and attractively displaying the available destinations
++ Providing a straight forward booking process modelled on the familiar workflow of existing air travel sites (eg. [Kenmore Air](https://www.kenmoreair.com)).
 
 ## User Stories <a name="users"></a>
 
@@ -50,8 +54,9 @@ The site envisages a time in the near future when space travel will become safe 
 
 "As a business user, I would like to"
 
-* As a buisness owner I would like to add new trips and experiences
-* As a buisness owner I would like to view the number of seats available for each trip
+* As a business user, I would like to add new trips and experiences
+* As a business user, I would like to view the number of seats available for each trip
+* As a business user, I would like to view details of the passengers for each booking
 
 
 ## Design Notes <a name="design"></a>
@@ -59,23 +64,25 @@ The site envisages a time in the near future when space travel will become safe 
 ### Fonts
 The fonts for this project were sourced from [Google Fonts](https://fonts.google.com/)
 
-+ **"Montserrat"** is the main font used for the body text, links, buttons and subheadings. It was chosen because of it's easy legibility and low contrast strokes that give it a clean, modern feel. The font comes in a good range weights which make it flexible for emphasising words in bold or adding subtle hover effect to links. Montserrat pairs well with the secondary font because of it's smooth, circular curves that contrast with the square form of Orbitron's letters,
++ **"Montserrat"** is the main font used for the body text, links, buttons and subheadings. It was chosen because of its easy legibility and low contrast strokes that give it a clean, modern feel. The font comes in a good range weights which make it flexible for emphasising words in bold or adding subtle hover effect to links. Montserrat pairs well with the secondary font because of its smooth, circular curves that contrast with the square form of Orbitron's letters,
 
-+ The secondary font used for this app is **"Orbiton"**, a sans serif font reminiscent of futuristic sci-fi movies. The geometric typeface was designed for display purposes and as such, is used for 2infinity's main logo and headings. It was chosen for it's strong futuristic character which supports the theme of the app.
++ The secondary font used for this app is **"Orbitron"**, a sans serif font reminiscent of futuristic sci-fi movies. The geometric typeface was designed for display purposes and as such, is used for 2infinity's main logo and headings. It was chosen for its strong futuristic character which supports the theme of the app.
 
-+ The font used for the hero text on the landing page is **"Euphoria Script"**. It was chosen to contrast the main display font (Orbitron) for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base teal colour chosen for the site.
++ The font used for the hero text on the landing page is **"Euphoria Script"**. It was chosen to contrast the main display font (Orbitron) for added interest. It is set to a large font size for maximum impact and legibility and given a text shadow which matches the base cyan colour chosen for the site.
 
 ### Icons
-
+The majority of 2infinity's icons were provided by the [Font Awesome](https://fontawesome.com/) icon library.
 + Icons are used as visual cues against each of the navigation links in the header.
 + Social Media Icons are included in the footer in lieu of written links as the icons are more immediately recognizable.
 + On the user profile page, the table headings are shortened by using icons to save space.
-+ Used in the porgress bar
++ The booking progress bar uses icons to illustrate the process steps and intuitively communicate the stage reached and steps remaining.
++ The site uses a custom mouse cursor for fun, with a design that echoes the theme of the site and gives the impression of a space shuttle freely roaming through outer space. The vector icon was created in Adobe Illustrator.
+![Shuttle Icon](https://res.cloudinary.com/fdeboo/image/upload/v1611957910/toinfinity_readme/shuttleicon_3_qcbrdj.png)
 
 ### Colours
 [Adobe Color](https://color.adobe.com/create) was used to develop the colours for 2infinty.
 
-The brand has a dark theme to reflect the darkness of outer space. Cyan, used for the base colour, is a bright, additative secondary colour created by mixing blue and green light. It was chosen because it captures the glow of Earth as viewed from space.
+The brand has a dark theme to reflect the darkness of outer space. Cyan, used for the base colour, is a bright, additive secondary colour created by mixing blue and green light. It captures the glow of Earth as viewed from space.
 
 
 #### Base 
@@ -105,9 +112,8 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 
 ## Wireframes <a name="wireframes"></a>
 
-The [Bootstrap](https://getbootstrap.com/) framework was used extensively throughout the app to acheive responsive layouts.
-
 ### Base Skeleton  
++ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throughout the app to achieve responsive layouts.
 
 + The pager header, containing the navigation links and company logo, is anchored to the top of the viewport window and has a high z-index so that the page content scrolls behind it.
 
@@ -115,7 +121,7 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 
 + If the main content overflows the viewport height, the content becomes scrollable and the footer is positioned as per default, in the normal flow of the page.  
 
-+ The content is structured using Bootstrap's Grid System. On all screen sizes, the containing elements - **header**, **main**, and **footer** are given the class **"container-fluid"** so that the background extends accross the full width of the screen.
++ The content is structured using Bootstrap's Grid System. On all screen sizes, the containing elements - **header**, **main**, and **footer** are given the class **"container-fluid"** so that the background extends across the full width of the screen.
 
 + The content within the **header** and **main** elements is contained within a content column. This is a full width column (**"col-12"**) on small devices, but reduced to 83.33\% width on viewports wider than 991px, to allow a margin on the left and right of content (**"col-md-10"**)
 
@@ -199,23 +205,24 @@ The [Bootstrap](https://getbootstrap.com/) framework was used extensively throug
 ## Existing Features <a name="existing"></a>
 
 ### Home App
-+ The layout of the landing page is minimalistic and draws the user directly to the hero button which offers a starting point for their navigation of the site.
++ The layout of the landing page is minimalistic and draws the user directly to the hero button as starting point for their navigation.
 
 + The page is filled with a dynamic full screen background image of the Earth photographed from space. The image is fixed so that image appears to zoom in and out when the viewport is resized but keeps its position on the page. 
 
-+ The base teal colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
++ The base cyan colour is used to catch the eye as it stands out againt the dark theme. In this template, it is used in the header section to underline the hovered navigation links, in the main section for the hero button and effect on the hero text, and for footer. This keeps the overall template nicely balanced.
 
 
-### Booking App    
+### Booking App
++ The booking process relies on Django sessions to store the users input and uses the session data to model the forms. In normal workflow, the booking is not created in the database until the user has successfully completed the checkout and made payment.  However they can choose to save the booking prior to checkout and come back to it later. In this case the booking is saved in a model with an 'OPEN' status. 
 
 #### Progress Bar
 
 ![Progress Bar](https://res.cloudinary.com/fdeboo/image/upload/v1611906942/toinfinity_readme/progressbar_fq5nmi.png "Progress Bar")
-+ The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains it's position if the page requires scrolling.
++ The templates in the booking process feature a progress bar just beneath the main navigation bar. This is positioned 'sticky' so that it retains its position if the page requires scrolling.
 
 * The progress bar benefits the user experience as it informs them of where they are in the booking process.
 
-+ The progress bar first appears  in the 'Search Trips View'/ when the user clicks the 'Book A Trip' link in the page header.
++ The progress bar first appears in the 'Search Trips View'/ when the user clicks the 'Book A Trip' link in the page header.
 
 + Each icon in the progress bar is a hyperlink that takes the user back to the respective step in the booking process.
 
@@ -267,22 +274,34 @@ def create_option(
 
 #### Confirm Trips Form
 
-+ The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by destination and then by seats available. The set of options is further refined to the dates closest to the date that the user requested.  
++ The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by 'destination' and then by 'seats available'. The set of options is further refined to the dates closest to the date that the user requested.  
 
 + The radio buttons are hidden in favor of custom styled input labels which display the date, and price per person.
 
 
 ![Customised Radio Inputs](https://res.cloudinary.com/fdeboo/image/upload/v1611906970/toinfinity_readme/customradiobtn_iys5yk.png "Custom Radio Inputs")
 
++ Customisation is applied to Django's 'label_from_instance' method so that the label represents both the price and date of the instance
 
-+ When the option is submitted, a model is triggered to confirm that the choices that the passenger has made.
+```
+    def label_from_instance(self, obj):
+        # 'obj' will be a Destination
+        date_string = (obj.date).strftime("%A %d %B %Y")
+        return f"{date_string} £{obj.destination.price}"
+```
+
++ The markup of the label is constructed using jquery. When the page loads, it takes the value of each label and slices it so that price and date can be returned  as separate html elements within the parent label.
+
++ When the option is submitted, a modal is triggered to confirm the choices the passenger has made.
 
 
 #### Passenger Formset
 
-+ The Formset receives a value for the number of passengers given in the booking and uses it to define the number of forms in the formset.
++ The Formset receives a value from the session for the the number of passengers in the booking and uses it to define the number of forms in the formset.
 
-+ The Addons for the trip are represented as a set of checkboxes but the checkboxes are customised to base on a 
++ The Formset also receives the trip instance from the session and uses it to determine which 'addons' to present to the user 
+
++ The Addons for the trip are represented as a set of checkboxes but the checkboxes use a custom template for improved styling.
 ![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906926/toinfinity_readme/customcheckboxes_hozdm9.png "Custom Checkboxes")
 
 
@@ -295,7 +314,8 @@ def create_option(
 This enhancement would aim to implement structures that make it easy introduce asynchronous housekeeping as requirements are identified, the first example being removal from the database of expired open bookings--bookings created and saved, perhaps by one-time visitors to the site, but never completed.  Any open bookings against expired trips would be targets for this housekeeping.  There are two parts to the implementation of each asynchronous housekeeping requirement:
 
     + A Python script that executes the specific housekeeping; in the case of expired open bookings, the sole objective of the script is to issue an database query along the lines of "BEGIN; DELETE BOOKING WHERE BOOKING.STATUS = 'Open' AND BOOKING.TRIP = TRIP.PK AND TRIP.DATE < CURRENT_DATE; END"
-    A means to schedule the periodic execution of the script which, in the case of open bookings, is the frequency with which open bookings may become expired.  This would be explored using some combination of Django async views, the Django-Q addon, and Heroku Redis as a queue dispatching service. 
+
+    + A means to schedule the periodic execution of the script which, in the case of open bookings, is the frequency with which open bookings may become expired.  This would be explored using some combination of Django async views, the Django-Q addon, and Heroku Redis as a queue dispatching service. 
 
     + Thereafter, each additional housekeeping requirement would be implemented by creating the appropriate housekeeping script, and the additional statements within the async view to invoke the script on the appropriate scheduling basis.
 

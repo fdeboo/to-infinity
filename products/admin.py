@@ -33,6 +33,10 @@ class AddOnAdmin(ProductAdmin):
         'min_medical_threshold',
     )
 
+    readonly_fields = (
+        'category',
+    )
+
     ordering = (
         'product_id',
     )
@@ -46,6 +50,10 @@ class InsuranceAdmin(ProductAdmin):
         'price',
         'image',
         'friendly_name',
+    )
+
+    readonly_fields = (
+        'category',
     )
 
     ordering = (
@@ -63,6 +71,10 @@ class DestinationAdmin(ProductAdmin):
         'category',
         'price',
         'image',
+    )
+
+    readonly_fields = (
+        'category',
     )
 
     ordering = (
