@@ -382,9 +382,36 @@ It checks that:
     ![Custom Error Template](https://res.cloudinary.com/fdeboo/image/upload/v1612021682/toinfinity_readme/pasttriperror_qvaxfl.png)
 
 
-### Stripe Payments
++ A clear message just below the proceed to checkout button, warns the user how much will they be charged.
++ The checkout system implements Stripe(devlopment version) for handling test payments
++ To test checkout, users can enter 4242 4242 4242 4242 for the credit card number
++ Webhooks are set up, so the order is created only after Stripe accepts the payment as valid.
++ Once the Webhook return a success status, the  user receives an email to confirming their booking
++ A Toast message confirms that their order has been successful.
++ On success, the system renders a new template with a full summary of the booking and a thank you message.
++ After successfully checking out the booking instance is created in the database if not already. If the booking instance does already exist, the booking is updated to a status of "COMPLETE"
++ When the booking is saved, the <code>update_seats_available()</code> method is called on the Trips model, prompting it to deduct the number of passengers created in the booking from the number of available seats.
 
+```
+reservations = self.bookings.filter(status="COMPLETE").aggregate(
+            num_passengers=Count("passengers")
+        )["num_passengers"]
+        self.save(reservations=reservations)
 
+    def save(self, *args, **kwargs):
+        """
+        Override the original save method to set the trip reference and
+        seats_available if not set already
+        """
+
+        if not self.trip_ref:
+            date = (self.date).strftime("%m%d-%y")
+            self.trip_ref = self.destination.pk + "-" + date
+
+        reservations = kwargs.pop("reservations", 0)
+        self.seats_available = self.destination.max_passengers - reservations
+        super().save(*args, **kwargs)
+```
 
 ## Future Features
 
