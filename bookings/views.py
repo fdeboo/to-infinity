@@ -8,7 +8,7 @@ from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import FormView, UpdateView, CreateView, DeleteView
+from django.views.generic import FormView, CreateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
@@ -19,6 +19,7 @@ from .formset import make_passenger_formset
 from .models import (
     Trip,
     Booking,
+    Passenger,
     Destination,
     UserProfile,
 )
@@ -27,7 +28,6 @@ from .forms import (
     DateChoiceForm,
     InputPassengersForm,
     make_passenger_form,
-    UpdateSearchForm,
 )
 
 
@@ -46,7 +46,7 @@ class SearchTripsView(FormView):
         Checks to see if data is already in session and if so, sets the initial
         values for the form.
         """
-        initial = super(SearchTripsView, self).get_initial()
+        initial = super().get_initial()
         if "request_date" in self.request.session:
             date = self.request.session["request_date"]
             form_date = json.loads(date)
@@ -226,20 +226,20 @@ class ConfirmTripView(FormView):
             return redirect("home.home")
 
         # Provide initial values for the form
-        initial = super(ConfirmTripView, self).get_initial()
+        initial = super().get_initial()
         initial.update({"trip": default_selected})
         return initial
 
     def get_form_kwargs(self, **kwargs):
         """ Provides keyword arguemnts """
-        kwargs = super(ConfirmTripView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         trips = self.get_trips_queryset(self.gte_dates, self.lt_dates)
         kwargs.update({"trips": trips})
         return kwargs
 
     def get_context_data(self, **kwargs):
 
-        context = super(ConfirmTripView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         destination = Destination.objects.filter(pk=self.destination_pk)
         context.update(
             {
@@ -304,7 +304,7 @@ class InputPassengersView(CreateView):
 
         # Pass passenger_total to determine number of forms
         formset = make_passenger_formset(passenger_form, passenger_total)
-        data = super(InputPassengersView, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         self.profile = UserProfile.objects.get(user=self.request.user)
 
         # Provide the context for the booking summary
@@ -344,7 +344,7 @@ class InputPassengersView(CreateView):
         return data
 
     def get_initial(self):
-        initial = super(InputPassengersView, self).get_initial()
+        initial = super().get_initial()
         initial.update({"trip": self.trip})
         return initial
 
@@ -364,14 +364,16 @@ class InputPassengersView(CreateView):
                 del self.request.session["passenger_total"]
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return super(InputPassengersView, self).post(
+            return super().post(
                 request, *args, **kwargs
             )
 
     def form_valid(self, form):
         """
         Checks which sumbit button was clicked and saves validated form data
-        to either the session or to the database
+        to either the session or to the database.
+        Identifies the lead_passenger and sets their 'is_leadpassenger' status
+        to True.
         """
 
         context = self.get_context_data()
@@ -380,10 +382,14 @@ class InputPassengersView(CreateView):
 
         # Check to see if form was 'saved for later'
         if "save" in form.data:
+            lead_passenger_id = None
             self.save = True
             self.object = form.save()
             if formset.is_valid():
-                for form in formset:
+                for count, form in enumerate(formset):
+                    lead_passenger = False
+                    if count == 0:
+                        lead_passenger_id = form.cleaned_data["passport_no"]
                     addons = form.cleaned_data["trip_addons"]
                     for addon in addons:
                         product_id = addon.product_id
@@ -396,17 +402,21 @@ class InputPassengersView(CreateView):
                 booking = self.object
                 booking.status = "OPENED"
                 booking.original_bag = booking_items
-                booking.lead_passenger = self.profile
+                booking.lead_user = self.profile
                 booking.save()
+                lead_passenger = Passenger.objects.filter(
+                    booking=booking.pk).get(passport_no=lead_passenger_id)
+                lead_passenger.is_leadpassenger = True
+                lead_passenger.save()
                 messages.add_message(
                     self.request, messages.SUCCESS, "Changes were saved."
                 )
-                return super(InputPassengersView, self).form_valid(form)
+                return super().form_valid(form)
             else:
                 messages.add_message(
                     self.request, messages.WARNING, "Check the form errors."
                 )
-                return super(InputPassengersView, self).form_invalid(form)
+                return super().form_invalid(form)
 
         else:
             # Else, save the form data to the session and proceed
@@ -431,7 +441,7 @@ class InputPassengersView(CreateView):
                         "lname": form.cleaned_data["last_name"],
                         "email": form.cleaned_data["email"],
                         "passport": form.cleaned_data["passport_no"],
-                        "is_leaduser": lead_passenger,
+                        "is_lead": lead_passenger,
                         "addons": addon_set,
                     }
                     passenger_details.append(passenger)
@@ -444,7 +454,7 @@ class InputPassengersView(CreateView):
                 messages.add_message(
                     self.request, messages.WARNING, "Check the form errors."
                 )
-                return super(InputPassengersView, self).form_invalid(form)
+                return super().form_invalid(form)
 
     def get_success_url(self):
         if self.cancel:
@@ -465,69 +475,3 @@ class CancelBookingView(DeleteView):
 
     model = Booking
     success_url = reverse_lazy("profile")
-
-
-class EditBookingView(SingleObjectMixin, FormView):
-    """ Provides form to update the date or passengers  """
-
-    template_name = "bookings/edit_booking.html"
-    model = Booking
-    form_class = UpdateSearchForm
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
-
-    def get_initial(self):
-        """
-        Returns the initial data to use for forms on this view.
-        """
-
-        booking = self.get_object()
-        original_bag = booking.original_bag
-        items = ast.literal_eval(original_bag)
-        passengers = 0
-        for product_id, quantity in items.items():
-            if "-DES-" in product_id:
-                passengers = quantity
-        initial = super().get_initial()
-        initial.update(
-            {
-                "destination": booking.trip.destination,
-                "request_date": booking.trip.date,
-                "passengers": passengers,
-            }
-        )
-        return initial
-
-    def get_form_kwargs(self):
-        """
-        Gets the destination from the booking object and passes it as
-        keyword argument to the form
-        """
-
-        booking = self.get_object()
-        kwargs = super(EditBookingView, self).get_form_kwargs()
-        kwargs.update({"destination": booking.trip.destination})
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["booking"] = self.get_object()
-        return context
-
-    def form_valid(self, form):
-        date = form.cleaned_data["request_date"]
-        date = json.dumps(date, cls=DjangoJSONEncoder)
-        booking = self.get_object()
-        self.request.session["request_date"] = date
-        self.request.session["destination_choice"] = booking.trip.destination
-        self.request.session["passenger_total"] = form.cleaned_data[
-            "passengers"
-        ]
-
-        return HttpResponseRedirect(reverse("confirm_trip"))

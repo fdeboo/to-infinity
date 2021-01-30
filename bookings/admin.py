@@ -43,7 +43,7 @@ class BookingAdmin(admin.ModelAdmin):
     fields = (
         "booking_ref",
         "booking_total",
-        "lead_passenger",
+        "lead_user",
         "original_bag",
         "contact_number",
         "full_name",

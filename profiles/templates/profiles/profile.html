@@ -31,7 +31,6 @@
                             <div class="col-auto account-info">
                                 <i class="fas fa-user mr-2"></i>{{ user }}
                             </div>
-                            <div class="col text-right">edit <i class="far fa-edit"></i></div>
                         </div>
                         <div class="row align-items-center">
                             <div class="col-auto account-info">
@@ -72,10 +71,6 @@
                                             title="{{ booking.booking_ref }}">
                                             {{ booking.booking_ref|truncatechars:6 }}
                                         </a>
-                                        <!---<a href="{% url 'edit_booking' booking.booking_ref %}"
-                                            title="{{ booking.booking_ref }}">
-                                            {{ booking.booking_ref|truncatechars:6 }}
-                                        </a>-->
                                     </td>
                                     <td>{{ booking.trip.destination }}</td>
                                     <td>{{ booking.trip.date | date:'d/m/Y' }}</td>

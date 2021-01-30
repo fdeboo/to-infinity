@@ -24,9 +24,4 @@ urlpatterns = [
         '<pk>/cancel/',
         views.CancelBookingView.as_view(),
         name="cancel_booking"),
-
-    path(
-        '<pk>/edit/',
-        views.EditBookingView.as_view(),
-        name="edit_booking"),
 ]

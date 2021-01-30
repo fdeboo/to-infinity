@@ -107,7 +107,7 @@ class StripeWH_Handler:
                     contact_email__iexact=contact_details.email,
                     contact_number__iexact=contact_details.phone,
                     original_bag=booking_items,
-                    lead_passenger=profile,
+                    lead_user=profile,
                     stripe_pid=pid,
                     status="COMPLETE",
                     date_completed=datetime.datetime.now()

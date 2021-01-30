@@ -76,8 +76,9 @@ The majority of 2infinity's icons were provided by the [Font Awesome](https://fo
 + Social Media Icons are included in the footer in lieu of written links as the icons are more immediately recognizable.
 + On the user profile page, the table headings are shortened by using icons to save space.
 + The booking progress bar uses icons to illustrate the process steps and intuitively communicate the stage reached and steps remaining.
-+ The site uses a custom mouse cursor for fun, with a design that echoes the theme of the site and gives the impression of a space shuttle freely roaming through outer space. The vector icon was created in Adobe Illustrator.
-![Shuttle Icon](https://res.cloudinary.com/fdeboo/image/upload/v1611957910/toinfinity_readme/shuttleicon_3_qcbrdj.png)
++ The site uses a custom mouse cursor for fun, with a design that echoes the theme of the site and gives the impression of a space shuttle freely roaming through outer space. The vector icon was created in Adobe Illustrator.  
+
+    ![Shuttle Icon](https://res.cloudinary.com/fdeboo/image/upload/v1611957910/toinfinity_readme/shuttleicon_3_qcbrdj.png)
 
 ### Colours
 [Adobe Color](https://color.adobe.com/create) was used to develop the colours for 2infinty.
@@ -158,7 +159,7 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 &nbsp;
 #### Sign Out
 
-![All auth Sign Out](https://res.cloudinary.com/fdeboo/image/upload/v1611914502/toinfinity_readme/signout_lkkeqi.png"Sign Out Template Page")
+![All auth Sign Out](https://res.cloudinary.com/fdeboo/image/upload/v1611914502/toinfinity_readme/signout_lkkeqi.png  "Sign Out Template Page")
 
 &nbsp;
 ### View Trips
@@ -304,9 +305,17 @@ def create_option(
 + The Addons for the trip are represented as a set of checkboxes but the checkboxes use a custom template for improved styling.
 ![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906926/toinfinity_readme/customcheckboxes_hozdm9.png "Custom Checkboxes")
 
-
-
 #### Booking Summary
+
+
+#### Save for later
++ The user can choose to save their booking if they are not ready to check out at that point.
++ The booking instance is saved and given a status of OPEN. They can access this booking from their Profile page and return to complete it another day.
+#### Cancel
++ If the user gets to adding the passengers and then decides they don't want to proceed with the booking, they can choose to 'cancel'. Pressing this button deletes all session data and redirects them back to the home page.
+
+#### Checkout
+
 
 ## Future Features
 

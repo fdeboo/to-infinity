@@ -33,9 +33,9 @@ class ProfileView(UpdateView):
         user = self.get_object()
         #  Find any complete or incomplete bookings that the user has made
         bookings_opened = Booking.objects.filter(
-            lead_passenger=user).filter(status='OPENED')
+            lead_user=user).filter(status='OPENED')
         complete_bookings = Booking.objects.filter(
-            lead_passenger=user).filter(status='COMPLETE')
+            lead_user=user).filter(status='COMPLETE')
 
         # Provide the context for the booking summary
         open_bookings = []

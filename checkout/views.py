@@ -36,7 +36,6 @@ def cache_checkout_data(request):
         save_info = request.POST.get("save_info")
         booking = request.session.get("booking", "")
         if booking:
-            print("yes")
             stripe.PaymentIntent.modify(
                 pid,
                 metadata={
@@ -49,7 +48,6 @@ def cache_checkout_data(request):
                 },
             )
         else:
-            print("no")
             stripe.PaymentIntent.modify(
                 pid,
                 metadata={
@@ -92,31 +90,31 @@ class CheckoutView(
     def __init__(self):
         self.object = None
         self.trip = None
+        self.booking = None
+        self.pk = None
 
     def get(self, request, *args, **kwargs):
         """ Check if pk in url and if not set to None. """
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        if pk is None:
+        self.pk = self.kwargs.get(self.pk_url_kwarg)
+        if self.pk is None:
             self.object = None
-            booking = None
-            booking_model = self.request.session.get('booking_model', {})
-            trip_pk = booking_model['trip']
+            booking_model = self.request.session.get("booking_model", {})
+            trip_pk = booking_model["trip"]
         else:
             self.object = self.get_object()
-            booking = Booking.objects.get(pk=pk)
-            original_bag = booking.original_bag
-            trip_pk = booking.trip.pk
+            self.booking = Booking.objects.get(pk=self.pk)
+            original_bag = self.booking.original_bag
+            trip_pk = self.booking.trip.pk
             passenger_count = Passenger.objects.filter(
-                booking=booking.pk).count()
+                booking=self.booking.pk
+            ).count()
             self.request.session["passenger_total"] = passenger_count
-            self.request.session["booking"] = booking.pk
+            self.request.session["booking"] = self.booking.pk
             self.request.session["booking_items"] = ast.literal_eval(
                 original_bag
             )
         trip = Trip.objects.get(pk=trip_pk)
         passenger_total = self.request.session["passenger_total"]
-        print(passenger_total)
-        print(trip.seats_available)
 
         # Prepare trip date for comparison by making it a naive date
         date_attr = trip.date
@@ -125,8 +123,8 @@ class CheckoutView(
 
         # Check to see if the date is in the past
         if datetime_naive < datetime.today():
-            if booking:
-                booking.delete()
+            if self.booking:
+                self.booking.delete()
             template_name = "checkout/date-passed.html"
             context = {
                 "date": trip.date,
@@ -143,7 +141,7 @@ class CheckoutView(
             }
             return render(request, template_name, context)
 
-        return super(CheckoutView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_object(self, **kwargs):
         """ Retrieve the primary key from the kwargs to use for lookup"""
@@ -151,19 +149,60 @@ class CheckoutView(
         return booking
 
     def get_initial(self):
-        # Provide initial values for the form
-        initial = super(CheckoutView, self).get_initial()
-        try:
-            profile = UserProfile.objects.get(user=self.request.user)
-            initial.update(
-                {
-                    "full_name": profile.user.get_full_name(),
-                    "contact_email": profile.user.email,
-                    "contact_number": profile.default_phone_num,
-                }
-            )
-        except UserProfile.DoesNotExist:
-            pass
+        # Provide initial values for the form.
+        # Check for the'lead passenger'. If exists, update the initial values
+        # with the passenger instance. Otherwise use profile
+
+        initial = super().get_initial()
+        if self.pk is None:
+            passenger_set = self.request.session.get("passenger_details", {})
+            for passenger in passenger_set:
+                if passenger["is_lead"] is True:
+                    initial.update(
+                        {
+                            "full_name": f"{passenger['fname']} "
+                            f"{passenger['lname']}",
+                            "contact_email": passenger["email"],
+                        }
+                    )
+                    break
+                try:
+                    profile = UserProfile.objects.get(user=self.request.user)
+                    initial.update(
+                        {
+                            "full_name": f"{profile.first_name} "
+                            f"{profile.last_name}",
+                            "contact_email": profile.user.email,
+                            "contact_number": profile.default_phone_num
+                        }
+                    )
+                except UserProfile.DoesNotExist:
+                    pass
+        else:
+            try:
+                lead_passenger = Passenger.objects.filter(
+                    booking=self.booking.pk).get(is_leadpassenger=True)
+                initial.update(
+                    {
+                        "full_name": f"{lead_passenger.first_name} "
+                        f"{lead_passenger.last_name}",
+                        "contact_email": lead_passenger.email
+                    }
+                )
+            except Passenger.DoesNotExist:
+                try:
+                    profile = UserProfile.objects.get(user=self.request.user)
+                    initial.update(
+                        {
+                            "full_name": f"{profile.first_name} "
+                            f"{profile.last_name}",
+                            "contact_email": profile.user.email,
+                            "contact_number": profile.default_phone_num
+                        }
+                    )
+                except UserProfile.DoesNotExist:
+                    pass
+
         return initial
 
     def get_context_data(self, **kwargs):
@@ -209,7 +248,7 @@ class CheckoutView(
             )
 
         # Add data to the get_context_data dictionary
-        data = super(CheckoutView, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         data["booking_total"] = booking_total
         data["booking_items"] = booking_items
         data["trip_items"] = trip_items
@@ -248,19 +287,19 @@ class CheckoutView(
             booking_line_item.save()
         pk = self.kwargs.get(self.pk_url_kwarg)
         if pk is None:
-            booking_model = self.request.session.get('booking_model', {})
-            trip_pk = booking_model['trip']
+            booking_model = self.request.session.get("booking_model", {})
+            trip_pk = booking_model["trip"]
             trip = Trip.objects.get(pk=trip_pk)
             self.object.trip = trip
-            self.object.lead_passenger = UserProfile.objects.get(
+            self.object.lead_user = UserProfile.objects.get(
                 user=self.request.user
             )
             self.object.save()
             passenger_details = self.request.session.get(
-                'passenger_details', {}
+                "passenger_details", {}
             )
             for passenger in passenger_details:
-                addons = passenger['addons']
+                addons = passenger["addons"]
                 addon_qs = None
                 for addon in addons:
                     item = AddOn.objects.filter(pk=addon)
@@ -270,11 +309,11 @@ class CheckoutView(
                         addon_qs = addon_qs | item
                 new_passenger = Passenger(
                     booking=self.object,
-                    first_name=passenger['fname'],
-                    last_name=passenger['lname'],
-                    email=passenger['email'],
-                    passport_no=passenger['passport'],
-                    is_leaduser=passenger['is_leaduser'],
+                    first_name=passenger["fname"],
+                    last_name=passenger["lname"],
+                    email=passenger["email"],
+                    passport_no=passenger["passport"],
+                    is_leaduser=passenger["is_leaduser"],
                 )
                 new_passenger.save()
                 if addon_qs:
@@ -285,7 +324,7 @@ class CheckoutView(
             booking.trip.update_seats_available()
 
         # save the save_info input to the session
-        return super(CheckoutView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         """

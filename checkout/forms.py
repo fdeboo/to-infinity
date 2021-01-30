@@ -12,9 +12,9 @@ from crispy_forms.layout import (
     Div,
     HTML,
     Hidden,
-    ButtonHolder,
 )
 from bookings.models import Booking
+
 
 class CustomCheckbox(Field):
     """ Provides template for custom Checkbox field used in crispy form """
