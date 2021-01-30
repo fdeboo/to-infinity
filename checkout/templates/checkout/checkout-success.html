@@ -12,9 +12,9 @@
 {% endblock header %}
 
 {% block content %}
-<main class="container-fluid black-bg">
+<main class="container-fluid d-flex flex-column justify-content-center align-items-center form-bg px-0">
     <!-- Progress Bar -->
-    <section class="row justify-content-center booking-steps-container">
+    <section class="row w-100 justify-content-center booking-steps-container">
         <div class="col-md-10">
             <div class="row booking-steps">
                 {% include 'bookings/includes/progressbar/checkout-steps.html' %}
@@ -40,21 +40,20 @@
     </section>
 
     <!-- Thank you summary-->
-    <section class="row justify-content-center my-5">
-        <div class="col-md-10">
+    <section class="row w-100 justify-content-center flex-grow-1 align-items-center">
+        <div class="col-12 col-sm-10 col-md-8 my-5 m-xl-5 text-center form-container">
             <div class="row">
                 <div class="col-12">
-                    <h2 class="logo-font mb-4">Thank you</h2>
-                    <hr>
-                    <p>
+                    <h1 class="logo-font">Thank you</h2>
+                    <h2 class="mb-5">
                         Your booking information is below. A confirmation email 
                         will be sent to {{ booking.contact_email }}
-                    </p>
+                    </h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-lg-7 order-lg-last mb-5">
-                    <div class="booking-confirmation-wrapper p-2 border">
+                <div class="col-12 mb-5">
+                    <div class="p-2 text-left">
                         <div class="row">
                             <div class="col">
                                 <small class="text-muted">Booking Info:</small>
@@ -97,14 +96,38 @@
                         </div>
                         {% endfor %}
 
-                        <div class="row">
-                            <div class="col-12 col-md-4">
-                                <p class="mb-0 text-black font-weight-bold">Full Name</p>
+                        {% if booking.full_name %}
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p class="mb-0 text-black font-weight-bold">Lead Contact</p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p class="mb-0">{{ booking.full_name }}</p>
+                                </div>
                             </div>
-                            <div class="col-12 col-md-8 text-md-right">
-                                <p class="mb-0">{{ booking.full_name }}</p>
+                        {% endif %}
+
+                        {% if booking.contact_email %}
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p class="mb-0 text-black font-weight-bold">Contact Email</p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p class="mb-0">{{ booking.contact_email }}</p>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
+
+                        {% if booking.contact_email %}
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p class="mb-0 text-black font-weight-bold">Contact Number</p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p class="mb-0">{{ booking.contact_number }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
 
                         <div class="row">
                             <div class="col">
@@ -125,7 +148,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-lg-7 text-right">
+                <div class="col-12">
                     {% if from_profile %}
                     <a href="#" class="btn btn-black rounded-) my-2">
                         <span class="icon">
@@ -140,7 +163,6 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
         </div>
     </section>
 </main>

@@ -325,7 +325,7 @@ class CheckoutView(
                     last_name=passenger["lname"],
                     email=passenger["email"],
                     passport_no=passenger["passport"],
-                    is_leaduser=passenger["is_leaduser"],
+                    is_leadpassenger=passenger["is_lead"],
                 )
                 new_passenger.save()
                 if addon_qs:
