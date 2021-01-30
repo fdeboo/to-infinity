@@ -56,7 +56,7 @@ class SelectOptionsWithAttributes(Select):
             label = opt_attrs.pop("label")
         else:
             opt_attrs = {}
-        option_dict = super(SelectOptionsWithAttributes, self).create_option(
+        option_dict = super().create_option(
             name, value, label, selected, index, subindex=subindex, attrs=attrs
         )
         for key, val in opt_attrs.items():
@@ -150,7 +150,7 @@ class SearchTripsForm(forms.Form):
         """ Form validation in case bad data passes validation in browser """
 
         # Data from the form is fetched using super function
-        super(SearchTripsForm, self).clean()
+        super().clean()
 
         # Extract the individual fields from the data
         destination = self.cleaned_data.get("destination")
@@ -218,7 +218,7 @@ class UpdateSearchForm(SearchTripsForm):
         """ Form validation in case bad data passes validation in browser """
 
         # Data from the form is fetched using super function
-        super(UpdateSearchForm, self).clean()
+        super().clean()
 
         # Extract the individual fields from the data
         destination = self.destination
@@ -259,7 +259,7 @@ class DateChoiceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         trip_dates = kwargs.pop("trips", None)
-        super(DateChoiceForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["trip"].queryset = trip_dates
 
 
@@ -276,7 +276,7 @@ class CustomCheckboxSet(forms.CheckboxSelectMultiple):
         self, name, value, label, selected, index, subindex, attrs
     ):
         obj = AddOn.objects.get(pk=value)
-        option_dict = super(CustomCheckboxSet, self).create_option(
+        option_dict = super().create_option(
             name, value, label, selected, index, subindex=subindex, attrs=attrs
         )
         option_dict["template_name"] = self.option_template_name
@@ -315,7 +315,7 @@ def make_passenger_form(active_trip):
             }
 
         def __init__(self, *args, **kwargs):
-            super(PassengerForm, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
 
             # Uses value from function param to create query for qs.
             self.fields["trip_addons"].queryset = AddOn.objects.filter(
@@ -369,7 +369,7 @@ def make_passenger_form(active_trip):
             """ Validation for fields in each individual form """
 
             # Data from the form fetched using super function
-            super(PassengerForm, self).clean()
+            super().clean()
 
             # Collect data from field
             passport_no = self.cleaned_data.get("passport_no")
@@ -403,7 +403,7 @@ class InputPassengersForm(forms.ModelForm):
         widgets = {"trip": forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
-        super(InputPassengersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.label_class = "col-md-3 create-label"

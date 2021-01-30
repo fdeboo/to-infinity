@@ -272,10 +272,22 @@ def create_option(
         return option_dict
 ```
 
++ The form has validation setup on its <code>def_clean(self)</code> method so that the data is cleaned even after it passes the intitial browser validation. This prevents any hacking from the developer tools.
+It checks that: 
+    + The Destination submitted is in fact an instance of the Destination Model. Returns error: "Please choose an option from the list"
+    + The date selected is not in the past. Returns error: ""Searched date should not be in the past"
+    + The value submitted for number of passengers does not exceed the number of seats that the Destination can accommodate. Returns error: "Sorry, this exceeds the maximum for the selected trip"
+    + The value submitted for number of passengers is not less than 1. Returns error: "Please choose at least one passenger".    
+
 
 #### Confirm Trips Form
 
-+ The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by 'destination' and then by 'seats available'. The set of options is further refined to the dates closest to the date that the user requested.  
++ The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by 'destination' and then by 'seats available'. The set of options is further refined to the dates closest to the date that the user requested.
+
++ Before loading the template and attempting to return any results, a check occurs to see if there are any trips available at all for the destination and requested number of passengers. If all trips are fully booked, the user is redirected to an error page and presented a button link to go back and start a new search.
+
+![Custom Error Message](https://res.cloudinary.com/fdeboo/image/upload/v1612038944/toinfinity_readme/noavailabilityerror_mdeqty.png)
+
 
 + The radio buttons are hidden in favor of custom styled input labels which display the date, and price per person.
 
@@ -295,26 +307,46 @@ def create_option(
 
 + When the option is submitted, a modal is triggered to confirm the choices the passenger has made.
 
-
 #### Passenger Formset
 
 + The Formset receives a value from the session for the the number of passengers in the booking and uses it to define the number of forms in the formset.
 
 + The Formset also receives the trip instance from the session and uses it to determine which 'addons' to present to the user 
 
++ Since the form relies on data from the session, it first runs a check to see if all the session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user from manually typing in the url without following the booking process from receiving a server error.
+
+![Customised Session Error](https://res.cloudinary.com/fdeboo/image/upload/v1612021457/toinfinity_readme/sessionerrortemplate_mb4zxq.png "No Session Data")
+
 + The Addons for the trip are represented as a set of checkboxes but the checkboxes use a custom template for improved styling.
 ![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906926/toinfinity_readme/customcheckboxes_hozdm9.png "Custom Checkboxes")
 
++ The form has custom validation defined in its <code>def_clean(self)</code> method to verify the data that is submitted. It checks that:
+    + The passport number has been provided for each passenger since it is a required field. Returns error: "This field is required."
+    + The passport number does not already exist within a booking for the same trip. Returns error: "Error, please check passport number or contact us"
+    + The passport number is not submitted twice within the same formset. Returns error: "".
+    + Details have been provided for all forms in the formset. Returns error: "Please provide details for all travellers."
+
 #### Booking Summary
 
++ A summary of items that the user is due to purchase appears in both the Passenger Details template and the Checkout template. The itemised summary shows each item on a separate row with the individual item price and quantity (number of passengers it applies to). A booking total is calculated and shown beneath the listed items.
+
+![Booking Summmary](https://res.cloudinary.com/fdeboo/image/upload/v1612021370/toinfinity_readme/bookingsummary_cx0pkc.png)
+
++ In the Passenger Details template, the booking summary initially displays the Trip which is being booked as the only 'product' item that has been selected at that step in the booking process. However, the summary features an 'Update' button which, when clicked, triggers the jquery to select all checked inputs from each passenger form and generate the html markup that appends the Addon products to the summary. The booking total is also updated.
+
++ The script first removes any markup beyond the listed trip in case it is in not the first time script has been triggered. This prevents the same Addon product being listed multiple times from previous click events.
+
++ Instead, the itemised list of Addon products is refreshed and any reoccurances (the same product selected by multiple passengers) is accounted for by incrementing the 'quantity' and subtotal.
 
 #### Save for later
-+ The user can choose to save their booking if they are not ready to check out at that point.
++ Just before the user proceeds to the checkout, they are presented with two alternative submit buttons. The 'Save for Later' button allows the user to save the booking to their profile if they are not ready to check out at that point.
 + The booking instance is saved and given a status of OPEN. They can access this booking from their Profile page and return to complete it another day.
 #### Cancel
-+ If the user gets to adding the passengers and then decides they don't want to proceed with the booking, they can choose to 'cancel'. Pressing this button deletes all session data and redirects them back to the home page.
++ If the user gets to Passenger Details template and then decides they don't want to proceed with the booking, they can choose to 'cancel'. Pressing this button deletes all session data and redirects them back to the home page.
 
-#### Checkout
+### Checkout App
+### Stripe Payments
+The 
 
 
 ## Future Features
