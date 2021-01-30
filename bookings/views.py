@@ -151,6 +151,18 @@ class ConfirmTripView(FormView):
         return trips
 
     def get(self, request, *args, **kwargs):
+        """ Checks to see if the values required to render the template are
+        available and if not renders a custom error template"""
+
+        # Check if the required session data exists
+        if not all(
+            x in self.request.session for x in [
+                'request_date', 'passenger_total', 'destination_choice']
+        ):
+            template_name = "bookings/session-unavailable.html"
+            context = {}
+            return render(request, template_name, context)
+
         # Retrieve values from the session
         date = self.request.session["request_date"]
         self.searched_date = json.loads(date)
@@ -292,6 +304,21 @@ class InputPassengersView(CreateView):
         self.cancel = False
         self.save = False
         self.profile = None
+
+    def get(self, request, *args, **kwargs):
+        """ Checks to see if the values required to render the template are
+        available and if not renders a custom error template"""
+
+        # Check if the required session data exists
+        if not all(
+            x in self.request.session for x in [
+                'passenger_total', 'booking_model', 'booking_items']
+        ):
+            template_name = "bookings/session-unavailable.html"
+            context = {}
+
+            return render(request, template_name, context)
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         # Get data from the session that will be used to define the forms

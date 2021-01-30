@@ -97,7 +97,20 @@ class CheckoutView(
         """ Check if pk in url and if not set to None. """
         self.pk = self.kwargs.get(self.pk_url_kwarg)
         if self.pk is None:
-            self.object = None
+
+            # Check if the required session data exists
+            if not all(
+                x in self.request.session for x in [
+                    'passenger_total',
+                    'booking_model',
+                    'booking_items',
+                    'passenger_details'
+                ]
+            ):
+                template_name = "bookings/session-unavailable.html"
+                context = {}
+                return render(request, template_name, context)
+
             booking_model = self.request.session.get("booking_model", {})
             trip_pk = booking_model["trip"]
         else:
@@ -140,7 +153,6 @@ class CheckoutView(
                 "passengers": passenger_total,
             }
             return render(request, template_name, context)
-
         return super().get(request, *args, **kwargs)
 
     def get_object(self, **kwargs):
@@ -266,7 +278,7 @@ class CheckoutView(
             self.object = None
         else:
             self.object = self.get_object()
-        return super(CheckoutView, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         pid = self.request.POST.get("client_secret").split("_secret")[0]
@@ -339,7 +351,7 @@ class CheckoutView(
         messages.add_message(
             self.request, messages.WARNING, "Check the form errors."
         )
-        return super(CheckoutView, self).form_invalid(form)
+        return super().form_invalid(form)
 
 
 class CheckoutSuccessView(SingleObjectMixin, View):
