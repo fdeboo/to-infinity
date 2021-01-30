@@ -7,7 +7,7 @@ The site can be enjoyed [here](https://toinfinity.herokuapp.com/)
 
 # Table of contents
 
-1. [Introduction](#introduction)
+1. [UX](#userexperience)
     * [Goals](#goals)
     * [User stories](#users)
     * [Design Notes](#design)
@@ -27,7 +27,7 @@ The site can be enjoyed [here](https://toinfinity.herokuapp.com/)
     * [Media](#media)
     * [Acknowledgements](#acknowledgements)
 
-# UX <a name="introduction"></a>
+# UX <a name="userexperience"></a>
 ## Goals
 ### Purpose
 The purpose of the app is to provide a way for users to book and pay for trips to a range of space destinations for themselves and other passengers whom they nominate.
@@ -205,8 +205,8 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 ![User Profile](https://res.cloudinary.com/fdeboo/image/upload/v1611914507/toinfinity_readme/userprofile_yqkofy.png "User Profile Template")
 
 
-# Features <a name="features"></a>
-## Existing Features <a name="existing"></a>
+# Features <a name="existing_feat"></a>
+## Existing Features <a name="future_feat"></a>
 
 ### Home App
 + The layout of the landing page is minimalistic and draws the user directly to the hero button as starting point for their navigation.
@@ -222,6 +222,8 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 + Since many of the forms in the booking process rely on data from the session, checks are made early on in the logic before rendering the page to see that all of the required session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user who may have typed in a url without following the booking process from receiving a server error.
 
 ![Customised Session Error](https://res.cloudinary.com/fdeboo/image/upload/v1612021457/toinfinity_readme/sessionerrortemplate_mb4zxq.png "No Session Data")
+
++ The booking process is reserved for authenticated users and therefore if a user tries to search a trip without being logged in, they are directed to the sign in page.
 
 #### Progress Bar
 
@@ -369,7 +371,7 @@ It checks that:
     If the check finds that there are no longer seats available for this trip, it redirects the user to a custom error page.
     ![Custom Error Template](https://res.cloudinary.com/fdeboo/image/upload/v1612021451/toinfinity_readme/seatsunavailable_jun0dt.png)
 
-+ A final check is made to see that the trip being 'purchased' is not in the past since the user may have saved their booking and returned to it many weeks later when the trip has already taken place. If this is the case the user is prevented from reaching the checkout page and redirected to a custom error page instead where they can navigate back to their profile.
++ A final check is made to see that the trip being 'purchased' is not in the past since the user may have saved their booking and returned to it many weeks later when the trip has already taken place. If this is the case, the user is prevented from reaching the checkout page and redirected to a custom error page instead where they can navigate back to their profile.
 
     ```
     if datetime_naive < datetime.today():
@@ -385,7 +387,7 @@ It checks that:
     ![Custom Error Template](https://res.cloudinary.com/fdeboo/image/upload/v1612021682/toinfinity_readme/pasttriperror_qvaxfl.png)
 
 
-+ A clear message just below the proceed to checkout button, warns the user how much will they be charged.
++ Within the checkout template, a clear message is shown just below the 'Proceed to Checkout' button, warns the user how much will they be charged.
 + The checkout system implements Stripe(devlopment version) for handling test payments
 + To test checkout, users can enter 4242 4242 4242 4242 for the credit card number
 + Webhooks are set up, so the order is created only after Stripe accepts the payment as valid.
@@ -417,6 +419,11 @@ reservations = self.bookings.filter(status="COMPLETE").aggregate(
 ```
 
 ## Future Features
+
++ Product management within the App
+Currently administrators can login to the Django admin which has been set up with all models registered. In a future feature, the app will give administrator only access to templates where they can submit forms to update, create or delete products.
+
++ Users will be able to delete their accounts
 
 + Asynchronous Housekeeping  
 This enhancement would aim to implement structures that make it easy introduce asynchronous housekeeping as requirements are identified, the first example being removal from the database of expired open bookings--bookings created and saved, perhaps by one-time visitors to the site, but never completed.  Any open bookings against expired trips would be targets for this housekeeping.  There are two parts to the implementation of each asynchronous housekeeping requirement:
@@ -546,7 +553,7 @@ Booking
 
 ![Schema](https://res.cloudinary.com/fdeboo/image/upload/v1611906975/toinfinity_readme/schema_rj3gkm.png)
 
-# Technologies Used
+# Technologies Used <a name="technologies">
 
 ## Frontend:
 + HTML5, CSS3, Javascript
@@ -600,6 +607,75 @@ Booking
     + For the creation of the wireframes used in this project
 + [Cloudinary](https://cloudinary.com/)
     + Hosts the images used in this README.md file
+
+
+# Technologies Used <a name="testing"></a>
+
+Features of 2Infinity were tested as they were developed, and re-tested in an ad hoc fashion as updates to the app continued.
+
+Critical path functions of the app were identified, and testing focused on ensuring that these remained functional.  Critical path functions include:
+
++ To register an account
++ To sign in with a registered account
++ To search for a trip (2 forms)
++ To book a trip and “Confirm”
++ To add passengers (with add-ons) and “Proceed”
++ To complete the “Checkout” process and “Complete Order”
++ Functions necessary to meet project requirements (e.g., view and amend the profile for a registered account)
+
+Formal and automated testing methods and assets were not developed.
+
+A close family member was introduced to the website on its deployed location and briefed about its purpose and critical path functions.  There subsequent use of the app helped to draw attention to defects and identify opportunities for enhancing usability.
+
+## Testing User Stories
+
+> * As a user, I would like to view the different types of trips available
+
+**Test**  
++ Clicked on **View Trips** in the navbar and made sure it linked to the correct page (_Passed_)
+
+> * As a user, I would like to view individual trips in more detail
++ Clicked on **View Details** button for each trip in View Trips template and was redirected to that individual trip's page (_Passed_)
+
+> * As a user, I would like to book my place on a trip
++ Clicked on **Book A Trip** link in the navigation bar and was redirected to the Search Form
++ Filled in the fields and submitted the form. Was redirected to confirm the Trip date.
++ Chose a date from the available options and clicked confirm. Was redirected to fill in passenger details
++ Filled out all inputs and clicked to submit form. Was redirected to the checkout page
++ Completed Checkout form and clicked to confirm the payment.
++ Received a success message and was taken to a booking summary to confirm the booking had been placed (_Passed_)
+
+>* As a user, I would like to provide details of the number of passengers and passenger information
++ Provided Destination in the select field and the passengers field was enabled
++ Input a value for the number of passengers and clicked submit
++ Chose a trip from the options that were returned
++ The search details were presented on the screen to remind me of the seach data I had provided
++ Redirected to input the passenger details
++ Was able to submit the form (_Passed_)
+
+>* As a user, I would like to review my booking before placing it
++ Started a booking and reached the Passenger Details Form
++ Added some addons to the order and clicked the Update button
++ The booking total updated and the addons were appended to the list
++ Continued to the Checkout Page and the booking summary contained all Addons and the Trip  (_Passed_)
+
+>* As a user, I would like to easily Enter Payment information
+
+>* As a user, I would like to feel my personal and payment information is secure
+>* As a user, I would like to view my order confirmation after checkout
+>* As a user, I would like to receive a confirmation email after the checokout is complete
++ Made a new booking and went through to the Checkout page.
++ Completed the order and was redirected to the success page
++ Received a notification email confirm that the booking had been place (_Passed_)
+>* As a user, I would like to modifiy my booking details
++ Clicked on Progress bar icons to go back steps in the booking process
++ Was able to resubmit the forms (_Passed_)
+>* As a user, I would like to view my bookings
++ Completed a booking and was redirected to the success page
++ Clicked on button to view profile
++ The booking was listed in the Completed bookings table
++ Started a booking and followed the booking process to the Passenger Details page
++ Clicked SAVE and was redirected to my profile page (_Passed_)
 
 
 # Deployment <a name="deploying"></a>
