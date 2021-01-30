@@ -216,6 +216,10 @@ The brand has a dark theme to reflect the darkness of outer space. Cyan, used fo
 ### Booking App
 + The booking process relies on Django sessions to store the users input and uses the session data to model the forms. In normal workflow, the booking is not created in the database until the user has successfully completed the checkout and made payment.  However they can choose to save the booking prior to checkout and come back to it later. In this case the booking is saved in a model with an 'OPEN' status. 
 
++ Since many of the forms in the booking process rely on data from the session, check are made early on in the logic before rendering the page to see that all of the required session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user who may have typed in a url without following the booking process from receiving a server error.
+
+![Customised Session Error](https://res.cloudinary.com/fdeboo/image/upload/v1612021457/toinfinity_readme/sessionerrortemplate_mb4zxq.png "No Session Data")
+
 #### Progress Bar
 
 ![Progress Bar](https://res.cloudinary.com/fdeboo/image/upload/v1611906942/toinfinity_readme/progressbar_fq5nmi.png "Progress Bar")
@@ -284,6 +288,8 @@ It checks that:
 
 + The form contains a set of radio input options based on a filtered queryset. The Trips are initially filtered by 'destination' and then by 'seats available'. The set of options is further refined to the dates closest to the date that the user requested.
 
++ The Confirm Trip form is rendered using data from the session. Therefore checks are made to see that the required session objects exist. If they do not exist the user is redirected to a custom error page with the message "It seems the session has ended" and a button to take them back to the search form.
+
 + Before loading the template and attempting to return any results, a check occurs to see if there are any trips available at all for the destination and requested number of passengers. If all trips are fully booked, the user is redirected to an error page and presented a button link to go back and start a new search.
 
 ![Custom Error Message](https://res.cloudinary.com/fdeboo/image/upload/v1612038944/toinfinity_readme/noavailabilityerror_mdeqty.png)
@@ -311,11 +317,9 @@ It checks that:
 
 + The Formset receives a value from the session for the the number of passengers in the booking and uses it to define the number of forms in the formset.
 
-+ The Formset also receives the trip instance from the session and uses it to determine which 'addons' to present to the user 
++ The Formset also receives the trip instance from the session and uses it to determine which 'addons' to present to the user
 
-+ Since the form relies on data from the session, it first runs a check to see if all the session data exists. If it doesn't, it redirects the user to a custom error template where they find a link back to the search form. This prevents a user from manually typing in the url without following the booking process from receiving a server error.
-
-![Customised Session Error](https://res.cloudinary.com/fdeboo/image/upload/v1612021457/toinfinity_readme/sessionerrortemplate_mb4zxq.png "No Session Data")
++ The Passenger Details form is rendered using data from the session. Therefore checks are made to see that the required session objects exist. If they do not exist the user is redirected to a custom error page with the message "It seems the session has ended" and a button to take them back to the search form.
 
 + The Addons for the trip are represented as a set of checkboxes but the checkboxes use a custom template for improved styling.
 ![Custom Checkboxes](https://res.cloudinary.com/fdeboo/image/upload/v1611906926/toinfinity_readme/customcheckboxes_hozdm9.png "Custom Checkboxes")
@@ -345,8 +349,41 @@ It checks that:
 + If the user gets to Passenger Details template and then decides they don't want to proceed with the booking, they can choose to 'cancel'. Pressing this button deletes all session data and redirects them back to the home page.
 
 ### Checkout App
++ The Checkout form is rendered using data from the session. Therefore checks are made to see that the required session objects exist. If they do not exist the user is redirected to a custom error page with the message "It seems the session has ended" and a button to take them back to the search form.
+
++ A check is also made to verify that there are still seats available on the trip for the number of passengers requested by the booking since it is possible that in the time since the initial search was made, the number available seats has changed.
+
+    ```
+    if trip.seats_available < passenger_total:
+                template_name = "checkout/seats-unavailable.html"
+                context = {
+                    "destination": trip.destination,
+                    "date": trip.date,
+                    "passengers": passenger_total,
+                }
+                return render(request, template_name, context)
+    ```
+    If the check finds that there are no longer seats available for this trip, it redirects the user to a custom error page.
+    ![Custom Error Template](https://res.cloudinary.com/fdeboo/image/upload/v1612021451/toinfinity_readme/seatsunavailable_jun0dt.png)
+
++ A final check is made to see that the trip being 'purchased' is not in the past since the user may have saved their booking and returned to it many weeks later when the trip has already taken place. If this is the case the user is prevented from reaching the checkout page and redirected to a custom error page instead where they can navigate back to their profile.
+
+    ```
+    if datetime_naive < datetime.today():
+                if self.booking:
+                    self.booking.delete()
+                template_name = "checkout/date-passed.html"
+                context = {
+                    "date": trip.date,
+                }
+                return render(request, template_name, context)
+    ```
+
+    ![Custom Error Template](https://res.cloudinary.com/fdeboo/image/upload/v1612021682/toinfinity_readme/pasttriperror_qvaxfl.png)
+
+
 ### Stripe Payments
-The 
+
 
 
 ## Future Features
