@@ -3,13 +3,11 @@ Views in this module provide logic for templates that guide the booking process
 """
 
 import json
-import ast
 from datetime import datetime
 from django.shortcuts import redirect, render, reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import FormView, CreateView, DeleteView
-from django.views.generic.detail import SingleObjectMixin
 from django.http import HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
