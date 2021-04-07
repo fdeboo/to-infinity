@@ -609,7 +609,7 @@ Booking
     + Hosts the images used in this README.md file
 
 
-# Technologies Used <a name="testing"></a>
+# Testing <a name="testing"></a>
 
 Features of 2Infinity were tested as they were developed, and re-tested in an ad hoc fashion as updates to the app continued.
 
