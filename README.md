@@ -722,9 +722,9 @@ pipenv install
     DEVELOPMENT=True
     ```
 
-*\*for guidance on where to obtain these values click [here](#guidance)*
-6\. If using VSCode\, or else if necessary\, restart the IDE and reactivate the virtual environment \(as per step 3\)
-7\. Migrate the admin panel models to create the database template:
+*for guidance on where to obtain these values click [here](#guidance)*
+6. If using VSCode, or else if necessary, restart the IDE and reactivate the virtual environment (as per step 3)
+7. Migrate the admin panel models to create the database template:
 
 ```
  python3 manage.py migrate
@@ -767,62 +767,86 @@ python3 manage.py runserver
 9. Make sure the 'Plan name' is set to **Hobby Dev - Free**
 ![Hobby_Dev - Free](https://res.cloudinary.com/fdeboo/image/upload/v1611914876/toinfinity_readme/hobby_dev_ylcbxw.png)
 10. Navigate to **Settings** and click on **Reveal Config Vars**.
+
 11. Ensure the following are set:
-*\*for guidance on where to obtain these values click [here](#guidance)*
-![Heroku Config Vars](https://res.cloudinary.com/fdeboo/image/upload/v1611914878/toinfinity_readme/blurred_heroku_vars_yac2nh.png)
 
-- - -
+    _*for guidance on where to obtain these values click [here](#guidance)_
 
-\#\# Guidance
-AWS\_ACCESS\_KEY\_ID:
-AWS\_SECRET\_ACCESS\_KEY:
-DATABASE\_URL *(for production)*
-EMAIL\_HOST\_USER:
-EMAIL\_HOST\_PASS (steps are based on gmail server):
-SECRET\_KEY:
-STRIPE\_PUBLIC\_KEY:
-STRIPE\_SECRET\_KEY:
-STRIPE\_WH\_SECRET:
-USE\_AWS:
+    ![Heroku Config Vars](media/screenshots/blurred_heroku_vars.png)
 
-- - -
+    &nbsp;
 
-* Set this to True
+    ***    
 
-> Remember to append the path for the checkout to the end of the url, including the trailing '/': `/checkout/wh/`
+    ## Guidance
 
-```
-  * Install ngrok. (On MacOs, `brew install ngrok`)
-  * Type `ngrok http  8000` in the terminal
-  * Add the temporary server address to ALLOWED\_HOSTS in the app settings eg. `[“9e96e1506ea8.ngrok.io”, “127.0.0.1”]`
-```
+    &nbsp;
 
-* Click the link alternative to **'receive all events'** in the 'Events to send' section and then 'Add endpoint'
-    * Copy the Signing secret provided.
-    * As above
-    * Copy the Secret Key token
-    * Create an account / Sign in to Stripe
-    * From the side menu, click on **Developers** > **API Keys**
-    * Copy the Publishable Key token
-    * Type `python3` in the terminal and then type `import secrets` and hit enter. Type `secrets.token_urlsafe(48)` to generate a secure randomized byte string containing 48 bytes.
-    * Sign in to gmail and go to **Settings** > *See all settings*.
-    * Navigate to **Accounts & Import** > **Other Google Account Settings.**
-    * From the side menu, click on **Security** and follow the steps to turn on 2-Step Verification.
-    * Click on **App Passwords**, choose 'Mail' from the first dropdown and 'other' from the second, giving it a reference i.e 'Django'
-    * Your gmail account address
-    * This value is pre-populated by Heroku in the Config Vars. Alternatively, you can type `Heroku config` in the CLI
-    * As above
-    * copy the Secret Access Key
-    * Create an account / Sign in to AWS and navigate to the **AWS Management Console**
-    * Search for S3 in AWS Services and **Create a bucket**. Follow the AWS [documentation.](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-configure-bucket.html)
-    * Create a User via the IAM service provided by aws
-    * As above
-    * From the side menu, click on **Developers** > **Webhooks**
-    * Click on button to '+ Add endpoint'.
-    * Provide your endpoint url. If you are working locally, you may need to take these extra steps for a temporary url:
+     AWS_ACCESS_KEY_ID: 
+
+     + Create an account / Sign in to AWS and navigate to the **AWS Management Console**
+     + Search for S3 in AWS Services and **Create a bucket**. Follow the AWS [documentation.](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-configure-bucket.html)
+     + Create a User via the IAM service provided by aws
+
+    AWS_SECRET_ACCESS_KEY:
+
+    + As above
+    + copy the Secret Access Key
+
+    DATABASE_URL _(for production)_    
+    + This value is pre-populated by Heroku in the Config Vars. Alternatively, you can type `Heroku config` in the CLI
+
+    EMAIL_HOST_USER: 
+    + Your gmail account address
+
+    EMAIL_HOST_PASS (steps are based on gmail server): 
+    + Sign in to gmail and go to **Settings** > _See all settings_.  
+    + Navigate to **Accounts &amp; Import** > **Other Google Account Settings.**
+    + From the side menu, click on **Security** and follow the steps to turn on 2-Step Verification.
+    + Click on **App Passwords**, choose 'Mail' from the first dropdown and 'other' from the second, giving it a reference i.e 'Django'
+
+    SECRET_KEY:
+    + Type `python3` in the terminal and then type `import secrets` and hit enter. Type `secrets.token_urlsafe(48)` to generate a secure randomized byte string containing 48 bytes.
+
+    STRIPE_PUBLIC_KEY:
+    + Create an account / Sign in to Stripe
+    + From the side menu, click on **Developers** > **API Keys**
+    + Copy the Publishable Key token
+
+    STRIPE_SECRET_KEY:
+    + As above
+    + Copy the Secret Key token
+
+    STRIPE_WH_SECRET:
+    + As above
+    + From the side menu, click on **Developers** > **Webhooks**
+    + Click on button to '+ Add endpoint'.
+    + Provide your endpoint url. If you are working locally, you may need to take these extra steps for a temporary url:
+        - Install ngrok. (On MacOs, `brew install ngrok`)
+        - Type `ngrok http  8000` in the terminal
+        - Add the temporary server address to ALLOWED_HOSTS in the app settings eg. `[“9e96e1506ea8.ngrok.io”, “127.0.0.1”]`   
+
+        &nbsp;
+
+        > Remember to append the path for the checkout to the end of the url, including the trailing '/':  `/checkout/wh/`    
+        
+
+
+    + Click the link alternative to **'receive all events'** in the 'Events to send' section and then 'Add endpoint'
+    + Copy the Signing secret provided.
+
+    USE_AWS:
+    + Set this to True
+
+    &nbsp;
+
+    *** 
+
 
 12. Migrate changes to the database models
-13. Commit any changes to GitHub (master branch) and deploy to Heroku. If this is not set to happen automatically, click **Deploy** from Heroku dashboard and navigate to **Manual Deploy** at the bottom of the page. Select the master branch and click **Deploy Branch**.
+
+13. Commit any changes to GitHub (master branch) and deploy to Heroku. If this is not set to happen automatically, click **Deploy** from Heroku dashboard and navigate to **Manual Deploy** at the bottom of the page. Select the master branch and click **Deploy Branch**. 
+
 14. Once the build is complete, click on **Open app** to view the site.
 
 # Bugs <a name="bugs"></a>
