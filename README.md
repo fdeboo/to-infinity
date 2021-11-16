@@ -772,7 +772,7 @@ python3 manage.py runserver
 
     _*for guidance on where to obtain these values click [here](#guidance)_
 
-    ![Heroku Config Vars](media/screenshots/blurred_heroku_vars.png)
+    ![Heroku Config Vars](https://res.cloudinary.com/fdeboo/image/upload/v1611914878/toinfinity_readme/blurred_heroku_vars_yac2nh.png)
 
     &nbsp;
 
@@ -825,8 +825,6 @@ python3 manage.py runserver
         - Install ngrok. (On MacOs, `brew install ngrok`)
         - Type `ngrok http  8000` in the terminal
         - Add the temporary server address to ALLOWED_HOSTS in the app settings eg. `[“9e96e1506ea8.ngrok.io”, “127.0.0.1”]`   
-
-        &nbsp;
 
         > Remember to append the path for the checkout to the end of the url, including the trailing '/':  `/checkout/wh/`    
         
