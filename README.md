@@ -871,7 +871,7 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 
 ## Code
 
-* I was greatly inspired by the Boutique Ado Walkthrough prject provided by Code Institute. Much of the code for the Checkout and Webhooks was based on the project code.
+* I was inspired by the Boutique Ado Walkthrough prject provided by Code Institute. Much of the code for the Checkout and Webhooks was based on the project code.
 
 + The [Django Documentation](https://docs.djangoproject.com/en/3.1/) provides a very comprehensive guide to it's features and was my main point of reference and source of all my learning about Django models, Model Relationships, Class Based Views, Forms, and queries.
 
@@ -881,17 +881,17 @@ The majority of images used in this project were sourced from Pexels. Thanks to 
 
 * [Advanced Form Rendering with Django Crispy Forms](https://simpleisbetterthancomplex.com/tutorial/2018/11/28/advanced-form-rendering-with-django-crispy-forms.html) by Vitor Freitas was a clear and concise explanation of how to use and customise crispy forms. It inspired me to provide my own templates for the checkboxes in the Passenger Details formset.
 
-+ Vitor Freitas' anwaser in his [AskVitor](https://simpleisbetterthancomplex.com/questions/2017/03/22/how-to-dynamically-filter-modelchoices-queryset-in-a-modelform.html) feature helped me grasp how to channel the search results from form to form, particulary in rendering the Confirm trips View which was based on a filtered queryset using the input data from the Search Form.
++ Vitor Freitas' answer in his [AskVitor](https://simpleisbetterthancomplex.com/questions/2017/03/22/how-to-dynamically-filter-modelchoices-queryset-in-a-modelform.html) feature helped me grasp how to channel the search results from form to form, particulary in rendering the Confirm trips View which was based on a filtered queryset using the input data from the Search Form.
 
 * I greatly valued the [Django inline formsets with Class-based views and crispy forms ](https://dev.to/zxenia/django-inline-formsets-with-class-based-views-and-crispy-forms-14o6) post, by Xenia from the Dev Community, as it provided a very simple yet comprehensive example of how to implement inline formsets within the same conditions I was working with.
 
-* I based my booking form which used inline\_formets to created a nested passenger forms, on [Working with nested forms with Django](https://swapps.com/blog/working-with-nested-forms-with-django/) walkthrough tutorial from Swapps.
+* I based my booking form, which used inline\_formsets to create the nested "passenger" forms, on [Working with nested forms with Django](https://swapps.com/blog/working-with-nested-forms-with-django/) walkthrough tutorial from Swapps.
 
 * Stack Overflow    
 
     The community on Stack Overflow helped me on many occasions, both in the answers to my own questions and in the answers to other users' questions. Notable posts that inspired my code are as follows:
 
-    + I understood how to pass extra data to the select options in the Search Trips form after reading [this](https://stackoverflow.com/a/63293300/2342815) post by 'mglart'.
+    + I understood how to pass extra data to the options of the Select element in the "Search Trips" form after reading [this](https://stackoverflow.com/a/63293300/2342815) post by 'mglart'.
 
     + The code used to check for the existence of multiple session objects in one statement was posted [here.](https://stackoverflow.com/a/6159329/2342815)
 
